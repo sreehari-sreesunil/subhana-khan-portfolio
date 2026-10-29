@@ -126,10 +126,11 @@ export default function Hero() {
                 style={{
                   left: `${figure.left}%`,
                   bottom: `${figure.bottom}%`,
-                  width: `${figure.width}%`,
+                  height: `${(figure.height / anchor.rowSpan) * 100}%`,
                 }}
               >
                 <motion.div
+                  className="h-full"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.8, ease, delay: afterTiles }}
@@ -141,7 +142,7 @@ export default function Hero() {
                       width={figure.image.width}
                       height={figure.image.height}
                       sizes="10vw"
-                      className="h-auto w-full"
+                      className="h-full w-auto max-w-none"
                     />
                   ) : (
                     <PlaceholderFigure variant={figure.variant} />

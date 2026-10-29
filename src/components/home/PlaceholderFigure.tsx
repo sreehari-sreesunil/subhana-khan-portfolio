@@ -4,7 +4,7 @@ export default function PlaceholderFigure({ variant }: { variant: FigureVariant 
   return (
     <svg
       viewBox="0 0 40 100"
-      className="block h-auto w-full"
+      className="block h-full w-auto"
       aria-hidden="true"
     >
       <g fill="var(--ink-green)" fillOpacity={0.85}>

@@ -28,7 +28,8 @@ export type HeroFigure = {
   /** Percentages of the anchor tile; negative values hang past its edge. */
   left: number;
   bottom: number;
-  width: number;
+  /** Figure height in rows (1 = one cell tall); width follows the figure's own proportions. */
+  height: number;
   /** Parallax drift: the figure rises speed × 100px across the Hero. */
   speed: number;
 };
@@ -69,7 +70,7 @@ export const hero: HeroContent = {
       anchorTileId: "03",
       left: 48,
       bottom: -22,
-      width: 34,
+      height: 0.85,
       speed: 0.3,
     },
     {
@@ -80,7 +81,7 @@ export const hero: HeroContent = {
       anchorTileId: "05",
       left: -18,
       bottom: 6,
-      width: 34,
+      height: 0.85,
       speed: 0.5,
     },
     {
@@ -91,7 +92,7 @@ export const hero: HeroContent = {
       anchorTileId: "11",
       left: 80,
       bottom: -30,
-      width: 16,
+      height: 0.8,
       speed: 0.4,
     },
   ],
