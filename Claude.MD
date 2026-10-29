@@ -62,6 +62,21 @@ Verify exact hex values by sampling the extracted page images before finalising.
   reappear across the site as small parallax figures.
 - Generous white space. Nothing loud. No neon, no gradients that aren't in her work.
 
+## Paper grain (site-wide background texture)
+
+A subtle animated grain over the whole site, so the screen feels like her paper pages
+(inspired by antonyraphy.com's moving noise background, but softer and warmer).
+
+- Generate ONE small noise tile once (e.g. 256×256 PNG, warm grey grain) with a script;
+  save to `public/textures/grain.png`. Do NOT animate an SVG `feTurbulence` filter
+  per frame (too expensive).
+- A fixed, full-screen overlay div above all content: `pointer-events: none`,
+  `mix-blend-mode: multiply`, opacity ~0.04–0.08 (tune by eye; it should be felt, not seen).
+- Animate it by jumping the tile to random offsets with a CSS `steps()` keyframe
+  animation at ~8–10 changes per second ("film grain" flicker), using `transform` only.
+- Reduced motion: keep the grain, stop the animation (static paper texture).
+- Must not cost noticeable performance on phones; check in DevTools Performance.
+
 ## Motion principles
 
 - Calm and architectural, never flashy. ONE signature effect per page; everything else subtle.
@@ -100,6 +115,31 @@ detail pages with a shared-element transition (the preview image grows into the 
 7. **Essay teaser** — one line from the essay, link to /writing/imperfections.
 8. **Footer** — "Thank you" lettering, contact (email, phone, location), CV link,
    optional "Download portfolio (PDF)" button.
+
+## Patterns borrowed from the reference site (antonyraphy.com)
+
+Borrow STRUCTURE only. Never his personality (spy theme, dark tech feel) or his content.
+Her site stays calm, warm and papery.
+
+1. **Chapter preview cards** (home sections 3–6): small code label, then a bold uppercase
+   headline written as a question or claim, then a 1–2 sentence story. Use her own words.
+   Example:
+   - Label: `_EPHEMERAL GROUND_01`
+   - Headline: `WHAT IF A SETTLEMENT LEFT A PLACE BETTER THAN IT FOUND IT?`
+   - Story: "A neighbourhood of 1,000 on Great Nicobar, designed so its daily life is its ecology."
+   Store label / headline / story per project in `src/content/`. Draft headlines for
+   02–04 from her texts and get approval before using them.
+2. **Art direction per screen size**: landscape sheets are unreadable on phones. Each key
+   image gets a desktop (landscape) version AND a portrait crop of its best detail for
+   phones, switched with `<picture>`/media-aware image sources. Add a `mobile` image field
+   to the content types.
+3. **Info strip in the site header**: extend the PDF-style header to e.g.
+   "Kochi, Kerala · Selected Works 2021-26 · Open to opportunities". Text lives in `site.ts`.
+4. **One signature interaction in the footer/contact** — must come from HER world
+   (architecture / slowness), not a copy of his rotary phone. Propose 2–3 ideas when
+   building the footer; don't build without approval.
+5. **Photography preview on home**: a drag-to-browse slider (with gentle parallax inside
+   each image) as the home preview; the full masonry grid stays on /photography.
 
 ## Ephemeral Ground — scroll story
 
@@ -141,3 +181,8 @@ original sheets as full images, click to open a zoomable viewer.
 
 Store page content as typed data in `/content` (e.g. `content/ephemeral-ground.ts`),
 not hard-coded in components, so text and images can be swapped without touching layout.
+
+## Before launch
+
+- Hero tiles 01, 07–10, 12, 13: upgrade if Subhana sends original photos (current crops
+  from cover.psd are ~420px per cell, below the 2× target).

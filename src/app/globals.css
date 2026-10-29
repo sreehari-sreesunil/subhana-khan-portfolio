@@ -14,7 +14,7 @@
   --header-h: 3rem;
 
   /* Paper grain strength: ~0.04 (barely there) to ~0.08 (clearly visible). */
-  --grain-opacity: 0.09;
+  --grain-opacity: 0.15;
 }
 
 @media (width >= 48rem) {
@@ -78,11 +78,16 @@ body {
   }
 }
 
-/* Unlayered so these beat Tailwind utilities at the breakpoint. */
+/*
+ * Unlayered so these beat Tailwind utilities at the breakpoint.
+ * --gap-ratio: gap ÷ tile size, measured from her cover.psd (≈106px gaps on ≈422px tiles).
+ */
 .hero {
   --pad-top: 0.5rem;
   --pad-bottom: 4rem;
-  --gap: 0.375rem;
+  --gap-ratio: 0.25;
+  /* Mobile: square cells filling the width (100vw minus the px-4 gutters). */
+  --gap: calc(var(--gap-ratio) * (100vw - 2rem) / (4 + 3 * var(--gap-ratio)));
   padding-top: calc(var(--header-h) + var(--pad-top));
   padding-bottom: var(--pad-bottom);
 }
@@ -99,7 +104,6 @@ body {
   .hero {
     --pad-top: 1rem;
     --pad-bottom: 1.5rem;
-    --gap: 0.5rem;
     container-type: inline-size;
     height: 100svh;
   }
@@ -108,22 +112,25 @@ body {
    * --overhang: how far (in rows) figures hang below the last row; set from content.
    * --name-em: rendered width of the name in ems (Metropolis Bold, tracking-tight), used only as a safety cap.
    */
+  /* Gaps scale with the cells: column gaps from cell width, row gaps from cell height. */
   .hero-comp {
-    --cell-w-full: calc((60cqw - 3 * var(--gap)) / 4);
+    --cell-w-full: calc(60cqw / (4 + 3 * var(--gap-ratio)));
     --cell-h: min(
       var(--cell-w-full),
-      (100svh - var(--header-h) - var(--pad-top) - var(--pad-bottom) - 3 * var(--gap)) /
-        (4 + var(--overhang, 0))
+      (100svh - var(--header-h) - var(--pad-top) - var(--pad-bottom)) /
+        (4 + 3 * var(--gap-ratio) + var(--overhang, 0))
     );
     --cell-w: min(var(--cell-w-full), var(--cell-h) * 1.35);
+    --col-gap: calc(var(--gap-ratio) * var(--cell-w));
+    --row-gap: calc(var(--gap-ratio) * var(--cell-h));
     --name-em: 8.2;
     --name-size: min(
       var(--cell-w) * 0.54,
-      (100cqw - 2 * var(--cell-w) - 2 * var(--gap)) / var(--name-em)
+      (100cqw - 2 * var(--cell-w) - 2 * var(--col-gap)) / var(--name-em)
     );
 
     display: grid;
-    grid-template-columns: calc(2 * var(--cell-w) + 2 * var(--gap)) max-content;
+    grid-template-columns: calc(2 * var(--cell-w) + 2 * var(--col-gap)) max-content;
     width: max-content;
     margin-inline: auto;
   }
@@ -133,6 +140,7 @@ body {
     grid-row: 1;
     grid-template-columns: repeat(4, var(--cell-w));
     grid-template-rows: repeat(4, var(--cell-h));
+    gap: var(--row-gap) var(--col-gap);
     width: max-content;
   }
 
@@ -143,7 +151,7 @@ body {
     align-self: start;
     justify-self: start;
     padding-top: 0;
-    margin-top: calc(1.5 * var(--cell-h) + var(--gap) - 0.45 * var(--name-size));
+    margin-top: calc(1.5 * var(--cell-h) + var(--row-gap) - 0.45 * var(--name-size));
   }
 
   .hero-name {
