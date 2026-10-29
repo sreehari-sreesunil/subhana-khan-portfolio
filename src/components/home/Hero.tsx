@@ -45,23 +45,42 @@ export default function Hero() {
   const rise = reduceMotion ? 0 : 16;
   const afterTiles = hero.tiles.length * tileStagger;
 
+  // People scene: each figure makes one small move as the Hero scrolls.
+  // Desktop pins the Hero for a screen of scrolling; phones play half the distance as it scrolls away.
   useGSAP(
     () => {
       const section = sectionRef.current;
-      if (!section || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (!section) return;
+      const cell = section.querySelector<HTMLElement>("[data-cell]");
+      if (!cell) return;
 
-      section.querySelectorAll<HTMLElement>("[data-parallax-speed]").forEach((el) => {
-        gsap.to(el, {
-          y: -Number(el.dataset.parallaxSpeed) * 100,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-          },
+      const mm = gsap.matchMedia();
+      const scene = (pinned: boolean) => {
+        const scale = pinned ? 1 : 0.5;
+        const tl = gsap.timeline({
+          defaults: { ease: "none", duration: 1 },
+          scrollTrigger: pinned
+            ? { trigger: section, start: "top top", end: "+=100%", pin: true, scrub: 0.6, invalidateOnRefresh: true }
+            : { trigger: section, start: "top top", end: "bottom top", scrub: true, invalidateOnRefresh: true },
         });
-      });
+        hero.figures.forEach((figure) => {
+          const el = section.querySelector<HTMLElement>(`[data-figure="${figure.id}"]`);
+          if (!el) return;
+          tl.to(
+            el,
+            {
+              x: () => figure.move.x * cell.offsetWidth * scale,
+              y: () => figure.move.y * cell.offsetHeight * scale,
+              rotate: (figure.move.rotate ?? 0) * scale,
+              transformOrigin: "50% 100%",
+            },
+            0,
+          );
+        });
+      };
+
+      mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => scene(true));
+      mm.add("(max-width: 767.98px) and (prefers-reduced-motion: no-preference)", () => scene(false));
     },
     { scope: sectionRef },
   );
@@ -82,6 +101,7 @@ export default function Hero() {
           return (
             <motion.div
               key={tile.id}
+              data-cell={isSingle ? "" : undefined}
               style={gridArea(tile)}
               className={`relative overflow-hidden ${isSingle ? "aspect-square md:aspect-auto" : ""} ${
                 tile.image ? "" : toneClass[tile.placeholderTone]
@@ -118,10 +138,10 @@ export default function Hero() {
             <div
               key={figure.id}
               style={gridArea(anchor)}
-              className="pointer-events-none relative z-20"
+              className={`pointer-events-none relative z-20 ${figure.clip ? "overflow-hidden" : ""}`}
             >
               <div
-                data-parallax-speed={figure.speed}
+                data-figure={figure.id}
                 className="absolute"
                 style={{
                   left: `${figure.left}%`,

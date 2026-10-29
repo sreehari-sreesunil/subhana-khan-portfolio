@@ -30,8 +30,13 @@ export type HeroFigure = {
   bottom: number;
   /** Figure height in rows (1 = one cell tall); width follows the figure's own proportions. */
   height: number;
-  /** Parallax drift: the figure rises speed × 100px across the Hero. */
-  speed: number;
+  /**
+   * Scroll scene: where the figure ends up, in cell units (x by cell width, y by cell height),
+   * plus an optional lean in degrees around its feet.
+   */
+  move: { x: number; y: number; rotate?: number };
+  /** Keep the figure inside its anchor tile while it moves. */
+  clip?: boolean;
 };
 
 export type HeroContent = {
@@ -72,7 +77,7 @@ export const hero: HeroContent = {
       left: -0.9,
       bottom: -28.4,
       height: 0.895,
-      speed: 0.3,
+      move: { x: 0, y: 0, rotate: 5 },
     },
     {
       id: "walking-woman",
@@ -83,7 +88,7 @@ export const hero: HeroContent = {
       left: -31,
       bottom: -3,
       height: 0.964,
-      speed: 0.5,
+      move: { x: 0.6, y: 0 },
     },
     {
       id: "yellow-dress-woman",
@@ -94,7 +99,7 @@ export const hero: HeroContent = {
       left: 84.7,
       bottom: -22.9,
       height: 0.742,
-      speed: 0.4,
+      move: { x: -0.03, y: -0.074 },
     },
     {
       id: "elderly-couple",
@@ -105,7 +110,8 @@ export const hero: HeroContent = {
       left: 48.3,
       bottom: 22.2,
       height: 0.488,
-      speed: 0.2,
+      move: { x: -0.126, y: -0.081 },
+      clip: true,
     },
     {
       id: "children",
@@ -116,7 +122,8 @@ export const hero: HeroContent = {
       left: 46.2,
       bottom: 0.5,
       height: 0.721,
-      speed: 0.25,
+      move: { x: -0.35, y: 0 },
+      clip: true,
     },
   ],
 };
