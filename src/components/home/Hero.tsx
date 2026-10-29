@@ -21,6 +21,17 @@ const toneClass: Record<PlaceholderTone, string> = {
 const ease = [0.22, 1, 0.36, 1] as const;
 const tileStagger = 0.07;
 
+const lastRow = Math.max(...hero.tiles.map((t) => t.row + t.rowSpan - 1));
+
+const overhangCells = Math.max(
+  0,
+  ...hero.figures.map((figure) => {
+    const anchor = hero.tiles.find((t) => t.id === figure.anchorTileId);
+    if (!anchor || anchor.row + anchor.rowSpan - 1 !== lastRow) return 0;
+    return (-figure.bottom / 100) * anchor.rowSpan;
+  }),
+);
+
 function gridArea(tile: HeroTile) {
   return {
     gridColumn: `${tile.col} / span ${tile.colSpan}`,
@@ -58,9 +69,12 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-x-clip bg-paper-white px-4 pt-14 pb-16 md:px-10 md:pt-20 md:pb-28"
+      className="hero relative overflow-x-clip bg-paper-white px-4 md:px-10"
     >
-      <div className="grid w-full grid-cols-4 gap-1.5 md:w-[60%] md:gap-2">
+      <div
+        className="hero-grid grid w-full grid-cols-4"
+        style={{ "--overhang": overhangCells } as React.CSSProperties}
+      >
         {hero.tiles.map((tile, i) => {
           const isSingle = tile.colSpan === 1 && tile.rowSpan === 1;
           const span = Math.max(tile.colSpan, tile.rowSpan);
@@ -144,7 +158,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease, delay: afterTiles }}
           >
-            <h1 className="font-heading text-[11vw] leading-[0.9] font-bold tracking-tight whitespace-nowrap text-ink-green md:text-[7vw]">
+            <h1 className="hero-name font-heading text-[11vw] leading-[0.9] font-bold tracking-tight whitespace-nowrap text-ink-green">
               {hero.name}
             </h1>
             <div className="mt-3 flex flex-col items-start md:absolute md:top-full md:right-0 md:mt-4 md:items-end">
