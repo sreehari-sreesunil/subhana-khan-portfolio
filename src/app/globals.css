@@ -12,6 +12,9 @@
   --sun: #eed98a;
 
   --header-h: 3rem;
+
+  /* Paper grain strength: ~0.04 (barely there) to ~0.08 (clearly visible). */
+  --grain-opacity: 0.06;
 }
 
 @media (width >= 48rem) {
@@ -39,6 +42,40 @@
 body {
   background: var(--paper);
   color: var(--ink-green);
+}
+
+/* Oversized by one tile on each side so the random offsets never expose an edge. */
+.paper-grain {
+  position: fixed;
+  inset: -256px;
+  z-index: 50;
+  pointer-events: none;
+  background-image: url("/textures/grain.png");
+  background-size: 256px 256px;
+  mix-blend-mode: multiply;
+  opacity: var(--grain-opacity);
+  will-change: transform;
+  animation: paper-grain 1s steps(1, end) infinite;
+}
+
+@keyframes paper-grain {
+  0%   { transform: translate3d(0, 0, 0); }
+  10%  { transform: translate3d(-97px, 61px, 0); }
+  20%  { transform: translate3d(143px, -38px, 0); }
+  30%  { transform: translate3d(-31px, -177px, 0); }
+  40%  { transform: translate3d(208px, 114px, 0); }
+  50%  { transform: translate3d(-164px, 23px, 0); }
+  60%  { transform: translate3d(57px, 199px, 0); }
+  70%  { transform: translate3d(-222px, -129px, 0); }
+  80%  { transform: translate3d(118px, -211px, 0); }
+  90%  { transform: translate3d(-12px, 148px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paper-grain {
+    animation: none;
+  }
 }
 
 /* Unlayered so these beat Tailwind utilities at the breakpoint. */

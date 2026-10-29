@@ -60,6 +60,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <SiteHeader />
           {children}
         </SmoothScroll>
+        <div aria-hidden="true" className="paper-grain" />
       </body>
     </html>
   );
