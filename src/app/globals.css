@@ -110,7 +110,7 @@ body {
 
   /*
    * --overhang: how far (in rows) figures hang below the last row; set from content.
-   * --name-em: rendered width of the name in ems (Metropolis Bold, tracking-tight), used only as a safety cap.
+   * --name-em: rendered width of the name in ems (Metropolis SemiBold), used only as a safety cap.
    */
   /* Gaps scale with the cells: column gaps from cell width, row gaps from cell height. */
   .hero-comp {
@@ -123,16 +123,15 @@ body {
     --cell-w: min(var(--cell-w-full), var(--cell-h) * 1.35);
     --col-gap: calc(var(--gap-ratio) * var(--cell-w));
     --row-gap: calc(var(--gap-ratio) * var(--cell-h));
-    --name-em: 8.2;
+    --name-em: 8.34;
     /* From her PSD text layers: 250px name on 437px rows, starting 0.149 of a cell into tile 06. */
     --name-indent: calc(0.149 * var(--cell-w));
     --name-size: min(
       var(--cell-h) * 0.572,
       (100cqw - 2 * var(--cell-w) - 2 * var(--col-gap) - var(--name-indent)) / var(--name-em)
     );
-    /* Baseline position within a line-height: 1 box, measured from the fonts. */
-    --name-baseline: 0.792;
-    --label-baseline: 0.824;
+    /* Metropolis baseline position within a line-height: 1 box (same for every weight). */
+    --baseline: 0.792;
     --portfolio-size: calc(0.4 * var(--name-size));
     --works-size: calc(0.2667 * var(--name-size));
 
@@ -164,7 +163,7 @@ body {
     margin-left: var(--name-indent);
     margin-top: calc(
       var(--cell-h) + var(--row-gap) + 0.703 * var(--cell-h) -
-        var(--name-baseline) * var(--name-size)
+        var(--baseline) * var(--name-size)
     );
   }
 
@@ -181,8 +180,8 @@ body {
     font-size: var(--portfolio-size);
     line-height: 1;
     margin-top: calc(
-      0.792 * var(--name-size) - (1 - var(--name-baseline)) * var(--name-size) -
-        var(--label-baseline) * var(--portfolio-size)
+      0.792 * var(--name-size) - (1 - var(--baseline)) * var(--name-size) -
+        var(--baseline) * var(--portfolio-size)
     );
   }
 
@@ -190,8 +189,8 @@ body {
     font-size: var(--works-size);
     line-height: 1;
     margin-top: calc(
-      0.392 * var(--name-size) - (1 - var(--label-baseline)) * var(--portfolio-size) -
-        var(--label-baseline) * var(--works-size)
+      0.392 * var(--name-size) - (1 - var(--baseline)) * var(--portfolio-size) -
+        var(--baseline) * var(--works-size)
     );
   }
 }

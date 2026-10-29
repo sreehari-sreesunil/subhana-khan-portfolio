@@ -162,14 +162,14 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease, delay: afterTiles }}
           >
-            <h1 className="hero-name font-heading text-[11vw] leading-[0.9] font-bold tracking-tight whitespace-nowrap text-ink-green">
+            <h1 className="hero-name font-heading text-[10.8vw] leading-[0.9] font-semibold whitespace-nowrap text-ink-green">
               {hero.name}
             </h1>
             <div className="hero-labels mt-3 flex flex-col items-start md:items-end">
-              <p className="hero-portfolio font-ui text-xl text-ink-green">
+              <p className="hero-portfolio font-heading text-xl font-medium text-ink-green">
                 {hero.portfolioLabel}
               </p>
-              <p className="hero-works font-ui text-sm text-ink-green">
+              <p className="hero-works font-heading text-sm font-normal text-ink-green">
                 {hero.worksLabel}
               </p>
             </div>
