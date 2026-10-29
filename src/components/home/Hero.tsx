@@ -1,0 +1,163 @@
+"use client";
+
+import Image from "next/image";
+import { useRef } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+import { hero, type HeroTile, type PlaceholderTone } from "@/content/home";
+import PlaceholderFigure from "./PlaceholderFigure";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+const toneClass: Record<PlaceholderTone, string> = {
+  sand: "bg-sand",
+  sage: "bg-sage/70",
+  paper: "bg-paper",
+  teal: "bg-thesis-teal/40",
+};
+
+const ease = [0.22, 1, 0.36, 1] as const;
+const tileStagger = 0.07;
+
+function gridArea(tile: HeroTile) {
+  return {
+    gridColumn: `${tile.col} / span ${tile.colSpan}`,
+    gridRow: `${tile.row} / span ${tile.rowSpan}`,
+  };
+}
+
+export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
+  const rise = reduceMotion ? 0 : 16;
+  const afterTiles = hero.tiles.length * tileStagger;
+
+  useGSAP(
+    () => {
+      const section = sectionRef.current;
+      if (!section || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      section.querySelectorAll<HTMLElement>("[data-parallax-speed]").forEach((el) => {
+        gsap.to(el, {
+          y: -Number(el.dataset.parallaxSpeed) * 100,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      });
+    },
+    { scope: sectionRef },
+  );
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative overflow-x-clip bg-paper-white px-4 pt-14 pb-16 md:px-10 md:pt-20 md:pb-28"
+    >
+      <div className="grid w-full grid-cols-4 gap-1.5 md:w-[60%] md:gap-2">
+        {hero.tiles.map((tile, i) => {
+          const isSingle = tile.colSpan === 1 && tile.rowSpan === 1;
+          const span = Math.max(tile.colSpan, tile.rowSpan);
+          return (
+            <motion.div
+              key={tile.id}
+              style={gridArea(tile)}
+              className={`relative overflow-hidden ${isSingle ? "aspect-square" : ""} ${
+                tile.image ? "" : toneClass[tile.placeholderTone]
+              }`}
+              initial={{ opacity: 0, y: rise }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease, delay: i * tileStagger }}
+            >
+              {tile.image ? (
+                <Image
+                  src={tile.image.src}
+                  alt={tile.alt}
+                  fill
+                  sizes={`(max-width: 768px) ${25 * span}vw, ${15 * span}vw`}
+                  loading={tile.row === 1 ? "eager" : "lazy"}
+                  className="object-cover"
+                />
+              ) : (
+                <span
+                  aria-hidden="true"
+                  className="absolute top-1.5 left-2 font-ui text-[10px] text-ink-green/50"
+                >
+                  {tile.id}
+                </span>
+              )}
+            </motion.div>
+          );
+        })}
+
+        {hero.figures.map((figure) => {
+          const anchor = hero.tiles.find((t) => t.id === figure.anchorTileId);
+          if (!anchor) return null;
+          return (
+            <div
+              key={figure.id}
+              style={gridArea(anchor)}
+              className="pointer-events-none relative z-20"
+            >
+              <div
+                data-parallax-speed={figure.speed}
+                className="absolute"
+                style={{
+                  left: `${figure.left}%`,
+                  bottom: `${figure.bottom}%`,
+                  width: `${figure.width}%`,
+                }}
+              >
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.8, ease, delay: afterTiles }}
+                >
+                  {figure.image ? (
+                    <Image
+                      src={figure.image.src}
+                      alt={figure.alt}
+                      width={figure.image.width}
+                      height={figure.image.height}
+                      sizes="10vw"
+                      className="h-auto w-full"
+                    />
+                  ) : (
+                    <PlaceholderFigure variant={figure.variant} />
+                  )}
+                </motion.div>
+              </div>
+            </div>
+          );
+        })}
+
+        <div className="relative z-10 [grid-column:1/span_4] [grid-row:5] pt-8 md:[grid-column:3/span_2] md:[grid-row:2] md:pt-0">
+          <motion.div
+            className="flex flex-col items-start md:absolute md:top-1/2 md:left-0 md:w-max md:-translate-y-1/2"
+            initial={{ opacity: 0, y: rise }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease, delay: afterTiles }}
+          >
+            <h1 className="font-heading text-[11vw] leading-[0.9] font-bold tracking-tight whitespace-nowrap text-ink-green md:text-[7vw]">
+              {hero.name}
+            </h1>
+            <div className="mt-3 flex flex-col items-start md:absolute md:top-full md:right-0 md:mt-4 md:items-end">
+              <p className="font-ui text-xl text-ink-green md:text-2xl">
+                {hero.portfolioLabel}
+              </p>
+              <p className="font-ui text-sm text-accent-terracotta md:text-base">
+                {hero.worksLabel}
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
