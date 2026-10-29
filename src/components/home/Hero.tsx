@@ -169,7 +169,7 @@ export default function Hero() {
               <p className="font-ui text-xl text-ink-green md:text-2xl">
                 {hero.portfolioLabel}
               </p>
-              <p className="font-ui text-sm text-accent-terracotta md:text-base">
+              <p className="font-ui text-sm text-ink-green md:text-base">
                 {hero.worksLabel}
               </p>
             </div>
