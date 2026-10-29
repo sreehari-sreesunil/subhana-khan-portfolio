@@ -165,11 +165,11 @@ export default function Hero() {
             <h1 className="hero-name font-heading text-[11vw] leading-[0.9] font-bold tracking-tight whitespace-nowrap text-ink-green">
               {hero.name}
             </h1>
-            <div className="mt-3 flex flex-col items-start md:mt-4 md:items-end">
-              <p className="font-ui text-xl text-ink-green md:text-2xl">
+            <div className="hero-labels mt-3 flex flex-col items-start md:items-end">
+              <p className="hero-portfolio font-ui text-xl text-ink-green">
                 {hero.portfolioLabel}
               </p>
-              <p className="font-ui text-sm text-ink-green md:text-base">
+              <p className="hero-works font-ui text-sm text-ink-green">
                 {hero.worksLabel}
               </p>
             </div>

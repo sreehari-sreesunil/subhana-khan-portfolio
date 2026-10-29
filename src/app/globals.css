@@ -14,7 +14,7 @@
   --header-h: 3rem;
 
   /* Paper grain strength: ~0.04 (barely there) to ~0.08 (clearly visible). */
-  --grain-opacity: 0.15;
+  --grain-opacity: 0.08;
 }
 
 @media (width >= 48rem) {
@@ -124,10 +124,17 @@ body {
     --col-gap: calc(var(--gap-ratio) * var(--cell-w));
     --row-gap: calc(var(--gap-ratio) * var(--cell-h));
     --name-em: 8.2;
+    /* From her PSD text layers: 250px name on 437px rows, starting 0.149 of a cell into tile 06. */
+    --name-indent: calc(0.149 * var(--cell-w));
     --name-size: min(
-      var(--cell-w) * 0.54,
-      (100cqw - 2 * var(--cell-w) - 2 * var(--col-gap)) / var(--name-em)
+      var(--cell-h) * 0.572,
+      (100cqw - 2 * var(--cell-w) - 2 * var(--col-gap) - var(--name-indent)) / var(--name-em)
     );
+    /* Baseline position within a line-height: 1 box, measured from the fonts. */
+    --name-baseline: 0.792;
+    --label-baseline: 0.824;
+    --portfolio-size: calc(0.4 * var(--name-size));
+    --works-size: calc(0.2667 * var(--name-size));
 
     display: grid;
     grid-template-columns: calc(2 * var(--cell-w) + 2 * var(--col-gap)) max-content;
@@ -144,17 +151,47 @@ body {
     width: max-content;
   }
 
-  /* Starts at collage column 3; the name's centre line sits on row 2's centre. */
+  /*
+   * Baselines placed as in her PSD: the name's at 0.703 of row 2; "Portfolio" 0.792 names
+   * below it and "Selected Works" 0.392 names below that; all three right-aligned.
+   */
   .hero-name-block {
     grid-column: 2;
     grid-row: 1;
     align-self: start;
     justify-self: start;
     padding-top: 0;
-    margin-top: calc(1.5 * var(--cell-h) + var(--row-gap) - 0.45 * var(--name-size));
+    margin-left: var(--name-indent);
+    margin-top: calc(
+      var(--cell-h) + var(--row-gap) + 0.703 * var(--cell-h) -
+        var(--name-baseline) * var(--name-size)
+    );
   }
 
   .hero-name {
     font-size: var(--name-size);
+    line-height: 1;
+  }
+
+  .hero-labels {
+    margin-top: 0;
+  }
+
+  .hero-portfolio {
+    font-size: var(--portfolio-size);
+    line-height: 1;
+    margin-top: calc(
+      0.792 * var(--name-size) - (1 - var(--name-baseline)) * var(--name-size) -
+        var(--label-baseline) * var(--portfolio-size)
+    );
+  }
+
+  .hero-works {
+    font-size: var(--works-size);
+    line-height: 1;
+    margin-top: calc(
+      0.392 * var(--name-size) - (1 - var(--label-baseline)) * var(--portfolio-size) -
+        var(--label-baseline) * var(--works-size)
+    );
   }
 }
