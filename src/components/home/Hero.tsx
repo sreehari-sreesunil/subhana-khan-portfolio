@@ -69,7 +69,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="hero relative overflow-x-clip bg-paper-white px-4 md:px-10"
+      className="hero relative overflow-x-clip bg-white px-4 md:px-10"
     >
       <div
         className="hero-comp"

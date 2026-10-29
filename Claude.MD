@@ -10,6 +10,8 @@ not a page-flipper.
 - Build ONE section at a time. After each section: run the dev server, check it in the
   browser at desktop (1440px) and mobile (375px) widths, then stop and wait for review.
 - Start every new feature in plan mode. Explain the plan in plain words before writing code.
+- If a CSS change doesn't show, run `npm run dev:clean` (deletes `.next`, then starts the
+  dev server; Turbopack sometimes serves stale CSS).
 - Do not add new dependencies beyond the stack below without asking.
 - The developer knows frontend fundamentals but not design jargon. When you use a design
   or animation term, explain it in one short sentence.
@@ -35,6 +37,9 @@ not a page-flipper.
 | UI labels, nav, captions, small meta text | Nunito | `next/font/google` |
 | Body text, long paragraphs | Lora (Regular / Italic) | `next/font/google` |
 | "Thank you" sign-off only | Script — use an image/SVG of her original lettering | — |
+
+Exception: the hero reproduces her cover PSD, so its name and labels use Metropolis
+(SemiBold / Medium / Regular) as in the PSD. Nunito is for the site header and other UI text.
 
 Headings are often large, tight and uppercase (e.g. "EPHEMERAL GROUND"). Chapter numerals
 (01, 02, 03, 04) are huge, bold Metropolis in deep green, often bleeding off the page edge.
