@@ -148,3 +148,65 @@ export const about: AboutIntroContent = {
   portrait: { src: "/images/home/about/portrait-temp.png", width: 376, height: 621 },
   portraitAlt: "Subhana Khan",
 };
+
+export type ChapterPreview = {
+  id: string;
+  numeral: string;
+  label: string;
+  headline: string;
+  story: string;
+  link: { label: string; href: string };
+};
+
+export type EphemeralGroundPreviewContent = ChapterPreview & {
+  map: ImageAsset;
+  mapAlt: string;
+  /** Great Nicobar's centre in % of the map, printed by scripts/generate-map.mjs. */
+  mapDot: { x: number; y: number };
+  sitePlan: ImageAsset;
+  sitePlanAlt: string;
+};
+
+export const ephemeralGroundPreview: EphemeralGroundPreviewContent = {
+  id: "ephemeral-ground",
+  numeral: "01",
+  label: "_EPHEMERAL GROUND_01",
+  headline: "WHAT IF A SETTLEMENT LEFT A PLACE BETTER THAN IT FOUND IT?",
+  story: "A neighbourhood of 1,000 on Great Nicobar, designed so its daily life is its ecology.",
+  link: { label: "Enter the project", href: "/work/ephemeral-ground" },
+  map: { src: "/images/home/ephemeral-ground/map.svg", width: 1000, height: 654 },
+  mapAlt: "Map of the eastern Indian Ocean from Sri Lanka to Sumatra, with Great Nicobar circled.",
+  mapDot: { x: 58.52, y: 43.12 },
+  // Keeps its transparency so the crossfade over the map shows her drawing, not a white box.
+  sitePlan: { src: "/images/home/ephemeral-ground/site-plan.webp", width: 2800, height: 780 },
+  sitePlanAlt: "Isometric site plan of Ephemeral Ground on Great Nicobar.",
+};
+
+// pending Subhana's approval: headlines drafted from her chapter texts; not rendered yet.
+export const chapterPreviews: ChapterPreview[] = [
+  {
+    id: "hillside-school",
+    numeral: "02",
+    label: "_HILLSIDE SCHOOL_02",
+    headline: "WHAT IF A SCHOOL STEPPED WITH THE HILL INSTEAD OF FLATTENING IT?",
+    story: "A primary and upper-primary school designed around the hilly terrain of Poopara, Kerala.",
+    link: { label: "Enter the project", href: "/work/hillside-school" },
+  },
+  {
+    id: "timber-veil",
+    numeral: "03",
+    label: "_TIMBER VEIL_03",
+    headline: "WHAT HAPPENS WHEN WOOD LETS THE LIGHT THROUGH?",
+    story: "Timber Veil explores the contrast between the solidity of wood and the softness of light.",
+    link: { label: "Enter the project", href: "/work/timber-veil" },
+  },
+  {
+    id: "indie-stories",
+    numeral: "04",
+    label: "_INDIE STORIES_04",
+    headline: "WHAT DOES A CAMERA TEACH AN ARCHITECT?",
+    story:
+      "I started photography with my phone, mostly photographing architecture and spaces that caught my attention.",
+    link: { label: "Enter the project", href: "/photography" },
+  },
+];
