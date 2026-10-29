@@ -14,7 +14,7 @@
   --header-h: 3rem;
 
   /* Paper grain strength: ~0.04 (barely there) to ~0.08 (clearly visible). */
-  --grain-opacity: 0.06;
+  --grain-opacity: 0.09;
 }
 
 @media (width >= 48rem) {
