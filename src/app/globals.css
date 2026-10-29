@@ -11,6 +11,11 @@
   --sand: #e9d6b6;
   --sun: #eed98a;
 
+  /* About intro, sampled from her page 01. */
+  --about-blue: #919b9c;
+  --bubble-cream: #eae1da;
+  --bubble-shadow: #7c8a8a;
+
   --header-h: 3rem;
 
   /* Paper grain strength: ~0.04 (barely there) to ~0.08 (clearly visible). */
@@ -37,6 +42,9 @@
   --color-sage: var(--sage);
   --color-sand: var(--sand);
   --color-sun: var(--sun);
+  --color-about-blue: var(--about-blue);
+  --color-bubble-cream: var(--bubble-cream);
+  --color-bubble-shadow: var(--bubble-shadow);
 }
 
 body {

@@ -191,3 +191,5 @@ not hard-coded in components, so text and images can be swapped without touching
 
 - Hero tiles 01, 07–10, 12, 13: upgrade if Subhana sends original photos (current crops
   from cover.psd are ~420px per cell, below the 2× target).
+- Replace About portrait with original (current one is a TEMP cutout from the flattened
+  PDF page, 376×621px).

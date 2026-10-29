@@ -127,3 +127,24 @@ export const hero: HeroContent = {
     },
   ],
 };
+
+export type AboutIntroContent = {
+  heading: string;
+  /** Short home version of her page 01. */
+  paragraphs: string[];
+  link: { label: string; href: string };
+  portrait: ImageAsset;
+  portraitAlt: string;
+};
+
+export const about: AboutIntroContent = {
+  heading: "Hello! I’m Subhana",
+  paragraphs: [
+    "Right now, architecture for me is about learning and discovering what kind of architect I want to become. I don't think I've found my architecture yet, and I think that's part of the process.",
+    "The idea of form follows care has become an important lens through which I approach design, and it continues to shape the work in this portfolio.",
+  ],
+  link: { label: "More about me", href: "/about" },
+  // TEMP: cut out of the flattened PDF page; replace with her original portrait.
+  portrait: { src: "/images/home/about/portrait-temp.png", width: 376, height: 621 },
+  portraitAlt: "Subhana Khan",
+};
