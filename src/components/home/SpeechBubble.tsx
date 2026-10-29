@@ -70,8 +70,9 @@ function tornBodyPath(seed: number) {
 }
 
 const BODY_PATH = tornBodyPath(20260101);
-// Tail in a 240×140 box: base along the top (hidden under the body), tip at bottom-left.
-const TAIL_PATH = "M12 0 C30 52 22 98 2 138 C78 104 168 56 240 0 Z";
+// Tail traced from her page 01, in a 240×140 box (10 units per 1% of bubble width; the body's
+// bottom edge sits at y≈23). It joins the body from 32% to 50% of its width; tip at 26.5%.
+const TAIL_PATH = "M59 0 L57 39 C52 70 30 110 0 138 C60 128 200 80 238 23 L240 0 Z";
 
 /**
  * Her cream speech bubble from page 01: torn edges, soft grey shadow, tail at the bottom-left.
@@ -94,7 +95,7 @@ export default function SpeechBubble({ children }: { children: ReactNode }) {
         <svg
           data-bubble-tail
           viewBox="0 0 240 140"
-          className="absolute top-[calc(100%-1.25rem)] left-[25.7%] w-[22%] fill-bubble-cream"
+          className="absolute top-[calc(100%-1.25rem)] left-[26.5%] w-[24%] fill-bubble-cream"
         >
           <path d={TAIL_PATH} />
         </svg>
