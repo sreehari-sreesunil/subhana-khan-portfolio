@@ -54,6 +54,10 @@ body {
   gap: var(--gap);
 }
 
+.hero-name-block {
+  padding-top: calc(var(--gap) + 2rem);
+}
+
 @media (width >= 48rem) {
   .hero {
     --pad-top: 1rem;
@@ -63,19 +67,49 @@ body {
     height: 100svh;
   }
 
-  /* --overhang: how far (in cells) figures hang below the last row; set from content. */
-  .hero-grid {
-    --cell: min(
-      (60cqw - 3 * var(--gap)) / 4,
+  /*
+   * --overhang: how far (in rows) figures hang below the last row; set from content.
+   * --name-em: rendered width of the name in ems (Metropolis Bold, tracking-tight), used only as a safety cap.
+   */
+  .hero-comp {
+    --cell-w-full: calc((60cqw - 3 * var(--gap)) / 4);
+    --cell-h: min(
+      var(--cell-w-full),
       (100svh - var(--header-h) - var(--pad-top) - var(--pad-bottom) - 3 * var(--gap)) /
         (4 + var(--overhang, 0))
     );
-    grid-template-columns: repeat(4, var(--cell));
-    grid-template-rows: repeat(4, var(--cell));
+    --cell-w: min(var(--cell-w-full), var(--cell-h) * 1.35);
+    --name-em: 8.2;
+    --name-size: min(
+      var(--cell-w) * 0.54,
+      (100cqw - 2 * var(--cell-w) - 2 * var(--gap)) / var(--name-em)
+    );
+
+    display: grid;
+    grid-template-columns: calc(2 * var(--cell-w) + 2 * var(--gap)) max-content;
+    width: max-content;
+    margin-inline: auto;
+  }
+
+  .hero-grid {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    grid-template-columns: repeat(4, var(--cell-w));
+    grid-template-rows: repeat(4, var(--cell-h));
     width: max-content;
   }
 
+  /* Starts at collage column 3; the name's centre line sits on row 2's centre. */
+  .hero-name-block {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+    justify-self: start;
+    padding-top: 0;
+    margin-top: calc(1.5 * var(--cell-h) + var(--gap) - 0.45 * var(--name-size));
+  }
+
   .hero-name {
-    font-size: calc(var(--cell) * 0.5);
+    font-size: var(--name-size);
   }
 }

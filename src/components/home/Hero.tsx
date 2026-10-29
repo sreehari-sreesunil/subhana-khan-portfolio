@@ -72,9 +72,10 @@ export default function Hero() {
       className="hero relative overflow-x-clip bg-paper-white px-4 md:px-10"
     >
       <div
-        className="hero-grid grid w-full grid-cols-4"
+        className="hero-comp"
         style={{ "--overhang": overhangCells } as React.CSSProperties}
       >
+      <div className="hero-grid grid w-full grid-cols-4">
         {hero.tiles.map((tile, i) => {
           const isSingle = tile.colSpan === 1 && tile.rowSpan === 1;
           const span = Math.max(tile.colSpan, tile.rowSpan);
@@ -82,7 +83,7 @@ export default function Hero() {
             <motion.div
               key={tile.id}
               style={gridArea(tile)}
-              className={`relative overflow-hidden ${isSingle ? "aspect-square" : ""} ${
+              className={`relative overflow-hidden ${isSingle ? "aspect-square md:aspect-auto" : ""} ${
                 tile.image ? "" : toneClass[tile.placeholderTone]
               }`}
               initial={{ opacity: 0, y: rise }}
@@ -151,9 +152,11 @@ export default function Hero() {
           );
         })}
 
-        <div className="relative z-10 [grid-column:1/span_4] [grid-row:5] pt-8 md:[grid-column:3/span_2] md:[grid-row:2] md:pt-0">
+      </div>
+
+        <div className="hero-name-block relative z-10">
           <motion.div
-            className="flex flex-col items-start md:absolute md:top-1/2 md:left-0 md:w-max md:-translate-y-1/2"
+            className="flex flex-col items-start md:w-max md:items-end"
             initial={{ opacity: 0, y: rise }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease, delay: afterTiles }}
@@ -161,7 +164,7 @@ export default function Hero() {
             <h1 className="hero-name font-heading text-[11vw] leading-[0.9] font-bold tracking-tight whitespace-nowrap text-ink-green">
               {hero.name}
             </h1>
-            <div className="mt-3 flex flex-col items-start md:absolute md:top-full md:right-0 md:mt-4 md:items-end">
+            <div className="mt-3 flex flex-col items-start md:mt-4 md:items-end">
               <p className="font-ui text-xl text-ink-green md:text-2xl">
                 {hero.portfolioLabel}
               </p>
