@@ -68,7 +68,7 @@ export default function ActNavigator({ acts }: { acts: Act[] }) {
     setOpen(false);
     scrollToLink(`#${id}`);
     window.history.replaceState(window.history.state, "", `#${id}`);
-    document.querySelector<HTMLElement>(`#${id} h2`)?.focus({ preventScroll: true });
+    document.getElementById(`${id}-title`)?.focus({ preventScroll: true });
   };
 
   const { number, label } = acts[current];

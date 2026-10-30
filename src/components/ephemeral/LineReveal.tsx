@@ -9,7 +9,9 @@ import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
 // Fades a paragraph up line by line, once. Reduced motion: one plain fade.
-export default function LineReveal({ children, className }: { children: ReactNode; className?: string }) {
+type LineRevealProps = { children: ReactNode; className?: string; duration?: number; stagger?: number };
+
+export default function LineReveal({ children, className, duration = 1, stagger = 0.14 }: LineRevealProps) {
   const ref = useRef<HTMLParagraphElement>(null);
   // Next keeps visited pages alive; coming back to one must not replay it.
   const played = useRef(false);
@@ -26,7 +28,7 @@ export default function LineReveal({ children, className }: { children: ReactNod
         if (context.conditions?.reduce) {
           gsap.from(el, {
             opacity: 0,
-            duration: 1,
+            duration,
             ease: "power2.out",
             scrollTrigger,
             onComplete: () => {
@@ -42,9 +44,9 @@ export default function LineReveal({ children, className }: { children: ReactNod
             gsap.from(self.lines, {
               opacity: 0,
               y: 8,
-              duration: 1,
+              duration,
               ease: "power2.out",
-              stagger: 0.14,
+              stagger,
               scrollTrigger,
               // Back to plain text once it has played, so resizing never re-splits.
               onComplete: () => {

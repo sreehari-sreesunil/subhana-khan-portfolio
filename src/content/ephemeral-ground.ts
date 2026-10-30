@@ -193,6 +193,90 @@ export const act1 = {
   },
 };
 
+// Act 2, 2.1–2.3 (p.23). All text is copied exactly from her PSD layers.
+export const act2 = {
+  question: "WHAT IS SLOWNESS IN DESIGN?",
+  // PSD
+  definition:
+    "Slowness in design is not inactivity, but intentional architecture that values people, place and time over speed and quantity. Through human-scaled spaces, shared courtyards and shaded transitions, architecture encourages pause, interaction and meaningful everyday experiences.",
+  // PSD
+  island:
+    "Island development must balance ecological limits, biodiversity, tourism and local livelihoods through slow, context-sensitive design that protects nature and strengthens resilient communities.",
+  walker: { name: "idea/walker", alt: "A lone figure walking, leaving a line of footprints." } satisfies EgImage,
+  tree: { name: "idea/lone-tree", alt: "A single tree standing on its own." } satisfies EgImage,
+  philosophersTitle: "PHILOSOPHICAL PERSPECTIVES",
+  // PSD, with her bold kept.
+  philosophers: [
+    {
+      name: "Hartmut Rosa",
+      image: { name: "idea/arch-rosa", alt: "Arched collage of a crowd, a phone, and people connected across a forest walkway.", credit: TO_CONFIRM },
+      caption: [
+        { text: "Resonance over Acceleration", bold: true },
+        { text: " shapes slower, more intentional living through spaces that foster meaningful connections between people, place and nature." },
+      ],
+    },
+    {
+      name: "Juhani Pallasmaa",
+      image: { name: "idea/arch-pallasmaa", alt: "Arched collage of a portrait of Pallasmaa, a stone wall and a child curled inside a hollow rock.", credit: TO_CONFIRM },
+      caption: [
+        { text: "Architecture creates " },
+        { text: "multi-sensory experiences", bold: true },
+        { text: " through material, sound, smell, light and texture, fostering emotional engagement and attachment to place." },
+      ],
+    },
+    {
+      name: "Jun'ichirō Tanizaki",
+      image: { name: "idea/arch-tanizaki", alt: "Arched collage of a portrait of Tanizaki, a temple roof, paper lanterns and shoji screens at dusk.", credit: TO_CONFIRM },
+      caption: [
+        { text: "In praise of shadows,", bold: true },
+        { text: " filtered daylight reveals the subtle qualities of space, creating intimate environments for contemplation and connection with nature." },
+      ],
+    },
+    {
+      name: "Peter Zumthor",
+      image: { name: "idea/arch-zumthor", alt: "Arched collage of a portrait of Zumthor, cupped hands, a stone labyrinth and a large leaf.", credit: TO_CONFIRM },
+      caption: [
+        { text: "Atmosphere and emotion", bold: true },
+        { text: " emerge through light, material and proportion, shaping memorable spaces that foster comfort, belonging and well-being." },
+      ],
+    },
+  ] as { name: string; image: EgImage; caption: { text: string; bold?: boolean }[] }[],
+  neuroscienceTitle: "NEUROSCIENTIFIC PERSPECTIVES",
+  // PSD
+  tiles: [
+    {
+      title: "Stress & Cognitive Load",
+      text: "Calm spaces reduce stress and support focus and clarity.",
+      image: { name: "idea/neuro-stress", alt: "Collage of a crowded street.", credit: TO_CONFIRM },
+    },
+    {
+      title: "Sensory Balance",
+      text: "Balanced sensory elements foster comfort and emotional regulation",
+      image: { name: "idea/neuro-sensory", alt: "Collage of a calm sheltered terrace.", credit: TO_CONFIRM },
+    },
+    {
+      title: "Nature & Attention Restoration",
+      text: "Nature restores attention, reduces stress and encourages slower experiences.",
+      image: { name: "idea/neuro-nature", alt: "Collage of a forest and a circular pool.", credit: TO_CONFIRM },
+    },
+    {
+      title: "Neuroarchitecture",
+      text: "Architecture shapes behaviour, emotion and well-being.",
+      image: { name: "idea/neuro-architecture", alt: "Collage of a city map with marked points.", credit: TO_CONFIRM },
+    },
+    {
+      title: "Spatial Legibility & Belonging",
+      text: "Clear layouts strengthen orientation, memory and belonging.",
+      image: { name: "idea/neuro-legibility", alt: "Collage of a courtyard house.", credit: TO_CONFIRM },
+    },
+    {
+      title: "Environmental Responsiveness",
+      text: "Climate-responsive design supports comfort and sustainable living.",
+      image: { name: "idea/neuro-environment", alt: "Collage of a brain beneath a concrete building.", credit: TO_CONFIRM },
+    },
+  ] as { title: string; text: string; image: EgImage }[],
+};
+
 export const acts: EgAct[] = [
   {
     id: "act-1",
@@ -210,67 +294,6 @@ export const acts: EgAct[] = [
     question: "What is slowness in design?",
     pages: [23, 24, 11, 12],
     sections: [
-      {
-        id: "question",
-        title: "WHAT IS SLOWNESS IN DESIGN?",
-        pages: [23],
-        images: [
-          { name: "idea/walker", alt: "A lone figure walking, leaving a line of footprints." },
-          { name: "idea/lone-tree", alt: "A single bare tree on an empty horizon." },
-          { name: "idea/photo-strip", alt: "Collage strip of an island, its coast and a crowded street." },
-        ],
-        text: [
-          // PSD
-          "Slowness in design is not inactivity, but intentional architecture that values people, place and time over speed and quantity. Through human-scaled spaces, shared courtyards and shaded transitions, architecture encourages pause, interaction and meaningful everyday experiences.",
-          // PSD
-          "Island development must balance ecological limits, biodiversity, tourism and local livelihoods through slow, context-sensitive design that protects nature and strengthens resilient communities.",
-        ],
-      },
-      {
-        id: "philosophers",
-        title: "PHILOSOPHICAL PERSPECTIVES",
-        pages: [23],
-        images: [{ name: "idea/philosophers", alt: "Four arched collages for four thinkers on slowness.", credit: TO_CONFIRM }],
-        // PSD: name, then text, for each arch.
-        text: [
-          "Hartmut Rosa",
-          "Resonance over Acceleration shapes slower, more intentional living through spaces that foster meaningful connections between people, place and nature.",
-          "Juhani Pallasmaa",
-          "Architecture creates multi-sensory experiences through material, sound, smell, light and texture, fostering emotional engagement and attachment to place.",
-          "Jun'ichirō Tanizaki",
-          "In praise of shadows, filtered daylight reveals the subtle qualities of space, creating intimate environments for contemplation and connection with nature.",
-          "Peter Zumthor",
-          "Atmosphere and emotion emerge through light, material and proportion, shaping memorable spaces that foster comfort, belonging and well-being.",
-        ],
-      },
-      {
-        id: "neuroscience",
-        title: "NEUROSCIENTIFIC PERSPECTIVES",
-        pages: [23],
-        images: [
-          { name: "idea/neuro-stress", alt: "Collage of a crowded street.", credit: TO_CONFIRM },
-          { name: "idea/neuro-sensory", alt: "Collage of a calm sheltered terrace.", credit: TO_CONFIRM },
-          { name: "idea/neuro-nature", alt: "Collage of a forest and a circular pool.", credit: TO_CONFIRM },
-          { name: "idea/neuro-architecture", alt: "Collage of a city map with marked points.", credit: TO_CONFIRM },
-          { name: "idea/neuro-legibility", alt: "Collage of a courtyard house.", credit: TO_CONFIRM },
-          { name: "idea/neuro-environment", alt: "Collage of a brain beneath a concrete building.", credit: TO_CONFIRM },
-        ],
-        // PSD: title, then text, for each tile.
-        text: [
-          "Stress & Cognitive Load",
-          "Calm spaces reduce stress and support focus and clarity.",
-          "Sensory Balance",
-          "Balanced sensory elements foster comfort and emotional regulation",
-          "Nature & Attention Restoration",
-          "Nature restores attention, reduces stress and encourages slower experiences.",
-          "Neuroarchitecture",
-          "Architecture shapes behaviour, emotion and well-being.",
-          "Spatial Legibility & Belonging",
-          "Clear layouts strengthen orientation, memory and belonging.",
-          "Environmental Responsiveness",
-          "Climate-responsive design supports comfort and sustainable living.",
-        ],
-      },
       {
         id: "case-studies",
         title: "CASE STUDIES",

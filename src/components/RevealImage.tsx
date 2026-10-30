@@ -8,10 +8,23 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-type RevealImageProps = ComponentProps<typeof Image> & { wrapperClassName?: string };
+type RevealImageProps = ComponentProps<typeof Image> & {
+  wrapperClassName?: string;
+  /** Seconds. */
+  duration?: number;
+  /** When the wipe starts, as a ScrollTrigger start. */
+  start?: string;
+};
 
 // The hidden start state lives in CSS under html.js, so the markup never depends on the browser.
-export default function RevealImage({ wrapperClassName = "", className = "", alt, ...image }: RevealImageProps) {
+export default function RevealImage({
+  wrapperClassName = "",
+  className = "",
+  alt,
+  duration = 1,
+  start = "top 90%",
+  ...image
+}: RevealImageProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   // Next keeps visited pages alive; coming back to one must not replay it.
   const revealed = useRef(false);
@@ -38,7 +51,7 @@ export default function RevealImage({ wrapperClassName = "", className = "", alt
           const reduce = Boolean(context.conditions?.reduce);
           ScrollTrigger.create({
             trigger: root,
-            start: "top 90%",
+            start,
             once: true,
             onEnter: () => {
               if (reduce) {
@@ -48,9 +61,9 @@ export default function RevealImage({ wrapperClassName = "", className = "", alt
               gsap.fromTo(
                 root,
                 { clipPath: "inset(100% 0% 0% 0%)" },
-                { clipPath: "inset(0% 0% 0% 0%)", duration: 1, ease: "power3.out", onComplete: finish },
+                { clipPath: "inset(0% 0% 0% 0%)", duration, ease: "power3.out", onComplete: finish },
               );
-              gsap.fromTo(inner, { scale: 1.08 }, { scale: 1, duration: 1, ease: "power3.out" });
+              gsap.fromTo(inner, { scale: 1.08 }, { scale: 1, duration, ease: "power3.out" });
             },
           });
         },

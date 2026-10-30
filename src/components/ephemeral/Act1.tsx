@@ -1,20 +1,12 @@
-"use client";
-
 import Image from "next/image";
-import { useRef, type ReactNode } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
+import type { ReactNode } from "react";
 import Grain from "@/components/Grain";
 import RevealImage from "@/components/RevealImage";
 import TornCard from "@/components/TornCard";
 import { act1, images, type EgImage } from "@/content/ephemeral-ground";
 import { ephemeralGroundPreview as home } from "@/content/home";
-import { createCamera } from "@/lib/camera";
 import { MAP_H, MAP_W } from "@/lib/ephemeral-geometry";
 import StaggerIn from "./StaggerIn";
-
-gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const MAP_RATIO = MAP_W / MAP_H;
 
@@ -86,65 +78,11 @@ function ColumnTitle({ children }: { children: ReactNode }) {
   return <h4 className={`${heading} text-[clamp(1rem,1.25vw,1.2rem)] leading-tight`}>{children}</h4>;
 }
 
-export default function Act1({ id, title }: { id: string; title: string }) {
-  const sectionRef = useRef<HTMLElement>(null);
+export default function Act1({ id }: { id: string }) {
   const { stops, ocean, strait, people, proposal, stake, lessons } = act1;
 
-  // Only the stage is sticky. Cards scroll over it; the camera moves in the gaps between them.
-  useGSAP(
-    () => {
-      const section = sectionRef.current;
-      const world = section?.querySelector<HTMLElement>("[data-act-world]");
-      if (!section || !world) return;
-
-      const mm = gsap.matchMedia();
-      mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
-        const camera = createCamera({
-          world,
-          size: { width: MAP_W, height: MAP_H },
-          stops: stops.map(({ center, scale }) => ({ center, scale })),
-        });
-        // Each leg's own ScrollTrigger reports how far along it is. One smoothed value follows their
-        // sum, so a jump past several legs can never leave two tweens fighting over the camera.
-        const smooth = gsap.quickTo(camera.state, "position", { duration: 0.6, ease: "power3", onUpdate: camera.place });
-        const legs: ScrollTrigger[] = [];
-        const follow = () => smooth(legs.reduce((sum, leg) => sum + leg.progress, 0));
-        gsap.utils.toArray<HTMLElement>("[data-act-leg] [data-act-card]", section).forEach((card) => {
-          legs.push(ScrollTrigger.create({ trigger: card, start: "top bottom", end: "top 45%", onUpdate: follow, onRefresh: follow }));
-        });
-      });
-    },
-    { scope: sectionRef },
-  );
-
   return (
-    <section ref={sectionRef} id={id} aria-labelledby={`${id}-title`} className="paper-fibre relative bg-paper">
-      <div className="relative px-4 pt-12 md:px-10 md:motion-safe:sticky md:motion-safe:top-0 md:motion-safe:h-svh md:motion-safe:overflow-hidden md:motion-safe:p-0">
-        {/* Covers the screen at any shape; its centre stays on the screen's centre. */}
-        <div
-          className="absolute top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 md:motion-safe:block"
-          style={{ width: `max(100%, calc(100svh * ${MAP_W} / ${MAP_H}))`, aspectRatio: `${MAP_W} / ${MAP_H}` }}
-        >
-          <div data-act-world className="absolute inset-0">
-            <Image src={home.map.src} alt={home.mapAlt} fill sizes="100vw" loading="eager" />
-          </div>
-        </div>
-        <h2
-          id={`${id}-title`}
-          tabIndex={-1}
-          className={`${heading} text-[clamp(1.75rem,3.4vw,3.25rem)] md:motion-safe:absolute md:motion-safe:bottom-9 md:motion-safe:left-10`}
-        >
-          {title}
-        </h2>
-        <p className="absolute right-10 bottom-3 hidden font-ui text-[11px] text-ink-green/70 md:motion-safe:block">
-          {act1.coastlineCredit}
-        </p>
-        <div className="hidden md:motion-safe:block">
-          <Grain surface="colour" />
-        </div>
-      </div>
-
-      <div className="relative z-10 pb-16 md:motion-safe:-mt-[100svh] md:motion-safe:pb-0">
+    <section id={id} aria-labelledby={`${id}-title`}>
         <div>
           <StaticFrame focus={stops[0].center} scale={stops[0].scale} ratio={MAP_RATIO} alt={home.mapAlt} />
           <Card id="ocean" seed={101} gap="first">
@@ -286,7 +224,6 @@ export default function Act1({ id, title }: { id: string; title: string }) {
             </div>
           </Card>
         </div>
-      </div>
     </section>
   );
 }

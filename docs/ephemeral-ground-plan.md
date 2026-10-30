@@ -206,7 +206,7 @@ A visible affordance (a sliver of the next image, plus a small "drag / swipe" la
 
 ### Act 2: The idea (23–24, then 11–12), "What is slowness in design?"
 Camera parked at the island, dimmed behind paper. See section 5.
-- **2.1 The question.** Her heading alone on a screen, the walking figure. *Motion: figure crosses as you scroll.*
+- **2.1 The question.** Her heading alone on a screen, the walking figure. *Motion: figure crosses as you scroll.* The stage is shared by Acts 1 and 2 (`CameraStory`), so the paper fades over the parked camera; the walker and tree live on the stage on desktop, so nothing else needs to pin.
 - **2.2 Philosophers.** 4 arches, one at a time. *Motion: `RevealImage` wipe, slow.*
 - **2.3 Neuroscience.** 6 tiles. *Motion: slow stagger.*
 - **2.4 Case studies.** Strips with short captions. *Native horizontal strip; no pin.*

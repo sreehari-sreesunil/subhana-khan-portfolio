@@ -137,7 +137,6 @@ PAINT_WHITE = {
 
 # name: (PSD layer id, widest px to keep, crop or None)
 LAYERS = {
-    "idea/philosophers": (1629, 1957, None),
     "idea/photo-strip": (1681, 2112, None),
     "idea/neuro-stress": (1689, 461, None),
     "idea/neuro-sensory": (1694, 449, None),
@@ -145,11 +144,21 @@ LAYERS = {
     "idea/neuro-architecture": (1709, 462, None),
     "idea/neuro-legibility": (1714, 432, None),
     "idea/neuro-environment": (1719, 468, None),
-    "idea/lone-tree": (1743, 1320, None),
-    "idea/walker": (1746, 1075, None),
+    "idea/lone-tree": (1743, 1320, (820, 195, 1090, 556)),
+    "idea/walker": (1746, 1075, (495, 570, 1075, 715)),
     "idea/case-brion": (1757, 2152, None),
     "idea/case-brick": (1761, 1549, None),
     "idea/render-housing": (1788, 1340, None),
+}
+
+# The four arches are one layer. name: (crop, areas to clear, as polygons in the layer's pixels).
+# Her leaf overlaps arches 3 and 4, so each loses the other's piece along the leaf's edge.
+ARCHES_LAYER = 1629
+ARCHES = {
+    "idea/arch-rosa": ((0, 0, 520, 1190), []),
+    "idea/arch-pallasmaa": ((530, 0, 1000, 1190), []),
+    "idea/arch-tanizaki": ((1002, 0, 1478, 1190), [[(1478, 1000), (1424, 1170), (1424, 1190), (1478, 1190)]]),
+    "idea/arch-zumthor": ((1430, 0, 1957, 1265), [[(1430, 0), (1479, 0), (1479, 1030), (1437, 1172), (1430, 1172)]]),
 }
 
 # Smart objects hold their own originals, larger than the placed size.
@@ -214,6 +223,12 @@ def main():
         if image.width > widest:
             image = image.resize((widest, round(image.height * widest / image.width)), Image.LANCZOS)
         save(image, name, manifest)
+    for name, (box, clear) in ARCHES.items():
+        image = layers[ARCHES_LAYER].topil().convert("RGBA")
+        draw = ImageDraw.Draw(image)
+        for polygon in clear:
+            draw.polygon(polygon, fill=(0, 0, 0, 0))
+        save(image.crop(box), name, manifest)
     for name, layer_id in SMART_OBJECTS.items():
         save(Image.open(io.BytesIO(layers[layer_id].smart_object.data)).convert("RGB"), name, manifest)
 
