@@ -17,7 +17,9 @@ not a page-flipper.
   or animation term, explain it in one short sentence.
 - Never retype or "improve" her writing without approval. Known typos to fix (approved
   list only): "innnovation" → "innovation", "consious" → "conscious", "PLANING" → "PLANNING",
-  "permanant" → "permanent", "Mangroove" → "Mangrove", "Spactial" → "Spatial".
+  "permanant" → "permanent", "Mangroove" → "Mangrove", "Spactial" → "Spatial",
+  "Settelers" → "Settlers", "Strait of malacca" → "Strait of Malacca", "166sq.km" → "166 sq.km",
+  "Bio-diversity" → "Biodiversity".
 
 ## Stack
 

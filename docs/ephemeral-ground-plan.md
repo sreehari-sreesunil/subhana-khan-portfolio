@@ -126,6 +126,10 @@ The PDF is out of order: **printed 17–18 are PDF p.11; printed 19–20 are PDF
 11. Is the p.07 Nicobarese collage safe to use? It's held back because a person in it may be Shompen.
 12. `idea/photo-strip` (p.23) has baked-in text ("Why current development fails?"). A clean version would let it be real HTML.
 
+13. 3,00,000 vs 300,000 (pick one style).
+14. Sentinelese* and starred figures: what do the asterisks refer to?
+15. "Humnn-place relationship" is a typo baked into the Rosa arch (p.23). A corrected image would fix it.
+
 **Fallback if unavailable:** redraw unit plans as SVG from the p.19 crop, needing her check. Cluster plans stay at about 1×, shown smaller, with no deep zoom.
 
 ---

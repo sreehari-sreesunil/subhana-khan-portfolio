@@ -58,15 +58,15 @@ function StaticFrame({ focus, scale, ratio, alt }: { focus: { x: number; y: numb
   );
 }
 
-type CardProps = { id: string; seed: number; wide?: boolean; gap?: "first" | "hold" | "move"; children: ReactNode };
+type CardProps = { id: string; seed: number; wide?: boolean; left?: boolean; gap?: "first" | "hold" | "move"; children: ReactNode };
 
 const gaps = { first: "md:motion-safe:pt-[22svh] md:motion-safe:pb-[45svh]", hold: "md:motion-safe:py-[28svh]", move: "md:motion-safe:py-[45svh]" };
 
-function Card({ id, seed, wide, gap = "hold", children }: CardProps) {
+function Card({ id, seed, wide, left, gap = "hold", children }: CardProps) {
   return (
     <div
       id={id}
-      className={`relative px-4 py-3 md:motion-safe:flex md:motion-safe:justify-end md:motion-safe:pr-[3vw] md:motion-safe:pl-0 ${gaps[gap]}`}
+      className={`relative px-4 py-3 md:motion-safe:flex ${left ? "md:motion-safe:pl-[3vw]" : "md:motion-safe:justify-end md:motion-safe:pr-[3vw]"} ${gaps[gap]}`}
     >
       {/* The shadow sits on a wrapper: clip-path would cut it off the card itself. */}
       <div
@@ -154,7 +154,7 @@ export default function Act1({ id, title }: { id: string; title: string }) {
 
         <div data-act-leg>
           <StaticFrame focus={stops[1].center} scale={stops[1].scale} ratio={MAP_RATIO} alt={strait.frameAlt} />
-          <Card id="strait-of-malacca" seed={102} gap="move">
+          <Card id="strait-of-malacca" seed={102} left gap="move">
             <h3 className={`${heading} text-[clamp(1.35rem,2vw,1.9rem)] leading-tight`}>{strait.title}</h3>
             <p className={`${body} mt-3`}>{strait.text}</p>
             <div className="mt-5">

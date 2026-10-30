@@ -63,8 +63,8 @@ export const act1 = {
   stops: [
     { center: { x: 500, y: 327 }, scale: 1, focus: { x: 500, y: 327 } },
     // Wider than a true close-up: the arc and the strait need about 400 units of height between them.
-    // Any further right and the view runs off the map, which ends at 105°E.
-    { center: { x: 667, y: 225 }, scale: 1.5, focus: { x: 667, y: 225 } },
+    // The arc sits just right of this stop's card, on the left, with the strait across the rest of the view.
+    { center: { x: 615, y: 243 }, scale: 1.4, focus: { x: 615, y: 243 } },
     // The island sits left of centre, clear of the cards. `focus` centres it in the static frame.
     { center: { x: 593.4, y: 284 }, scale: 24, focus: { x: 585.5, y: 282 } },
   ],
@@ -74,7 +74,7 @@ export const act1 = {
   },
   strait: {
     frameAlt: "Map of the Andaman and Nicobar Islands and the Malacca Strait.",
-    title: "Strait of malacca",
+    title: "Strait of Malacca",
     // OCR, proofread
     text: "The Malacca Strait is one of the world’s most critical maritime trade routes, connecting the Indian and Pacific Oceans and carrying a significant share of global shipping and energy transport. Its proximity to the Andaman and Nicobar Islands gives the region strategic importance in terms of trade, defence, and maritime security. This location has played a key role in shaping recent development interests in the islands.",
     image: { name: "island/malacca-map", alt: "Map of the Strait of Malacca between Malaysia and Sumatra.", credit: TO_CONFIRM } satisfies EgImage,
@@ -101,7 +101,7 @@ export const act1 = {
     scaleTitle: "Scale of development",
     // OCR, proofread
     scale: [
-      { value: "166sq.km", label: "Total project area" },
+      { value: "166 sq.km", label: "Total project area" },
       { value: "6000+ ha", label: "Land to be developed" },
       { value: "300,000+", label: "Incoming population" },
       { value: "Large scale", label: "Reclamation & dredging" },
@@ -112,7 +112,7 @@ export const act1 = {
     // OCR, proofread
     population: [
       { value: "1600", label: "Native people", note: "(Shompen & Nicobarese)" },
-      { value: "5700", label: "Settelers", note: "(Old immigrants)" },
+      { value: "5700", label: "Settlers", note: "(Old immigrants)" },
       { value: "300,000", label: "Proposed", note: "(New population)" },
     ],
     // OCR, proofread
@@ -135,7 +135,7 @@ export const act1 = {
       {
         icon: "island/icon-power",
         title: "Power Plant (Gas + Solar)",
-        text: ["~450 MVA power capacity combining gas and solar power assets.", "To supply electricity for new infrastructure"],
+        text: ["~450 MVA power capacity combining gas and solar power assets.", "To supply electricity for new infrastructure."],
       },
     ] satisfies { icon: ImageName; title: string; text: string[] }[],
     iconsCredit: `Icons: ${TO_CONFIRM.toLowerCase()}`,
@@ -143,7 +143,7 @@ export const act1 = {
   // OCR, proofread
   stake: [
     {
-      title: "Bio-diversity loss",
+      title: "Biodiversity loss",
       text: "The proposed clearance of nearly 8.5 lakh trees in Great Nicobar raises concerns beyond local biodiversity. As India faces rising temperatures and heatwaves, losing one of its last intact tropical rainforests threatens carbon storage, climate regulation and ecological resilience, highlighting the conflict between development and long-term environmental stability.",
       images: [
         { name: "island/trees-graphic", alt: "News graphic of Great Nicobar's coast from the air.", credit: TO_CONFIRM },
