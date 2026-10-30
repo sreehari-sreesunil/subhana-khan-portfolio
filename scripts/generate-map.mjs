@@ -1,14 +1,20 @@
-// Generates public/images/home/ephemeral-ground/map.svg: the Indian Ocean from Sri Lanka to the
+// Generates public/images/home/ephemeral-ground/map-osm.svg: the Indian Ocean from Sri Lanka to the
 // Malacca Strait, styled like her p.07 map. The islands the Ephemeral Ground camera dives past keep
 // every Natural Earth point and are drawn as smooth curves, so they hold up at 20×.
 // Source: Natural Earth 10m land (public domain). Download it first (not committed):
 //   curl -L -o assets-src/natural-earth/ne_10m_land.geojson \
 //     https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_land.geojson
+// The Nicobars come from OpenStreetMap (scripts/fetch-osm-coast.mjs): simplified, then drawn as smooth
+// curves to suit her watercolour style. --raw writes map-osm-raw.svg, the unsoftened version, for comparing.
 // Then run `node scripts/generate-map.mjs`. Prints `mapDot`, `mapRing` and `site.target` for home.ts.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const SRC = "assets-src/natural-earth/ne_10m_land.geojson";
-const OUT = "public/images/home/ephemeral-ground/map.svg";
+const RAW = process.argv.includes("--raw");
+const OSM_SRC = "assets-src/osm/nicobar-coast.json";
+// In map units, 1 ≈ 3km. Soft takes out the jitter and keeps the bays; raw is finer than a pixel at 24×.
+const OSM_TOLERANCE = RAW ? 0.01 : 0.09;
+const OUT = `public/images/home/ephemeral-ground/map-osm${RAW ? "-raw" : ""}.svg`;
 
 // Region (degrees) and output width (SVG units).
 const LON_MIN = 78;
@@ -154,6 +160,12 @@ for (const feature of geo.features) {
   }
 }
 
+smoothRings.length = 0;
+for (const ring of JSON.parse(readFileSync(OSM_SRC, "utf8")).rings) {
+  const simple = simplify(ring.map(project), OSM_TOLERANCE).slice(0, -1);
+  if (simple.length >= 3 && Math.abs(area(simple)) > 0.02) smoothRings.push(simple);
+}
+
 // Great Nicobar: the ring containing the island's approximate centre (bounding-box test).
 const [gx, gy] = project([GREAT_NICOBAR.lon, GREAT_NICOBAR.lat]);
 const island = smoothRings
@@ -190,7 +202,9 @@ function smoothPath(r) {
 
 const d =
   rings.map((r) => `M${r.map((p) => `${f(p[0])} ${f(p[1])}`).join("L")}Z`).join("") +
-  smoothRings.map(smoothPath).join("");
+  smoothRings
+    .map(RAW ? (r) => `M${r.map((p) => `${f2(p[0])} ${f2(p[1])}`).join("L")}Z` : smoothPath)
+    .join("");
 const svg =
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${WIDTH} ${f(HEIGHT)}" width="${WIDTH}" height="${Math.round(HEIGHT)}">` +
   `<rect width="${WIDTH}" height="${f(HEIGHT)}" fill="${SEA}"/>` +
@@ -214,6 +228,7 @@ console.log(
         mapRing: { cx: +cx.toFixed(1), cy: +cy.toFixed(1), r: +radius.toFixed(1) },
       },
       closeUpRings: smoothRings.length,
+      siteToCoast: +Math.min(...island.map((p) => Math.hypot(p[0] - siteX, p[1] - siteY))).toFixed(3),
       siteTarget: { x: +siteX.toFixed(2), y: +siteY.toFixed(2) },
     },
     null,

@@ -50,8 +50,10 @@ export default function EphemeralGroundPreview() {
         const camera = createCamera({
           world,
           size: { width: MAP_W, height: MAP_H },
-          target: site.target,
-          depth: DEPTH,
+          stops: [
+            { center: { x: MAP_W / 2, y: MAP_H / 2 }, scale: 1 },
+            { center: site.target, scale: DEPTH },
+          ],
           // The boundary's dots stay the same size on screen as the camera closes in.
           onMove: (scale) => {
             boundary.setAttribute("stroke-width", String((DOT_PX * MAP_W) / (frame.clientWidth * scale)));
@@ -60,7 +62,7 @@ export default function EphemeralGroundPreview() {
 
         const dive = gsap
           .timeline({ paused: true, onUpdate: camera.place })
-          .to(camera.state, { zoom: 1, duration: 4.4, ease: "sine.inOut" }, 0.8)
+          .to(camera.state, { position: 1, duration: 4.4, ease: "sine.inOut" }, 0.8)
           .to(marks, { opacity: 0, duration: 0.8, ease: "power2.out" }, 1)
           .set(boundary, { opacity: 1 }, 2.2)
           .to(reveal, { attr: { "stroke-dashoffset": 0 }, duration: 1, ease: "sine.inOut" }, 2.2)
@@ -253,6 +255,10 @@ export default function EphemeralGroundPreview() {
             <span aria-hidden="true">↻ </span>
             {content.replayLabel}
           </button>
+          {/* On the Replay row, out of the flow: the frame's position mustn't move. */}
+          <p className="absolute right-0 bottom-0 hidden font-ui text-[11px] leading-5 text-ink-green/70 md:motion-safe:block">
+            {content.mapCredit}
+          </p>
 
           {/* Phones and reduced motion: wider than its column so her drawing fills it. */}
           <div className="-ml-[8%] w-[130%] md:pointer-events-none md:-ml-[8.3%] md:w-[139%] md:motion-safe:hidden">

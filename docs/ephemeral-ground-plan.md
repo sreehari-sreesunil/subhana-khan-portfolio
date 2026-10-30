@@ -77,7 +77,7 @@ The PDF is out of order: **printed 17–18 are PDF p.11; printed 19–20 are PDF
 
 | Asset | p. | Best source | Pixels | Display | Verdict |
 |---|---|---|---|---|---|
-| Ocean, island map | 07 | `map.svg` (we own it) | vector | full screen | Good; coast crude near 86× |
+| Ocean, island map | 07 | `map-osm.svg` (Natural Earth, with the Nicobars from OpenStreetMap, softened) | vector | full screen | Good |
 | Isometric plan | 05–06 | PSD Layer 93 | 10420×1937 | full width | **Excellent** |
 | Philosopher arches | 23 | PSD `Atmosphere` | 1957×1329 | 1100 | Good |
 | Neuro tiles (6) | 23 | PSD Layers 99–114 | ≈460×500 each | 230 | Good |
@@ -154,7 +154,7 @@ All 47 editable text layers are on three artboards. Everything else must be **ty
 ### How the camera works
 
 - **Reuse the home camera.** `EphemeralGroundPreview.tsx` already has the maths: `placeCamera`, log scale `DEPTH ** zoom`, `xPercent`/`yPercent` on one world, `force3D: false`. Extract it into a shared helper so both use one implementation.
-- **Reuse the data:** `map.svg` (1000×654), `site.target` (590, 282.96), `site.widthUnits` (10) from `src/content/home.ts`.
+- **Reuse the data:** `map-osm.svg` (1000×654), `site.target` (590, 282.96), `site.widthUnits` (10) from `src/content/home.ts`.
 - **One fixed stage** behind the content, full-screen. Acts scroll over it; the camera moves between named stops.
 - **Scroll-scrubbed** (`scrub: 0.6`, reversible), per CLAUDE.md. The home preview is autoplay; this difference is deliberate.
 - **It is the only pinned or sticky scroll mechanism on the page.** The act navigator is sticky chrome, not a scroll effect. No other section pins.
@@ -163,7 +163,7 @@ All 47 editable text layers are on three artboards. Everything else must be **ty
 
 | Stop | Scale | Shows | Where |
 |---|---|---|---|
-| Ocean | 1× | `map.svg` | Start of Act 1 |
+| Ocean | 1× | `map-osm.svg` | Start of Act 1 |
 | Island | ≈24× | Great Nicobar fills the screen | End of Act 1, held through Act 2 |
 | Site | ≈80× | Site outline on the coast | Act 3 |
 | Masterplan | ≈80× | Plan fades in, map fades out | Start of Act 4 |
@@ -251,7 +251,7 @@ A credit line isn't permission, and a public site is different from a jury sheet
 
 | Image | p. | Suggested credit | Note |
 |---|---|---|---|
-| Indian Ocean map | 07 | Map data © Google | **Replace** with our `map.svg` |
+| Indian Ocean map | 07 | Map data © Google | **Replace** with our `map-osm.svg` |
 | Malacca locator map | 07 | Source to confirm | Ask, or redraw |
 | Development proposal map | 07 | Based on NITI Aayog, *Holistic Development of Great Nicobar Island* | Confirm source |
 | Tribal/forest map | 09 | Dr M. Chandi, ANTRI RAC, with A&N Forest Dept GIS cell, 2018 | Printed on the map |

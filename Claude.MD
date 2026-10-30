@@ -80,6 +80,8 @@ Verify exact hex values by sampling the extracted page images before finalising.
 - `Footer`: in the layout, so on every page. `site.footer.portfolioPdf` is `null` until she provides
   the file; setting a path shows the download link. `SunPath` is retired from the footer and kept in
   `/lab` for reference; its hill and building are TEMP.
+- `createCamera` (`src/lib/camera.ts`): one camera, any number of stops. `map-osm.svg` is shared by home and
+  the project page, so its credit ("Coastline © OpenStreetMap contributors") must show wherever the map does.
 - `/lab`: dev-only workbench (404 in production). Try shared components there first.
 
 ## Paper texture and grain

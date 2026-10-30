@@ -175,6 +175,7 @@ export type ChapterPreview = {
 export type EphemeralGroundPreviewContent = ChapterPreview & {
   map: ImageAsset;
   mapAlt: string;
+  mapCredit: string;
   /** Great Nicobar's centre in % of the map, printed by scripts/generate-map.mjs. */
   mapDot: { x: number; y: number };
   /** Her dotted circle around the island, in map units. */
@@ -202,7 +203,8 @@ export const ephemeralGroundPreview: EphemeralGroundPreviewContent = {
   headline: "WHAT IF A SETTLEMENT LEFT A PLACE BETTER THAN IT FOUND IT?",
   story: "A neighbourhood of 1,000 on Great Nicobar, designed so its daily life is its ecology.",
   link: { label: "Enter the project", href: "/work/ephemeral-ground" },
-  map: { src: "/images/home/ephemeral-ground/map.svg", width: 1000, height: 654 },
+  map: { src: "/images/home/ephemeral-ground/map-osm.svg", width: 1000, height: 654 },
+  mapCredit: "Coastline © OpenStreetMap contributors",
   mapAlt: "Map of the eastern Indian Ocean from Sri Lanka to Sumatra, with Great Nicobar circled.",
   mapDot: { x: 58.52, y: 43.11 },
   mapRing: { cx: 585.2, cy: 282, r: 27.8 },

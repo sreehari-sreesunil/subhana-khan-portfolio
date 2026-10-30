@@ -1,3 +1,4 @@
+import { ephemeralGroundPreview as home } from "./home";
 import { images, type ImageName } from "./ephemeral-ground.images";
 
 // Skeleton for /work/ephemeral-ground. See docs/ephemeral-ground-plan.md.
@@ -36,6 +37,14 @@ export type EgAct = {
 };
 
 const TO_CONFIRM = "Source to confirm";
+
+export const credits = { coastline: home.mapCredit };
+
+// Camera stops, in the map's units. The scale is relative to the map covering the whole screen.
+export const zoomStops = {
+  ocean: { center: { x: 500, y: 327 }, scale: 1 },
+  island: { center: { x: 585.5, y: 282 }, scale: 24 },
+};
 
 export const opening = {
   numeral: "01",

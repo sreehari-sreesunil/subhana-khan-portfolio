@@ -1,22 +1,30 @@
 import type { Metadata } from "next";
+import Act1Zoom from "@/components/ephemeral/Act1Zoom";
 import ActNavigator from "@/components/ephemeral/ActNavigator";
 import Opening from "@/components/ephemeral/Opening";
 import Grain from "@/components/Grain";
 import SiteHeader from "@/components/SiteHeader";
 import TransitionLink from "@/components/TransitionLink";
-import { acts } from "@/content/ephemeral-ground";
+import { acts, credits, zoomStops } from "@/content/ephemeral-ground";
 
 export const metadata: Metadata = { title: "Ephemeral Ground — Subhana Khan" };
 
 export default function EphemeralGroundPage() {
+  const [first, ...rest] = acts;
   return (
     <>
       <SiteHeader variant="halo" />
       <main className="flex-1">
         <Opening />
         <ActNavigator acts={acts.map(({ id, number, navLabel }) => ({ id, number, label: navLabel }))} />
+        <Act1Zoom
+          id={first.id}
+          title={`${first.number} ${first.navLabel}`}
+          credit={credits.coastline}
+          stops={[zoomStops.ocean, zoomStops.island]}
+        />
         {/* TEMP: placeholders until each act is built. */}
-        {acts.map((act, i) => (
+        {rest.map((act, i) => (
           <section
             key={act.id}
             id={act.id}
@@ -30,7 +38,7 @@ export default function EphemeralGroundPage() {
             >
               {act.number} {act.navLabel}
             </h2>
-            {i === acts.length - 1 && (
+            {i === rest.length - 1 && (
               <TransitionLink
                 href="/"
                 className="font-ui text-sm tracking-wide text-accent-terracotta underline-offset-4 hover:underline"
