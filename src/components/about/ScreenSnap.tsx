@@ -6,10 +6,11 @@ import Snap from "lenis/snap";
 import { getLenis } from "@/components/SmoothScroll";
 
 // Turns [data-screen] sections like pages: a gesture goes to the next one in its direction.
+// Mouse and trackpad only; touch screens use native CSS snapping (globals.css).
 export default function ScreenSnap() {
   useEffect(() => {
     const mm = gsap.matchMedia();
-    mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+    mm.add("(min-width: 768px) and (pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
       const lenis = getLenis();
       if (!lenis) return;
       const snap = new Snap(lenis, {

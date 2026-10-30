@@ -90,6 +90,21 @@ body {
   background-image: url("/textures/grain-white.png");
 }
 
+.grain-paused > div {
+  animation-play-state: paused;
+}
+
+/* Touch screens at desktop width: native snapping, since Lenis leaves touch scrolling native. */
+@media (width >= 48rem) and (pointer: coarse) {
+  html:has([data-screen]) {
+    scroll-snap-type: y mandatory;
+  }
+
+  [data-screen] {
+    scroll-snap-align: start;
+  }
+}
+
 @keyframes paper-grain {
   0%   { transform: translate3d(0, 0, 0); }
   10%  { transform: translate3d(-97px, 61px, 0); }
