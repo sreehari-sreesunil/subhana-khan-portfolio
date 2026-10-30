@@ -9,6 +9,7 @@ import { ephemeralGroundPreview as content } from "@/content/home";
 import Grain from "@/components/Grain";
 import { getLenis } from "@/components/SmoothScroll";
 import TransitionLink from "@/components/TransitionLink";
+import { createCamera } from "@/lib/camera";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -54,28 +55,20 @@ export default function EphemeralGroundPreview() {
 
       const mm = gsap.matchMedia();
       mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
-        const camera = { zoom: 0 };
-        const placeCamera = () => {
-          // Logarithmic: equal steps of zoom multiply the scale by an equal amount.
-          const scale = DEPTH ** camera.zoom;
-          const screenX = gsap.utils.interpolate(site.target.x, MAP_W / 2, camera.zoom);
-          const screenY = gsap.utils.interpolate(site.target.y, MAP_H / 2, camera.zoom);
-          gsap.set(world, {
-            xPercent: ((screenX - site.target.x * scale) / MAP_W) * 100,
-            yPercent: ((screenY - site.target.y * scale) / MAP_H) * 100,
-            scale,
-            // 2D transform keeps the SVG re-rendered sharp at every scale.
-            force3D: false,
-          });
+        const camera = createCamera({
+          world,
+          size: { width: MAP_W, height: MAP_H },
+          target: site.target,
+          depth: DEPTH,
           // The boundary's dots stay the same size on screen as the camera closes in.
-          boundary.setAttribute("stroke-width", String((DOT_PX * MAP_W) / (frame.clientWidth * scale)));
-        };
-        gsap.set(world, { transformOrigin: "0 0" });
-        placeCamera();
+          onMove: (scale) => {
+            boundary.setAttribute("stroke-width", String((DOT_PX * MAP_W) / (frame.clientWidth * scale)));
+          },
+        });
 
         const dive = gsap
-          .timeline({ paused: true, onUpdate: placeCamera })
-          .to(camera, { zoom: 1, duration: 4.4, ease: "sine.inOut" }, 0.8)
+          .timeline({ paused: true, onUpdate: camera.place })
+          .to(camera.state, { zoom: 1, duration: 4.4, ease: "sine.inOut" }, 0.8)
           .to(marks, { opacity: 0, duration: 0.8, ease: "power2.out" }, 1)
           .set(boundary, { opacity: 1 }, 2.2)
           .to(reveal, { attr: { "stroke-dashoffset": 0 }, duration: 1, ease: "sine.inOut" }, 2.2)
@@ -108,7 +101,7 @@ export default function EphemeralGroundPreview() {
 
         const onReplay = () => {
           dive.restart();
-          placeCamera();
+          camera.place();
         };
         replay.addEventListener("click", onReplay);
 
