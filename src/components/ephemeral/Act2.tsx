@@ -55,14 +55,9 @@ export default function Act2({ id, label }: { id: string; label: string }) {
             {act2.question}
           </h2>
         </div>
-        <div className="mx-auto max-w-[44rem] space-y-6">
-          <LineReveal className={bodyText} {...SLOW}>
-            {act2.definition}
-          </LineReveal>
-          <LineReveal className={bodyText} {...SLOW}>
-            {act2.island}
-          </LineReveal>
-        </div>
+        <LineReveal className={`mx-auto max-w-[44rem] ${bodyText}`} {...SLOW}>
+          {act2.definition}
+        </LineReveal>
         <div data-motif-flow className="relative mx-auto mt-14 mb-10 h-44 max-w-2xl overflow-x-clip md:motion-safe:hidden">
           <SlownessMotif />
         </div>

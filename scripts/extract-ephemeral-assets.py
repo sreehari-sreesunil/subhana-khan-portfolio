@@ -152,12 +152,12 @@ LAYERS = {
 }
 
 # The four arches are one layer. name: (crop, areas to clear, as polygons in the layer's pixels).
-# Her leaf overlaps arches 3 and 4, so each loses the other's piece along the leaf's edge.
+# Her leaf overlaps arches 3 and 4: Tanizaki stops above it, and Zumthor loses Tanizaki's piece beside it.
 ARCHES_LAYER = 1629
 ARCHES = {
     "idea/arch-rosa": ((0, 0, 520, 1190), []),
     "idea/arch-pallasmaa": ((530, 0, 1000, 1190), []),
-    "idea/arch-tanizaki": ((1002, 0, 1478, 1190), [[(1478, 1000), (1424, 1170), (1424, 1190), (1478, 1190)]]),
+    "idea/arch-tanizaki": ((1002, 0, 1478, 1000), []),
     "idea/arch-zumthor": ((1430, 0, 1957, 1265), [[(1430, 0), (1479, 0), (1479, 1030), (1437, 1172), (1430, 1172)]]),
 }
 

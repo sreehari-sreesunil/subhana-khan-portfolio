@@ -199,9 +199,6 @@ export const act2 = {
   // PSD
   definition:
     "Slowness in design is not inactivity, but intentional architecture that values people, place and time over speed and quantity. Through human-scaled spaces, shared courtyards and shaded transitions, architecture encourages pause, interaction and meaningful everyday experiences.",
-  // PSD
-  island:
-    "Island development must balance ecological limits, biodiversity, tourism and local livelihoods through slow, context-sensitive design that protects nature and strengthens resilient communities.",
   walker: { name: "idea/walker", alt: "A lone figure walking, leaving a line of footprints." } satisfies EgImage,
   tree: { name: "idea/lone-tree", alt: "A single tree standing on its own." } satisfies EgImage,
   philosophersTitle: "PHILOSOPHICAL PERSPECTIVES",
@@ -225,7 +222,7 @@ export const act2 = {
       ],
     },
     {
-      name: "Jun'ichirō Tanizaki",
+      name: "Jun’ichirō Tanizaki",
       image: { name: "idea/arch-tanizaki", alt: "Arched collage of a portrait of Tanizaki, a temple roof, paper lanterns and shoji screens at dusk.", credit: TO_CONFIRM },
       caption: [
         { text: "In praise of shadows,", bold: true },
@@ -251,7 +248,7 @@ export const act2 = {
     },
     {
       title: "Sensory Balance",
-      text: "Balanced sensory elements foster comfort and emotional regulation",
+      text: "Balanced sensory elements foster comfort and emotional regulation.",
       image: { name: "idea/neuro-sensory", alt: "Collage of a calm sheltered terrace.", credit: TO_CONFIRM },
     },
     {

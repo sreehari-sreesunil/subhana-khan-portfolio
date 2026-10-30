@@ -92,7 +92,7 @@ export const images = {
   "idea/render-housing": { src: "/images/ephemeral-ground/idea/render-housing.webp", width: 1340, height: 740 },
   "idea/arch-rosa": { src: "/images/ephemeral-ground/idea/arch-rosa.webp", width: 520, height: 1190 },
   "idea/arch-pallasmaa": { src: "/images/ephemeral-ground/idea/arch-pallasmaa.webp", width: 470, height: 1190 },
-  "idea/arch-tanizaki": { src: "/images/ephemeral-ground/idea/arch-tanizaki.webp", width: 476, height: 1190 },
+  "idea/arch-tanizaki": { src: "/images/ephemeral-ground/idea/arch-tanizaki.webp", width: 476, height: 1000 },
   "idea/arch-zumthor": { src: "/images/ephemeral-ground/idea/arch-zumthor.webp", width: 527, height: 1265 },
   "idea/render-water": { src: "/images/ephemeral-ground/idea/render-water.webp", width: 1072, height: 598 },
   "idea/render-library": { src: "/images/ephemeral-ground/idea/render-library.webp", width: 1072, height: 598 },
