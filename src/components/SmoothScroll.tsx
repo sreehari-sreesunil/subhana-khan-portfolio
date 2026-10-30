@@ -9,12 +9,16 @@ import "lenis/dist/lenis.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
+let instance: Lenis | null = null;
+export const getLenis = () => instance;
+
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({ autoRaf: false });
     lenis.on("scroll", ScrollTrigger.update);
+    instance = lenis;
 
     const tick = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(tick);
@@ -22,6 +26,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     return () => {
       gsap.ticker.remove(tick);
+      instance = null;
       lenis.destroy();
     };
   }, []);

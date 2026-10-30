@@ -167,16 +167,15 @@ export type EphemeralGroundPreviewContent = ChapterPreview & {
   mapRing: { cx: number; cy: number; r: number };
   sitePlan: ImageAsset;
   sitePlanAlt: string;
+  replayLabel: string;
   /** Where the plan sits in the map. All map values are in the SVG's units (1000 wide). */
   site: {
     /** Campbell Bay coast, 7.00°N 93.93°E, printed by scripts/generate-map.mjs. */
     target: { x: number; y: number };
-    /** The drawn plan's width on the map. True scale is 0.21, about 3px at 20×, so this is exaggerated. */
+    /** The drawn plan's width on the map, about the island's width. True scale is 0.21. */
     widthUnits: number;
     /** The drawing inside the image, as fractions of the image; the rest is empty board. */
     drawing: { left: number; right: number; top: number; bottom: number };
-    /** The point of the drawing's shoreline placed on the target, as fractions of the image. */
-    shore: { x: number; y: number };
     /** Boundary traced from her plan's edge, as fractions of the image (she drew no site boundary). */
     outline: [number, number][];
   };
@@ -196,11 +195,11 @@ export const ephemeralGroundPreview: EphemeralGroundPreviewContent = {
   // Keeps its transparency so the crossfade over the map shows her drawing, not a white box.
   sitePlan: { src: "/images/home/ephemeral-ground/site-plan.webp", width: 2800, height: 780 },
   sitePlanAlt: "Isometric site plan of Ephemeral Ground on Great Nicobar.",
+  replayLabel: "Replay",
   site: {
     target: { x: 590, y: 282.96 },
-    widthUnits: 20,
+    widthUnits: 10,
     drawing: { left: 0.0595, right: 0.7775, top: 0.2, bottom: 0.772 },
-    shore: { x: 0.15, y: 0.45 },
     outline: [
       [0.125, 0.242],
       [0.415, 0.201],
