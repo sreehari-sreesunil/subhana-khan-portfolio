@@ -15,6 +15,7 @@ const RING = 340;
 const HOLE = 60;
 const STOP_MARGIN = 14; // the finger meets the stop just before the hole reaches it
 const REACHED = 12; // how close to the stop still counts as dialled
+const OVERSHOOT = 4; // degrees the wheel swings past rest on its way back
 
 const FACE_PATH = tornBodyPath(20261101, 1000, 486);
 const WHEEL_PATH = tornBodyPath(20261102, 1000, 486);
@@ -140,14 +141,15 @@ export default function RotaryDial() {
     later(1, () => setStatus("connected"));
   };
 
-  const springBack = (onDone?: () => void) => {
-    gsap.to(wheelRef.current, {
-      rotation: 0,
-      duration: 0.9,
-      ease: "elastic.out(1, 0.7)",
-      overwrite: true,
-      onComplete: onDone,
-    });
+  // Two steps, not an elastic ease: its swing grows with the pull (33° on a 0), and this one can't.
+  const springBack = () => {
+    const wheel = wheelRef.current;
+    const from = Number(gsap.getProperty(wheel, "rotation")) || 0;
+    const past = -Math.min(OVERSHOOT, from * 0.2);
+    gsap
+      .timeline()
+      .to(wheel, { rotation: past, duration: 0.55, ease: "power2.out", overwrite: true })
+      .to(wheel, { rotation: 0, duration: 0.35, ease: "sine.inOut" });
   };
 
   // Keyboard: each digit plays the same pull, one after another.
