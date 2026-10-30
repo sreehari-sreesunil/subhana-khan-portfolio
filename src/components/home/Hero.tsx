@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRef } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -20,6 +20,7 @@ const toneClass: Record<PlaceholderTone, string> = {
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const tileStagger = 0.07;
+const rise = 16;
 
 const lastRow = Math.max(...hero.tiles.map((t) => t.row + t.rowSpan - 1));
 
@@ -41,8 +42,6 @@ function gridArea(tile: HeroTile) {
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
-  const rise = reduceMotion ? 0 : 16;
   const afterTiles = hero.tiles.length * tileStagger;
 
   // People scene: each figure makes one small move as the Hero scrolls.

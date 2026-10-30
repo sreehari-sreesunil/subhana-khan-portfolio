@@ -89,6 +89,9 @@ A subtle animated grain over the whole site, so the screen feels like her paper 
 - Default durations 0.4–0.8s. Stagger lists by ~60–100ms.
 - Animate only `transform` and `opacity` (smooth on phones).
 - Respect `prefers-reduced-motion`: replace movement with simple fades.
+- Never branch initial render output on reduced motion (causes hydration mismatches). Use
+  MotionConfig reducedMotion='user' for Motion, CSS motion-safe: variants for layout, and
+  gsap.matchMedia for GSAP.
 - In the thesis "slowness" act, motion deliberately slows down (1.2–1.6s, line-by-line text).
 
 ## Site map

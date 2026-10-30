@@ -207,6 +207,6 @@ export const chapterPreviews: ChapterPreview[] = [
     headline: "WHAT DOES A CAMERA TEACH AN ARCHITECT?",
     story:
       "I started photography with my phone, mostly photographing architecture and spaces that caught my attention.",
-    link: { label: "Enter the project", href: "/photography" },
+    link: { label: "Browse the photographs", href: "/photography" },
   },
 ];
