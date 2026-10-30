@@ -179,7 +179,7 @@ All 47 editable text layers are on three artboards. Everything else must be **ty
 
 A small sticky bar: **01 THE ISLAND · 02 THE IDEA · 03 THE GROUND · 04 THE SETTLEMENT**.
 - Shows the current act; click jumps to it via Lenis (`scrollToLink` in `PageTransition.tsx` already does this for #hash links).
-- Each act gets an id, so `#the-island` etc. are linkable. Keyboard focusable, `aria-current` on the active act.
+- Each act gets an id, so `#act-1` to `#act-4` are linkable. Keyboard focusable, `aria-current` on the active act.
 - Hidden during the Opening. Reduced motion: jumps instantly.
 
 ### Horizontal strips

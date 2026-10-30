@@ -56,7 +56,7 @@ export const opening = {
 
 export const acts: EgAct[] = [
   {
-    id: "the-island",
+    id: "act-1",
     number: "01",
     navLabel: "THE ISLAND",
     question: "Why here, and what is at stake?",
@@ -110,7 +110,7 @@ export const acts: EgAct[] = [
     ],
   },
   {
-    id: "the-idea",
+    id: "act-2",
     number: "02",
     navLabel: "THE IDEA",
     question: "What is slowness in design?",
@@ -251,7 +251,7 @@ export const acts: EgAct[] = [
     ],
   },
   {
-    id: "the-ground",
+    id: "act-3",
     number: "03",
     navLabel: "THE GROUND",
     question: "Where exactly?",
@@ -291,7 +291,7 @@ export const acts: EgAct[] = [
     ],
   },
   {
-    id: "the-settlement",
+    id: "act-4",
     number: "04",
     navLabel: "THE SETTLEMENT",
     question: "What did she design?",

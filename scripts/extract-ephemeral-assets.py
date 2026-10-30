@@ -158,6 +158,10 @@ SMART_OBJECTS = {
 }
 
 
+# Phones show the residential half of the isometric plan. (name, source, crop as fractions, widest px)
+PLAN_MOBILE = ("opening/plan-mobile", "assets-src/extracted/ug-thesis-ab20/site-plan-fullres.png", (0.52, 0.19, 0.79, 0.78), 1400)
+
+
 def save(image, name, manifest):
     path = OUT / f"{name}.webp"
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -188,6 +192,15 @@ def main():
 
     for name, (printed, box) in CROPS.items():
         save(crop_page(pages[printed], name, box), name, manifest)
+
+    name, source, (left, top, right, bottom), widest = PLAN_MOBILE
+    plan = Image.open(source).convert("RGBA")
+    plan = plan.crop((int(left * plan.width), int(top * plan.height), int(right * plan.width), int(bottom * plan.height)))
+    flat = Image.new("RGB", plan.size, "white")
+    flat.paste(plan, (0, 0), plan)
+    if flat.width > widest:
+        flat = flat.resize((widest, round(flat.height * widest / flat.width)), Image.LANCZOS)
+    save(flat, name, manifest)
 
     psd = PSDImage.open("assets-src/ug thesis.psd")
     layers = {layer.layer_id: layer for layer in psd.descendants()}

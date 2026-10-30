@@ -74,6 +74,7 @@ export const images = {
   "settlement/cultural-plan": { src: "/images/ephemeral-ground/settlement/cultural-plan.webp", width: 1320, height: 915 },
   "settlement/cultural-key": { src: "/images/ephemeral-ground/settlement/cultural-key.webp", width: 488, height: 300 },
   "settlement/cultural-section": { src: "/images/ephemeral-ground/settlement/cultural-section.webp", width: 940, height: 210 },
+  "opening/plan-mobile": { src: "/images/ephemeral-ground/opening/plan-mobile.webp", width: 1400, height: 853 },
   "idea/philosophers": { src: "/images/ephemeral-ground/idea/philosophers.webp", width: 1957, height: 1329 },
   "idea/photo-strip": { src: "/images/ephemeral-ground/idea/photo-strip.webp", width: 2112, height: 460 },
   "idea/neuro-stress": { src: "/images/ephemeral-ground/idea/neuro-stress.webp", width: 461, height: 532 },

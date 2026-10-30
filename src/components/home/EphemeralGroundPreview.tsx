@@ -10,24 +10,16 @@ import Grain from "@/components/Grain";
 import { getLenis } from "@/components/SmoothScroll";
 import TransitionLink from "@/components/TransitionLink";
 import { createCamera } from "@/lib/camera";
+import { DEPTH, MAP_H, MAP_W, planH, planW, planX, planY } from "@/lib/ephemeral-geometry";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const MAP_W = content.map.width;
-const MAP_H = content.map.height;
 const DOT_PX = 3;
 
 const { site, sitePlan } = content;
-const imageW = site.widthUnits / (site.drawing.right - site.drawing.left);
-const imageH = (imageW * sitePlan.height) / sitePlan.width;
-const imageX = site.target.x - ((site.drawing.left + site.drawing.right) / 2) * imageW;
-const imageY = site.target.y - ((site.drawing.top + site.drawing.bottom) / 2) * imageH;
 const outlinePoints = site.outline
-  .map(([x, y]) => `${(imageX + x * imageW).toFixed(2)},${(imageY + y * imageH).toFixed(2)}`)
+  .map(([x, y]) => `${(planX + x * planW).toFixed(2)},${(planY + y * planH).toFixed(2)}`)
   .join(" ");
-
-// The drawing ends at 86% of the visual's width, which sets how deep the camera goes.
-const DEPTH = (0.86 * MAP_W) / site.widthUnits;
 
 const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
 
@@ -182,7 +174,7 @@ export default function EphemeralGroundPreview() {
                 data-eg-plan
                 className="absolute inset-0 origin-top-left opacity-0 mix-blend-multiply"
                 style={{
-                  transform: `translate(${((imageX / MAP_W) * 100).toFixed(4)}%, ${((imageY / MAP_H) * 100).toFixed(4)}%) scale(${(imageW / MAP_W).toFixed(6)})`,
+                  transform: `translate(${((planX / MAP_W) * 100).toFixed(4)}%, ${((planY / MAP_H) * 100).toFixed(4)}%) scale(${(planW / MAP_W).toFixed(6)})`,
                 }}
               >
                 <Image
