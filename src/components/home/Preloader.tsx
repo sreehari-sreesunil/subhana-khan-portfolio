@@ -54,7 +54,6 @@ function Overlay() {
     const main = root.nextElementSibling;
 
     if (html.hasAttribute(PRELOADER_ATTR)) {
-      main?.removeAttribute("aria-busy");
       markPreloaderDone();
       return;
     }
@@ -89,6 +88,7 @@ function Overlay() {
       return;
     }
 
+    main?.setAttribute("aria-busy", "true");
     const images = new AbortController();
     const watchdog = window.setTimeout(finish, WATCHDOG_MS);
     let ctx: gsap.Context | undefined;
@@ -163,6 +163,7 @@ function Overlay() {
       window.clearTimeout(watchdog);
       images.abort();
       ctx?.revert();
+      main?.removeAttribute("aria-busy");
       getLenis()?.start();
     };
   }, []);

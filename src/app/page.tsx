@@ -10,7 +10,7 @@ export default function Home() {
     <>
       <SiteHeader />
       <Preloader />
-      <main className="flex-1" aria-busy="true">
+      <main className="flex-1">
         <Hero />
         <AboutIntro content={about} />
         <EphemeralGroundPreview />
