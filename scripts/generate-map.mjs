@@ -1,9 +1,10 @@
 // Generates public/images/home/ephemeral-ground/map.svg: the Indian Ocean from Sri Lanka to the
-// Malacca Strait, styled like her p.07 map, with Great Nicobar circled in her red dots.
+// Malacca Strait, styled like her p.07 map. The islands the Ephemeral Ground camera dives past keep
+// every Natural Earth point and are drawn as smooth curves, so they hold up at 20×.
 // Source: Natural Earth 10m land (public domain). Download it first (not committed):
 //   curl -L -o assets-src/natural-earth/ne_10m_land.geojson \
 //     https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_land.geojson
-// Then run `node scripts/generate-map.mjs`. Prints the island's position for `mapDot` in home.ts.
+// Then run `node scripts/generate-map.mjs`. Prints `mapDot`, `mapRing` and `site.target` for home.ts.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const SRC = "assets-src/natural-earth/ne_10m_land.geojson";
@@ -21,9 +22,14 @@ const TOLERANCE = 0.3;
 // Colours sampled from her page 07 map; land is the --sand token.
 const SEA = "#70BBB7";
 const LAND = "#E9D6B6";
-const CIRCLE = "#E2002C";
 
 const GREAT_NICOBAR = { lon: 93.85, lat: 7.0 };
+// Her site, near Campbell Bay on the east coast.
+const SITE = [93.93, 7.0];
+const CLOSE_UP = { lonMin: 93.5, lonMax: 94.2, latMin: 6.5, latMax: 7.6 };
+
+const inCloseUp = (ring) =>
+  ring.every(([lon, lat]) => lon >= CLOSE_UP.lonMin && lon <= CLOSE_UP.lonMax && lat >= CLOSE_UP.latMin && lat <= CLOSE_UP.latMax);
 
 const toRad = (d) => (d * Math.PI) / 180;
 const mercY = (lat) => (Math.log(Math.tan(Math.PI / 4 + toRad(lat) / 2)) * 180) / Math.PI;
@@ -128,6 +134,7 @@ const intersectsRegion = (ring) => {
 
 const geo = JSON.parse(readFileSync(SRC, "utf8"));
 const rings = [];
+const smoothRings = [];
 for (const feature of geo.features) {
   const g = feature.geometry;
   const polygons = g.type === "Polygon" ? [g.coordinates] : g.type === "MultiPolygon" ? g.coordinates : [];
@@ -137,6 +144,10 @@ for (const feature of geo.features) {
       const clipped = clipRing(ring.slice(0, -1));
       if (clipped.length < 3) continue;
       const projected = clipped.map(project);
+      if (inCloseUp(clipped)) {
+        smoothRings.push(projected);
+        continue;
+      }
       const simple = simplify([...projected, projected[0]], TOLERANCE).slice(0, -1);
       if (simple.length >= 3 && Math.abs(area(simple)) > 0.02) rings.push(simple);
     }
@@ -145,7 +156,7 @@ for (const feature of geo.features) {
 
 // Great Nicobar: the ring containing the island's approximate centre (bounding-box test).
 const [gx, gy] = project([GREAT_NICOBAR.lon, GREAT_NICOBAR.lat]);
-const island = rings
+const island = smoothRings
   .filter((r) => {
     const xs = r.map((p) => p[0]);
     const ys = r.map((p) => p[1]);
@@ -159,14 +170,31 @@ const iys = island.map((p) => p[1]);
 const islandW = Math.max(...ixs) - Math.min(...ixs);
 const islandH = Math.max(...iys) - Math.min(...iys);
 const radius = islandH * 1.5;
+const [siteX, siteY] = project(SITE);
 
 const f = (n) => n.toFixed(1);
-const d = rings.map((r) => `M${r.map((p) => `${f(p[0])} ${f(p[1])}`).join("L")}Z`).join("");
+const f2 = (n) => n.toFixed(2);
+
+/** Closed Catmull–Rom spline through every point, as cubic Béziers. */
+function smoothPath(r) {
+  const at = (i) => r[(i + r.length) % r.length];
+  let path = `M${f2(r[0][0])} ${f2(r[0][1])}`;
+  for (let i = 0; i < r.length; i++) {
+    const [p0, p1, p2, p3] = [at(i - 1), at(i), at(i + 1), at(i + 2)];
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    path += `C${f2(c1[0])} ${f2(c1[1])} ${f2(c2[0])} ${f2(c2[1])} ${f2(p2[0])} ${f2(p2[1])}`;
+  }
+  return `${path}Z`;
+}
+
+const d =
+  rings.map((r) => `M${r.map((p) => `${f(p[0])} ${f(p[1])}`).join("L")}Z`).join("") +
+  smoothRings.map(smoothPath).join("");
 const svg =
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${WIDTH} ${f(HEIGHT)}" width="${WIDTH}" height="${Math.round(HEIGHT)}">` +
   `<rect width="${WIDTH}" height="${f(HEIGHT)}" fill="${SEA}"/>` +
   `<path fill="${LAND}" fill-rule="evenodd" d="${d}"/>` +
-  `<circle cx="${f(cx)}" cy="${f(cy)}" r="${f(radius)}" fill="none" stroke="${CIRCLE}" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="0 4.2"/>` +
   `</svg>\n`;
 
 mkdirSync("public/images/home/ephemeral-ground", { recursive: true });
@@ -183,7 +211,10 @@ console.log(
         widthUnits: +islandW.toFixed(1),
         heightUnits: +islandH.toFixed(1),
         mapDot: { x: +((cx / WIDTH) * 100).toFixed(2), y: +((cy / HEIGHT) * 100).toFixed(2) },
+        mapRing: { cx: +cx.toFixed(1), cy: +cy.toFixed(1), r: +radius.toFixed(1) },
       },
+      closeUpRings: smoothRings.length,
+      siteTarget: { x: +siteX.toFixed(2), y: +siteY.toFixed(2) },
     },
     null,
     2,

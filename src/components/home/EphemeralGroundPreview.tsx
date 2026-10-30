@@ -10,26 +10,77 @@ import { ephemeralGroundPreview as content } from "@/content/home";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const ZOOM = 4;
+const MAP_W = content.map.width;
+const MAP_H = content.map.height;
+const DEPTH = 20;
+const DOT_PX = 2.5;
+
+// Her plan has the sea on its left; mirrored, it matches her p.10 sheet and the real east coast.
+const { site, sitePlan } = content;
+const imageW = site.widthUnits / (site.drawing.right - site.drawing.left);
+const imageH = (imageW * sitePlan.height) / sitePlan.width;
+const imageX = site.target.x - (1 - site.shore.x) * imageW;
+const imageY = site.target.y - site.shore.y * imageH;
+const planCentre = {
+  x: imageX + (1 - (site.drawing.left + site.drawing.right) / 2) * imageW,
+  y: imageY + ((site.drawing.top + site.drawing.bottom) / 2) * imageH,
+};
+const outlinePoints = site.outline
+  .map(([x, y]) => `${(imageX + (1 - x) * imageW).toFixed(2)},${(imageY + y * imageH).toFixed(2)}`)
+  .join(" ");
+
+const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+const smoothstep = (t: number) => t * t * (3 - 2 * t);
+const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
 
 export default function EphemeralGroundPreview() {
   const sectionRef = useRef<HTMLElement>(null);
-  const { mapDot } = content;
+  const { mapDot, mapRing } = content;
 
-  // Desktop: the frame is sticky for one screen of scrolling while the map zooms toward
-  // Great Nicobar and crossfades into her site plan. Phones: the plan fades up once.
-  // Reduced motion: nothing moves (CSS shows the plan and hides the map).
+  // Desktop: the frame is sticky while one camera moves over one world (map, plan, outline).
+  // Phones: the plan fades up once. Reduced motion: nothing moves (CSS shows the static plan).
   useGSAP(
     () => {
       const section = sectionRef.current;
       if (!section) return;
+      const frame = section.querySelector<HTMLElement>("[data-eg-frame]");
+      const world = section.querySelector<HTMLElement>("[data-eg-world]");
       const map = section.querySelector<HTMLElement>("[data-eg-map]");
-      const dot = section.querySelector<HTMLElement>("[data-eg-dot]");
+      const marks = gsap.utils.toArray<Element>("[data-eg-mark]", section);
       const plan = section.querySelector<HTMLElement>("[data-eg-plan]");
-      if (!map || !dot || !plan) return;
+      const boundary = section.querySelector<SVGElement>("[data-eg-boundary]");
+      const reveal = section.querySelector<SVGElement>("[data-eg-reveal]");
+      const planStatic = section.querySelector<HTMLElement>("[data-eg-plan-static]");
+      if (!frame || !world || !map || !plan || !boundary || !reveal || !planStatic) return;
 
       const mm = gsap.matchMedia();
       mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+        const camera = { progress: 0 };
+        const placeCamera = () => {
+          const p = camera.progress;
+          // Equal scroll multiplies the scale by an equal amount.
+          const zoom = clamp01((p - 0.1) / 0.7);
+          const scale = DEPTH ** zoom;
+          const toCentre = smoothstep(zoom);
+          const settle = easeOutCubic(clamp01((p - 0.8) / 0.2));
+          const focusX = lerp(site.target.x, planCentre.x, settle);
+          const focusY = lerp(site.target.y, planCentre.y, settle);
+          const screenX = lerp(site.target.x, MAP_W / 2, toCentre);
+          const screenY = lerp(site.target.y, MAP_H / 2, toCentre);
+          gsap.set(world, {
+            xPercent: ((screenX - focusX * scale) / MAP_W) * 100,
+            yPercent: ((screenY - focusY * scale) / MAP_H) * 100,
+            scale,
+            // 2D transform keeps the SVG re-rendered sharp at every scale.
+            force3D: false,
+          });
+          // The boundary's dots stay the same size on screen as the camera closes in.
+          boundary.setAttribute("stroke-width", String((DOT_PX * MAP_W) / (frame.clientWidth * scale)));
+        };
+        gsap.set(world, { transformOrigin: "0 0" });
+        placeCamera();
+
         gsap
           .timeline({
             defaults: { ease: "none" },
@@ -39,22 +90,23 @@ export default function EphemeralGroundPreview() {
               end: "bottom bottom",
               scrub: 0.6,
               invalidateOnRefresh: true,
+              onRefresh: placeCamera,
             },
           })
-          // 2D transform keeps the SVG re-rendered sharp at every scale.
-          .to(map, { scale: ZOOM, ease: "power1.in", force3D: false, duration: 0.7 }, 0)
-          .to(dot, { opacity: 0, duration: 0.15 }, 0.45)
-          .to(map, { opacity: 0, duration: 0.4 }, 0.45)
-          .fromTo(plan, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4 }, 0.45)
-          .to({}, { duration: 0.15 }, 0.85);
+          .to(camera, { progress: 1, duration: 1, onUpdate: placeCamera }, 0)
+          .to(marks, { opacity: 0, duration: 0.2 }, 0.1)
+          .set(boundary, { opacity: 1 }, 0.35)
+          .fromTo(reveal, { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.2 }, 0.35)
+          .to(plan, { opacity: 1, duration: 0.3 }, 0.5)
+          .to(map, { opacity: 0, duration: 0.3 }, 0.5);
       });
       mm.add("(max-width: 767.98px) and (prefers-reduced-motion: no-preference)", () => {
-        gsap.from(plan, {
+        gsap.from(planStatic, {
           opacity: 0,
           y: 24,
           duration: 1,
           ease: "power2.out",
-          scrollTrigger: { trigger: plan, start: "top 85%", once: true },
+          scrollTrigger: { trigger: planStatic, start: "top 85%", once: true },
         });
       });
     },
@@ -96,30 +148,94 @@ export default function EphemeralGroundPreview() {
         </div>
 
         <div className="relative mt-12 md:mt-0 md:flex md:h-full md:items-center">
-          {/* Map: desktop with motion only. It zooms around Great Nicobar, inside its own frame. */}
-          <div className="relative hidden w-full overflow-hidden md:motion-safe:block" style={{ aspectRatio: `${content.map.width} / ${content.map.height}` }}>
-            <div data-eg-map className="absolute inset-0" style={{ transformOrigin: `${mapDot.x}% ${mapDot.y}%` }}>
-              <Image src={content.map.src} alt={content.mapAlt} fill sizes="60vw" className="object-cover" />
-            </div>
-            <div
-              data-eg-dot
-              aria-hidden="true"
-              className="absolute size-3 -translate-x-1/2 -translate-y-1/2"
-              style={{ left: `${mapDot.x}%`, top: `${mapDot.y}%` }}
-            >
-              <span className="map-pulse absolute inset-0 rounded-full border-2 border-white" />
-              <span className="absolute inset-0 rounded-full border-2 border-white bg-thesis-teal" />
+          {/* The world: desktop with motion only. Everything in it moves with the camera. */}
+          <div
+            data-eg-frame
+            className="relative hidden w-full overflow-hidden md:motion-safe:block"
+            style={{ aspectRatio: `${MAP_W} / ${MAP_H}` }}
+          >
+            <div data-eg-world className="absolute inset-0">
+              <div data-eg-map className="absolute inset-0">
+                <Image src={content.map.src} alt={content.mapAlt} fill sizes="60vw" className="object-cover" />
+              </div>
+              <div
+                data-eg-plan
+                className="absolute opacity-0"
+                style={{
+                  left: `${(imageX / MAP_W) * 100}%`,
+                  top: `${(imageY / MAP_H) * 100}%`,
+                  width: `${(imageW / MAP_W) * 100}%`,
+                }}
+              >
+                <Image
+                  src={sitePlan.src}
+                  alt={content.sitePlanAlt}
+                  width={sitePlan.width}
+                  height={sitePlan.height}
+                  sizes="75vw"
+                  className="block h-auto w-full -scale-x-100"
+                />
+              </div>
+              <svg
+                aria-hidden="true"
+                viewBox={`0 0 ${MAP_W} ${MAP_H}`}
+                className="absolute inset-0 size-full overflow-visible"
+              >
+                <circle
+                  data-eg-mark
+                  cx={mapRing.cx}
+                  cy={mapRing.cy}
+                  r={mapRing.r}
+                  fill="none"
+                  stroke="#E2002C"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeDasharray="0 4.2"
+                />
+                <mask id="eg-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width={MAP_W} height={MAP_H}>
+                  <polygon
+                    data-eg-reveal
+                    points={outlinePoints}
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="2"
+                    pathLength={1}
+                    strokeDasharray="1"
+                    strokeDashoffset="1"
+                  />
+                </mask>
+                <g mask="url(#eg-reveal)">
+                  <polygon
+                    data-eg-boundary
+                    points={outlinePoints}
+                    fill="none"
+                    stroke="#E2002C"
+                    strokeLinecap="round"
+                    strokeDasharray="0 0.7"
+                    opacity="0"
+                  />
+                </g>
+              </svg>
+              <div
+                data-eg-mark
+                aria-hidden="true"
+                className="absolute size-3 -translate-x-1/2 -translate-y-1/2"
+                style={{ left: `${mapDot.x}%`, top: `${mapDot.y}%` }}
+              >
+                <span className="map-pulse absolute inset-0 rounded-full border-2 border-white" />
+                <span className="absolute inset-0 rounded-full border-2 border-white bg-thesis-teal" />
+              </div>
             </div>
           </div>
 
-          {/* Site plan: wider than its column so her drawing fills it; the empty board bleeds off the right. */}
-          <div className="-ml-[8%] w-[130%] md:motion-safe:absolute md:motion-safe:inset-y-0 md:motion-safe:left-[-6%] md:motion-safe:ml-0 md:motion-safe:flex md:motion-safe:items-center">
-            <div data-eg-plan className="w-full md:motion-safe:opacity-0">
+          {/* Phones and reduced motion: wider than its column so her drawing fills it. */}
+          <div className="-ml-[8%] w-[130%] md:motion-safe:hidden">
+            <div data-eg-plan-static className="w-full">
               <Image
-                src={content.sitePlan.src}
+                src={sitePlan.src}
                 alt={content.sitePlanAlt}
-                width={content.sitePlan.width}
-                height={content.sitePlan.height}
+                width={sitePlan.width}
+                height={sitePlan.height}
                 sizes="(max-width: 768px) 130vw, 75vw"
                 className="block h-auto w-full"
               />
