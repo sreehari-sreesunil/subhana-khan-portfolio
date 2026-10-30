@@ -151,6 +151,7 @@ export default function AboutIntro({ content: about, headingLevel: Heading = "h2
           width={about.portrait.width}
           height={about.portrait.height}
           sizes="(max-width: 768px) 45vw, 30vw"
+          loading={isStatic ? "eager" : "lazy"}
           className="block h-auto w-full md:h-full md:w-auto"
         />
       </div>

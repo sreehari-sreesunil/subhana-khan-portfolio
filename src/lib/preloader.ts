@@ -6,6 +6,7 @@ let done = false;
 const listeners = new Set<() => void>();
 
 export function markPreloaderDone() {
+  if (done) return;
   done = true;
   listeners.forEach((listener) => listener());
 }

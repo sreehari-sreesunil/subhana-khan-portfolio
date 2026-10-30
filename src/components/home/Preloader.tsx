@@ -42,11 +42,20 @@ export default function Preloader() {
       markPreloaderDone();
     };
 
+    // Shared by the lift and the reduced-motion fade: `ratio` is how far the overlay has actually
+    // moved, so the hero starts once it's half gone and there's never an empty page.
+    const leave = {
+      onUpdate(this: gsap.core.Tween) {
+        if (this.ratio >= 0.5) markPreloaderDone();
+      },
+      onComplete: finish,
+    };
+
     getLenis()?.stop();
     const images = new AbortController();
     const ctx = gsap.context(() => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        gsap.to(root, { opacity: 0, delay: 0.6, duration: 0.4, ease: "power2.out", onComplete: finish });
+        gsap.to(root, { opacity: 0, delay: 0.6, duration: 0.4, ease: "power2.out", ...leave });
         return;
       }
 
@@ -72,7 +81,7 @@ export default function Preloader() {
       const liftWhenReady = () => {
         if (!minElapsed || !heroLoaded) return;
         minElapsed = false;
-        gsap.to(root, { yPercent: -100, duration: 0.8, ease: "power3.out", onComplete: finish });
+        gsap.to(root, { yPercent: -100, duration: 0.8, ease: "power3.out", ...leave });
       };
 
       gsap.delayedCall(MIN_SECONDS, () => {
