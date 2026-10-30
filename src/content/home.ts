@@ -130,9 +130,8 @@ export const hero: HeroContent = {
 
 export type AboutIntroContent = {
   heading: string;
-  /** Short home version of her page 01. */
   paragraphs: string[];
-  link: { label: string; href: string };
+  link?: { label: string; href: string };
   portrait: ImageAsset;
   portraitAlt: string;
 };

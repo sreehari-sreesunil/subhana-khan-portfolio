@@ -48,9 +48,9 @@ function roundedRect(x: number, y: number, w: number, h: number, r: number, step
  * Torn-paper outline: a fine ragged edge plus occasional bites (and a few small tabs).
  * Seeded, so the shape is identical on every render.
  */
-function tornBodyPath(seed: number) {
+function tornBodyPath(seed: number, height: number) {
   const rand = mulberry32(seed);
-  const pts = roundedRect(MARGIN, MARGIN, W - 2 * MARGIN, H - 2 * MARGIN, RADIUS, 5);
+  const pts = roundedRect(MARGIN, MARGIN, W - 2 * MARGIN, height - 2 * MARGIN, RADIUS, 5);
   let bite = 0;
   let biteLeft = 0;
   let biteLen = 0;
@@ -69,7 +69,12 @@ function tornBodyPath(seed: number) {
   return `M${d.join("L")}Z`;
 }
 
-const BODY_PATH = tornBodyPath(20260101);
+const BODY_PATH = tornBodyPath(20260101, H);
+// Long text: drawn nearer its final proportions, so stretching doesn't turn the bites into spikes.
+const TALL_H = 1000;
+const TALLER_H = 3400;
+const TALL_PATH = tornBodyPath(20260101, TALL_H);
+const TALLER_PATH = tornBodyPath(20260101, TALLER_H);
 // Tail traced from her page 01, in a 240×140 box (10 units per 1% of bubble width; the body's
 // bottom edge sits at y≈23). It joins the body from 32% to 50% of its width; tip at 26.5%.
 const TAIL_PATH = "M59 0 L57 39 C52 70 30 110 0 138 C60 128 200 80 238 23 L240 0 Z";
@@ -78,20 +83,36 @@ const TAIL_PATH = "M59 0 L57 39 C52 70 30 110 0 138 C60 128 200 80 238 23 L240 0
  * Her cream speech bubble from page 01: torn edges, soft grey shadow, tail at the bottom-left.
  * Children are real HTML laid over the shape.
  */
-export default function SpeechBubble({ children }: { children: ReactNode }) {
+export default function SpeechBubble({ children, tall = false }: { children: ReactNode; tall?: boolean }) {
+  const bodyClass = "absolute inset-0 h-full w-full fill-bubble-cream";
   return (
     <div className="relative">
       <div
         aria-hidden="true"
         className="absolute inset-0 drop-shadow-[-14px_14px_6px_var(--bubble-shadow)]"
       >
-        <svg
-          viewBox={`0 0 ${W} ${H}`}
-          preserveAspectRatio="none"
-          className="absolute inset-0 h-full w-full fill-bubble-cream"
-        >
-          <path d={BODY_PATH} />
-        </svg>
+        {tall ? (
+          <>
+            <svg
+              viewBox={`0 0 ${W} ${TALLER_H}`}
+              preserveAspectRatio="none"
+              className={`${bodyClass} md:hidden`}
+            >
+              <path d={TALLER_PATH} />
+            </svg>
+            <svg
+              viewBox={`0 0 ${W} ${TALL_H}`}
+              preserveAspectRatio="none"
+              className={`${bodyClass} hidden md:block`}
+            >
+              <path d={TALL_PATH} />
+            </svg>
+          </>
+        ) : (
+          <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className={bodyClass}>
+            <path d={BODY_PATH} />
+          </svg>
+        )}
         <svg
           data-bubble-tail
           viewBox="0 0 240 140"

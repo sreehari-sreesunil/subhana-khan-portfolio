@@ -7,12 +7,19 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
-import { about } from "@/content/home";
+import type { AboutIntroContent } from "@/content/home";
 import SpeechBubble from "./SpeechBubble";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
-export default function AboutIntro() {
+type AboutIntroProps = {
+  content: AboutIntroContent;
+  headingLevel?: "h1" | "h2";
+  /** For the top of a page, where the entrance would flash the text before hiding it. */
+  static?: boolean;
+};
+
+export default function AboutIntro({ content: about, headingLevel: Heading = "h2", static: isStatic }: AboutIntroProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
   // Plays once as the section comes into view: portrait rises, the bubble opens from its tail,
@@ -20,7 +27,7 @@ export default function AboutIntro() {
   useGSAP(
     () => {
       const section = sectionRef.current;
-      if (!section) return;
+      if (!section || isStatic) return;
       const portrait = section.querySelector<HTMLElement>("[data-about-portrait]");
       const bubble = section.querySelector<HTMLElement>("[data-about-bubble]");
       const tail = section.querySelector<SVGElement>("[data-bubble-tail]");
@@ -96,15 +103,15 @@ export default function AboutIntro() {
       className="relative flex flex-col overflow-hidden bg-about-blue px-4 pt-20 md:min-h-svh md:justify-center md:px-10 md:py-28"
     >
       <div data-about-bubble className="w-full md:ml-[23%] md:w-[58%] md:max-w-[56rem]">
-        <SpeechBubble>
+        <SpeechBubble tall={isStatic}>
           <div className="px-[7%] pt-[8%] pb-[9%] md:px-[7%] md:pt-[6%] md:pb-[7%]">
-            <h2
+            <Heading
               id="about-heading"
               data-about-text
               className="font-heading text-[clamp(1.75rem,2.8vw,2.75rem)] leading-tight font-semibold text-ink-green"
             >
               {about.heading}
-            </h2>
+            </Heading>
             {about.paragraphs.map((paragraph) => (
               <p
                 key={paragraph.slice(0, 24)}
@@ -114,14 +121,16 @@ export default function AboutIntro() {
                 {paragraph}
               </p>
             ))}
-            <p data-about-link className="mt-6 text-center">
-              <Link
-                href={about.link.href}
-                className="font-ui text-sm tracking-wide text-accent-terracotta underline-offset-4 hover:underline md:text-base"
-              >
-                {about.link.label} <span aria-hidden="true">→</span>
-              </Link>
-            </p>
+            {about.link && (
+              <p data-about-link className="mt-6 text-center">
+                <Link
+                  href={about.link.href}
+                  className="font-ui text-sm tracking-wide text-accent-terracotta underline-offset-4 hover:underline md:text-base"
+                >
+                  {about.link.label} <span aria-hidden="true">→</span>
+                </Link>
+              </p>
+            )}
           </div>
         </SpeechBubble>
       </div>
