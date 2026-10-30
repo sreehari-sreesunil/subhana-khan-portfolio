@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { hero, type HeroTile, type PlaceholderTone } from "@/content/home";
+import { usePreloaderDone } from "@/lib/preloader";
 import Grain from "@/components/Grain";
 import PlaceholderFigure from "./PlaceholderFigure";
 
@@ -43,6 +44,8 @@ function gridArea(tile: HeroTile) {
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
+  // The entrance waits for the preloader to lift away.
+  const revealed = usePreloaderDone();
   const afterTiles = hero.tiles.length * tileStagger;
 
   // People scene: each figure makes one small move as the Hero scrolls.
@@ -107,7 +110,7 @@ export default function Hero() {
                 tile.image ? "" : toneClass[tile.placeholderTone]
               }`}
               initial={{ opacity: 0, y: rise }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={revealed ? { opacity: 1, y: 0 } : undefined}
               transition={{ duration: 0.6, ease, delay: i * tileStagger }}
             >
               {tile.image ? (
@@ -152,7 +155,7 @@ export default function Hero() {
                 <motion.div
                   className="h-full"
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  animate={revealed ? { opacity: 1 } : undefined}
                   transition={{ duration: 0.8, ease, delay: afterTiles }}
                 >
                   {figure.image ? (
@@ -179,7 +182,7 @@ export default function Hero() {
           <motion.div
             className="flex flex-col items-start md:w-max md:items-end"
             initial={{ opacity: 0, y: rise }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={revealed ? { opacity: 1, y: 0 } : undefined}
             transition={{ duration: 0.8, ease, delay: afterTiles }}
           >
             <h1 className="hero-name font-heading text-[10.8vw] leading-[0.9] font-semibold whitespace-nowrap text-ink-green">

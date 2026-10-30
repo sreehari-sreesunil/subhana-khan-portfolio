@@ -52,6 +52,10 @@ body {
   color: var(--ink-green);
 }
 
+html[data-preloader-seen] .preloader {
+  display: none;
+}
+
 /* Her paper: static fibres woven into a section's own background colour. */
 .paper-fibre {
   background-image: url("/textures/paper.png");

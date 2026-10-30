@@ -128,6 +128,21 @@ export const hero: HeroContent = {
   ],
 };
 
+// Crops of her PDF pages at 600px: 2021 and 2025 from Indie Stories p.39–40, 2022 from p.38,
+// 2023 from p.26, 2024 from p.33, 2026 from the masterplan p.15.
+export const preloader = {
+  label: "Selected Works",
+  staticYears: "2021–26",
+  years: [
+    { year: 2021, image: { src: "/images/home/preloader/2021.webp" } },
+    { year: 2022, image: { src: "/images/home/preloader/2022.webp" } },
+    { year: 2023, image: { src: "/images/home/preloader/2023.webp" } },
+    { year: 2024, image: { src: "/images/home/preloader/2024.webp" } },
+    { year: 2025, image: { src: "/images/home/preloader/2025.webp" } },
+    { year: 2026, image: { src: "/images/home/preloader/2026.webp" } },
+  ],
+};
+
 export type AboutIntroContent = {
   heading: string;
   paragraphs: string[];

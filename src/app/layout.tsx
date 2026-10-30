@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Nunito, Lora } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
+import { preloaderScript } from "@/lib/preloader-script";
 import "./globals.css";
 
 const metropolis = localFont({
@@ -53,7 +54,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${metropolis.variable} ${nunito.variable} ${lora.variable} h-full antialiased`}
+      // The <head> script may add the preloader attribute before hydration.
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: preloaderScript }} />
+        <noscript>
+          <style>{`.preloader{display:none}`}</style>
+        </noscript>
+      </head>
       <body className="relative min-h-full flex flex-col">
         <SmoothScroll>{children}</SmoothScroll>
       </body>
