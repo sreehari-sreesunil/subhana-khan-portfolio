@@ -98,8 +98,10 @@ export default function EphemeralGroundPreview() {
           end: "top top",
           onEnter: () => {
             // Also fires on a page restored below the section; that must not pull the reader back.
-            if (played || section.getBoundingClientRect().top <= 0) return;
-            getLenis()?.scrollTo(section, { duration: 0.8, easing: easeOutCubic });
+            const top = section.getBoundingClientRect().top;
+            if (played || top <= 0) return;
+            // A number, not the element: after a jump (Page Down, scrollbar) Lenis's own position is stale.
+            getLenis()?.scrollTo(window.scrollY + top, { duration: 0.8, easing: easeOutCubic });
           },
         });
         const landed = ScrollTrigger.create({ trigger: section, start: "top 2px", once: true, onEnter: play });
@@ -174,6 +176,7 @@ export default function EphemeralGroundPreview() {
           {/* The world: desktop with motion only. Everything in it moves with the camera. */}
           <div
             data-eg-frame
+            data-cursor="enter"
             className="relative hidden w-full overflow-hidden md:motion-safe:block"
             style={{ aspectRatio: `${MAP_W} / ${MAP_H}` }}
           >
@@ -248,6 +251,13 @@ export default function EphemeralGroundPreview() {
                 <span className="absolute inset-0 rounded-full border-2 border-white bg-thesis-teal" />
               </div>
             </div>
+            {/* The visible link is in the text; this one makes the "Enter" cursor true. */}
+            <TransitionLink
+              href={content.link.href}
+              tabIndex={-1}
+              aria-hidden="true"
+              className="absolute inset-0"
+            />
           </div>
 
           <button

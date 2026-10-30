@@ -116,6 +116,72 @@ h1[tabindex="-1"]:focus {
   outline: none;
 }
 
+/* Custom cursor: above the page-transition sheet. Shown only after a mouse has moved. */
+.cursor {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 80;
+  pointer-events: none;
+}
+
+html.has-cursor .cursor {
+  display: block;
+}
+
+.cursor-dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: -36px 0 0 -36px;
+  border-radius: 50%;
+  background: var(--ink-green);
+}
+
+.cursor-label {
+  opacity: 0;
+}
+
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+
+html.has-cursor :is(input, textarea, [contenteditable="true"]) {
+  cursor: text !important;
+}
+
+html.has-cursor select {
+  cursor: auto !important;
+}
+
+/*
+ * RevealImage start state. Under html.js only, so images stay visible without JavaScript.
+ * The inline script can run while the main bundle fails, so a failsafe still shows them.
+ */
+html.js [data-reveal] {
+  clip-path: inset(100% 0% 0% 0%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal] {
+    clip-path: none;
+    opacity: 0;
+  }
+}
+
+html.js:not([data-hydrated]) [data-reveal] {
+  animation: reveal-failsafe 0.6s ease-out 6s forwards;
+}
+
+@keyframes reveal-failsafe {
+  to {
+    clip-path: inset(0% 0% 0% 0%);
+    opacity: 1;
+  }
+}
+
 /* Her paper: static fibres woven into a section's own background colour. */
 .paper-fibre {
   background-image: url("/textures/paper.png");

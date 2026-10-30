@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Nunito, Lora } from "next/font/google";
+import Cursor from "@/components/Cursor";
 import PageTransition from "@/components/PageTransition";
 import SmoothScroll from "@/components/SmoothScroll";
 import { preloaderScript } from "@/lib/preloader-script";
@@ -59,7 +60,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: preloaderScript }} />
+        <script dangerouslySetInnerHTML={{ __html: `document.documentElement.classList.add("js");${preloaderScript}` }} />
         <noscript>
           <style>{`.preloader{display:none}[data-hero-reveal],[data-eg-text]{opacity:1!important;transform:none!important}`}</style>
         </noscript>
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SmoothScroll>
           <PageTransition>{children}</PageTransition>
         </SmoothScroll>
+        <Cursor />
       </body>
     </html>
   );

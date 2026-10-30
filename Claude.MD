@@ -68,6 +68,17 @@ Verify exact hex values by sampling the extracted page images before finalising.
   reappear across the site as small parallax figures.
 - Generous white space. Nothing loud. No neon, no gradients that aren't in her work.
 
+## Shared components
+
+- `<RevealImage>`: use for images that should wipe up as they enter view (once). Takes all
+  `next/image` props, plus `wrapperClassName` for the outer box. Reduced motion: a fade. The
+  hidden state is CSS under `html.js`, with a failsafe if the main bundle never runs. Don't use it
+  for anything above the fold on load (it would flash in after hydration).
+- `data-cursor="enter"`: on an element that navigates when clicked, the dot grows into an
+  "Enter" circle. Never put it on something that isn't clickable. Links and buttons grow the dot
+  automatically. Text fields keep the native cursor. Fine pointers only, off under reduced motion.
+- `/lab`: dev-only workbench (404 in production). Try shared components there first.
+
 ## Paper texture and grain
 
 A subtle animated grain over every section, so the screen feels like her paper pages
