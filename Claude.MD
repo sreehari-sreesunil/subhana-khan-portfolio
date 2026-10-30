@@ -54,7 +54,7 @@ Headings are often large, tight and uppercase (e.g. "EPHEMERAL GROUND"). Chapter
 | `--accent-terracotta` | #9C6B4A | Meta labels, page numbers, links |
 | `--paper` | #E6E1D9 | Main background (with subtle paper texture) |
 | `--paper-white` | #FAF8F4 | Alternate background |
-| `--thesis-teal` | #6FB5B0 | Ephemeral Ground accent |
+| `--thesis-teal` | #70BBB7 | Ephemeral Ground accent |
 | `--sage` | #9DB58A | Landscape / masterplan accents |
 | `--sand` | #E9D6B6 | Floor-plan fills |
 | `--sun` | #EED98A | Hillside School accent (the sun) |
@@ -82,6 +82,8 @@ Verify exact hex values by sampling the extracted page images before finalising.
 - `Footer`: in the layout, so on every page. `site.footer.portfolioPdf` is `null` until she provides
   the file; setting a path shows the download link. `SunPath` is retired from the footer and kept in
   `/lab` for reference; its hill and building are TEMP.
+- `SnapStrip`: native sideways scroller with arrows and a progress line, for wide images. It rests on each
+  `[data-snap]` inside it, which must have real size (`inset-y-0 w-px`): Chrome ignores empty snap targets.
 - `createCamera` (`src/lib/camera.ts`): one camera, any number of stops. `map-osm.svg` is shared by home and
   the project page, so its credit ("Coastline © OpenStreetMap contributors") must show wherever the map does.
 - `/lab`: dev-only workbench (404 in production). Try shared components there first.

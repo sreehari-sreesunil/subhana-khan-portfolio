@@ -45,14 +45,20 @@ export default function CameraStory({ titleId, title, children }: CameraStoryPro
           legs.push(ScrollTrigger.create({ trigger: card, start: "top bottom", end: "top 45%", onUpdate: follow, onRefresh: follow }));
         });
 
-        // Tracing paper over the parked island as Act 2 arrives.
-        gsap
-          .timeline({
-            defaults: { ease: "none" },
-            scrollTrigger: { trigger: "#act-2", start: "top 90%", end: "top 25%", scrub: 0.6 },
-          })
-          .to("[data-stage-paper]", { opacity: PAPER_OPACITY, duration: 1 }, 0)
-          .to("[data-stage-title]", { opacity: 0, duration: 0.5 }, 0);
+        // Tracing paper over the parked island: it settles as Act 2 arrives, and lifts again for 2.6.
+        // As with the camera, one smoothed value follows both, so a long jump can't leave them fighting.
+        const paper = gsap.quickTo("[data-stage-paper]", "opacity", { duration: 0.6, ease: "power3" });
+        const stageTitle = gsap.quickTo("[data-stage-title]", "opacity", { duration: 0.6, ease: "power3" });
+        const edges: ScrollTrigger[] = [];
+        const followPaper = () => {
+          const [arrive, lift] = edges;
+          if (!arrive || !lift) return;
+          paper(PAPER_OPACITY * (arrive.progress - lift.progress));
+          stageTitle(1 - Math.min(arrive.progress * 2, 1));
+        };
+        ["#act-2", "#back-to-the-island"].forEach((trigger) => {
+          edges.push(ScrollTrigger.create({ trigger, start: "top 90%", end: "top 25%", onUpdate: followPaper, onRefresh: followPaper }));
+        });
 
         // Once the paper is down the walker crosses 2.1, gone before the next heading; the tree stays put.
         gsap

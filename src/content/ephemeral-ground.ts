@@ -17,6 +17,9 @@ export type EgImage = {
   credit?: string;
 };
 
+/** Her bold words, kept. */
+export type TextPart = { text: string; bold?: boolean };
+
 export type EgSection = {
   id: string;
   title?: string;
@@ -193,7 +196,7 @@ export const act1 = {
   },
 };
 
-// Act 2, 2.1–2.3 (p.23). All text is copied exactly from her PSD layers.
+// Act 2 (pp.23, 24, 11, 12). Text is from her PSD layers unless marked OCR.
 export const act2 = {
   question: "WHAT IS SLOWNESS IN DESIGN?",
   // PSD
@@ -237,7 +240,7 @@ export const act2 = {
         { text: " emerge through light, material and proportion, shaping memorable spaces that foster comfort, belonging and well-being." },
       ],
     },
-  ] as { name: string; image: EgImage; caption: { text: string; bold?: boolean }[] }[],
+  ] as { name: string; image: EgImage; caption: TextPart[] }[],
   neuroscienceTitle: "NEUROSCIENTIFIC PERSPECTIVES",
   // PSD
   tiles: [
@@ -272,6 +275,167 @@ export const act2 = {
       image: { name: "idea/neuro-environment", alt: "Collage of a brain beneath a concrete building.", credit: TO_CONFIRM },
     },
   ] as { title: string; text: string; image: EgImage }[],
+  caseStudies: {
+    title: "CASE STUDIES",
+    label: "Case studies",
+    hint: "Scroll sideways",
+    // Measured from her p.24. Positions are % of the strip; each has room above the image for her captions.
+    strips: [
+      {
+        ratio: 2152 / 853,
+        image: { name: "idea/case-brion", alt: "Concrete walls, water and planting at Brion Cemetery.", credit: "Carlo Scarpa. Photographer to confirm" },
+        // PSD, with her bold kept.
+        captions: [
+          {
+            left: 5.6,
+            top: 17.8,
+            width: 26,
+            parts: [
+              { text: "Movement through " },
+              { text: "Brion Cemetery", bold: true },
+              { text: " is slow and non-linear, revealing spaces gradually and encouraging discovery." },
+            ],
+          },
+          { left: 39.7, top: 3.3, width: 24.6, parts: [{ text: "Concrete, stone, water and vegetation embrace weathering and ageing, allowing architecture to reflect the passage of time." }] },
+          { left: 50.9, top: 37, width: 23.7, parts: [{ text: "Alternating enclosure and openness guide visitors through a reflective journey of mourning." }] },
+          { left: 77.1, top: 9.6, width: 21.4, parts: [{ text: "Thresholds, level changes and framed openings mark transitions, slowing movement and heightening awareness of each crossing." }] },
+        ],
+      },
+      {
+        ratio: 1209 / 853,
+        image: { name: "idea/case-brick", alt: "A brick stair, a timber bench and a braided door handle.", credit: TO_CONFIRM },
+        // PSD
+        captions: [
+          { left: 3, top: 2.7, width: 30, line: { left: 1.8, top: 2.7, height: 39 }, parts: [{ text: "The braided leather handle creates a tactile memory while preventing the metal from feeling cold in winter." }] },
+          { left: 36, top: 0, width: 34, line: { left: 34.6, top: 0, height: 38 }, parts: [{ text: "A gradual ascent through brick-lined stairways and shifting clerestory light slows movement and prepares occupants for collective decision-making." }] },
+          { left: 75.9, top: 14.4, width: 24, line: { left: 74.6, top: 14.4, height: 24 }, parts: [{ text: "The seat has inbuild heaters so that users feel comfortable" }] },
+        ],
+      },
+    ] as {
+      ratio: number;
+      image: EgImage;
+      captions: { left: number; top: number; width: number; line?: { left: number; top: number; height: number }; parts: TextPart[] }[];
+    }[],
+  },
+  applicationTitle: "APPLICATION",
+  // PSD
+  application: [
+    {
+      name: "Library Building",
+      image: { name: "idea/render-library", alt: "Render of a figure seated at a reflecting pool facing the sea, above a dark hall opening through a narrow slit." },
+      text: "A narrow slit compresses perception before opening onto a sheltered verandah and reflecting pool that extends the horizon. The low ceiling offers refuge within the vast landscape, creating pause through anticipation, wonder and framed views.",
+    },
+    {
+      name: "Community hall",
+      image: { name: "idea/render-hall", alt: "Render of a community hall on stilts above a stone landscape." },
+      text: "The community hall’s elevated auditorium establishes monumentality, while stone landscapes and tactile surfaces bring the ground to a human scale, transforming awe into familiarity through touch and movement.",
+    },
+    {
+      name: "Residential Building",
+      image: { name: "idea/render-residential", alt: "Render of a woman on a sheltered balcony." },
+      text: "Sheltered balconies frame views of the landscape and community, offering refuge for pause and observation, while cluster orientation connects homes to the surrounding landscape and shared courtyard, encouraging interaction and strengthening belonging.",
+    },
+    {
+      name: "Incremental Housing",
+      image: { name: "idea/render-housing", alt: "Painted elevation of a timber house." },
+      text: "Residential units are conceived as incremental frameworks capable of growth, contraction and modification over time. Rather than prescribing a fixed mode of living, the design acknowledges that homes must evolve alongside the changing needs of their inhabitants.",
+    },
+  ] as { name: string; image: EgImage; text: string }[],
+  island: {
+    collage: { name: "idea/arch-collage", alt: "Arched collage of a whale, a turtle, a tree held by hands, and a hut." } satisfies EgImage,
+    // OCR, proofread
+    key: "The Great Nicobar development brings 300,000 people to one of the least disturbed rainforest landscapes in India. This neighbourhood of 1,000 – the teachers, doctors, shopkeepers and guides who make that development liveable – is designed on a different logic entirely. Not against development, but proposing that development can leave a place better than it found it. A settlement whose daily life is its ecology.",
+    // PSD
+    closing:
+      "Island development must balance ecological limits, biodiversity, tourism and local livelihoods through slow, context-sensitive design that protects nature and strengthens resilient communities.",
+    // OCR, proofread
+    diagrams: [
+      { title: "Terrain", image: { name: "idea/terrain", alt: "Isometric diagram of the site's terrain." }, text: [] },
+      {
+        title: "Slope Ratio",
+        image: { name: "idea/slope-ratio", alt: "Isometric diagram of the site's slopes, with the high contours marked." },
+        text: [
+          "The community buildings are positioned in the high contours as a protective measure against tsunami or flooding that the site is prone to.",
+          "The permanent build structures are build away from the ocean",
+        ],
+      },
+      { title: "Accessibility", image: { name: "idea/accessibility", alt: "Isometric diagram of the site's access, with the road, zones and nearest town marked." }, text: [] },
+    ] as { title: string; image: EgImage; text: string[] }[],
+  },
+  strategies: {
+    title: "STRATEGIES",
+    // OCR, proofread. Order follows the grid: Defence, Social, then Environment, Economy.
+    quadrants: [
+      {
+        label: "DEFENCE",
+        items: [
+          {
+            text: "Canopy as camouflage. Retained tree cover reduces the settlement’s thermal and visual signature from aerial surveillance. The settlement remains forest from above.",
+            image: { name: "idea/strategy-canopy", alt: "Watercolour of a settlement under a tree canopy." },
+          },
+          {
+            text: "Tsunami evacuation by design. The community tower sits on the highest ridge in the settlement. All cluster paths lead toward it. When evacuation is needed, people don’t need to be told where to go – their daily movement has already taught them. Safety becomes instinct, not instruction.",
+            image: { name: "idea/strategy-tower", alt: "Watercolour of an evacuation tower among trees." },
+          },
+          {
+            text: "Natural buffers as boundary. The regenerating forest edge between the settlement and the defence zone acts as a passive, living restriction. No wall, no fence – the forest itself marks the limit.",
+            image: { name: "idea/strategy-buffer", alt: "Watercolour of a forest edge." },
+          },
+        ],
+      },
+      {
+        label: "SOCIAL",
+        items: [
+          {
+            text: "Intentional exclusion of tribal territory. The Shompen people’s land is not a design opportunity. Site selection deliberately avoids all marked Nicobarese settlements. The forest buffer ensures no social or physical encroachment over time.",
+            image: { name: "idea/strategy-locator", alt: "Small locator map of Great Nicobar." },
+          },
+          {
+            text: "Forced adjacency through architecture. The shared veranda, community kitchen, and hollow are not optional amenities – they are the primary circulation and social infrastructure. To move through the settlement is to encounter your neighbours.",
+            image: { name: "idea/strategy-steps", alt: "Sketch of people on a shared stepped street." },
+          },
+          {
+            text: "Local ecological knowledge of the island is treated as expertise. Residents are trained in forest stewardship, seasonal water management, and island ecology by those who already understand it — not by imported consultants.",
+            image: { name: "idea/strategy-exchange", alt: "Sketch of residents sharing knowledge." },
+          },
+        ],
+      },
+      {
+        label: "ENVIRONMENT",
+        items: [
+          {
+            text: "Terrain-led placement. Cluster positions determined by slope analysis, drainage corridors, and existing canopy gaps. The land decides where buildings go.",
+            image: { name: "idea/strategy-terrain", alt: "Watercolour of a building set into a slope." },
+          },
+          {
+            text: "Wetland and vegetation conservation. Three distinct zones – littoral forest, mangrove wetland, and rainforest – are mapped and protected absolutely. No structure enters any vegetation zone boundary.",
+            image: { name: "idea/strategy-wetland", alt: "Watercolour section of wetland and rainforest." },
+          },
+          {
+            text: "Passive climate response. Orientation, cross ventilation, butterfly roofs, and raised construction respond to the tropical climate without mechanical systems. The building breathes with the island.",
+            image: { name: "idea/strategy-climate", alt: "Watercolour of a raised house with a butterfly roof." },
+          },
+        ],
+      },
+      {
+        label: "ECONOMY",
+        items: [
+          {
+            text: "Resident-run tourism cooperative. All tourism income – visitor entry, guiding, market sales, short stays – flows through a community cooperative. Money stays within the neighbourhood.",
+            image: { name: "idea/strategy-market", alt: "Watercolour of a covered market." },
+          },
+          {
+            text: "Resource self-sufficiency. Water harvested from roofs. Energy from solar. Food from productive agriculture without land clearing. The settlement minimises its dependency on external supply chains.",
+            image: { name: "idea/strategy-water", alt: "Watercolour section of a rainwater pond." },
+          },
+          {
+            text: "Gateway to undiscovered India. Great Nicobar sits on one of the world’s busiest shipping lanes yet remains virtually unknown to international tourism. This settlement positions itself to attract the global sailing community, eco-tourists, and adventure travellers – a market largely untapped in India. The neighbourhood becomes the first point of contact for a form of tourism the country has not yet formalised.",
+            image: { name: "idea/strategy-boat", alt: "Painting of a sailing boat." },
+          },
+        ],
+      },
+    ] as { label: string; items: { text: string; image: EgImage }[] }[],
+  },
 };
 
 export const acts: EgAct[] = [
@@ -290,79 +454,8 @@ export const acts: EgAct[] = [
     navLabel: "THE IDEA",
     question: "What is slowness in design?",
     pages: [23, 24, 11, 12],
-    sections: [
-      {
-        id: "case-studies",
-        title: "CASE STUDIES",
-        pages: [24],
-        images: [
-          { name: "idea/case-brion", alt: "Concrete walls, water and planting at Brion Cemetery.", credit: "Carlo Scarpa. Photographer to confirm" },
-          { name: "idea/case-brick", alt: "A brick stair, a timber bench and a braided door handle.", credit: TO_CONFIRM },
-        ],
-        // PSD
-        text: [
-          "Movement through Brion Cemetery is slow and non-linear, revealing spaces gradually and encouraging discovery.",
-          "Concrete, stone, water and vegetation embrace weathering and ageing, allowing architecture to reflect the passage of time.",
-          "Alternating enclosure and openness guide visitors through a reflective journey of mourning.",
-          "Thresholds, level changes and framed openings mark transitions, slowing movement and heightening awareness of each crossing.",
-          "The braided leather handle creates a tactile memory while preventing the metal from feeling cold in winter.",
-          "A gradual ascent through brick-lined stairways and shifting clerestory light slows movement and prepares occupants for collective decision-making.",
-          "The seat has inbuild heaters so that users feel comfortable",
-        ],
-      },
-      {
-        id: "application",
-        title: "APPLICATION",
-        pages: [24],
-        images: [
-          { name: "idea/render-library", alt: "Render of a dark library hall opening through a narrow slit." },
-          { name: "idea/render-water", alt: "Render of a figure seated at a reflecting pool facing the sea." },
-          { name: "idea/render-hall", alt: "Render of a community hall on stilts above a stone landscape." },
-          { name: "idea/render-residential", alt: "Render of a woman on a sheltered balcony." },
-          { name: "idea/render-housing", alt: "Painted elevation of a timber house." },
-        ],
-        // PSD: title, then text, for each building.
-        text: [
-          "Library Building",
-          "A narrow slit compresses perception before opening onto a sheltered verandah and reflecting pool that extends the horizon. The low ceiling offers refuge within the vast landscape, creating pause through anticipation, wonder and framed views.",
-          "Community hall",
-          "The community hall’s elevated auditorium establishes monumentality, while stone landscapes and tactile surfaces bring the ground to a human scale, transforming awe into familiarity through touch and movement.",
-          "Residential Building",
-          "Sheltered balconies frame views of the landscape and community, offering refuge for pause and observation, while cluster orientation connects homes to the surrounding landscape and shared courtyard, encouraging interaction and strengthening belonging.",
-          "Incremental Housing",
-          "Residential units are conceived as incremental frameworks capable of growth, contraction and modification over time. Rather than prescribing a fixed mode of living, the design acknowledges that homes must evolve alongside the changing needs of their inhabitants.",
-        ],
-      },
-      {
-        id: "back-to-the-island",
-        pages: [11],
-        images: [
-          { name: "idea/arch-collage", alt: "Arched collage of a whale, a turtle, a tree held by hands, and a hut." },
-          { name: "idea/terrain", alt: "Isometric diagram of the site's terrain." },
-          { name: "idea/slope-ratio", alt: "Isometric diagram of the site's slopes." },
-          { name: "idea/accessibility", alt: "Isometric diagram of the site's access." },
-        ],
-      },
-      {
-        id: "strategies",
-        title: "STRATEGIES",
-        pages: [12],
-        images: [
-          { name: "idea/strategy-canopy", alt: "Watercolour of a settlement under a tree canopy." },
-          { name: "idea/strategy-tower", alt: "Watercolour of an evacuation tower among trees." },
-          { name: "idea/strategy-steps", alt: "Sketch of people on a shared stepped street." },
-          { name: "idea/strategy-locator", alt: "Small locator map of Great Nicobar." },
-          { name: "idea/strategy-buffer", alt: "Watercolour of a forest edge." },
-          { name: "idea/strategy-exchange", alt: "Sketch of residents sharing knowledge." },
-          { name: "idea/strategy-terrain", alt: "Watercolour of a building set into a slope." },
-          { name: "idea/strategy-market", alt: "Watercolour of a covered market." },
-          { name: "idea/strategy-wetland", alt: "Watercolour section of wetland and rainforest." },
-          { name: "idea/strategy-water", alt: "Watercolour section of a rainwater pond." },
-          { name: "idea/strategy-climate", alt: "Watercolour of a raised house with a butterfly roof." },
-          { name: "idea/strategy-boat", alt: "Painting of a sailing boat." },
-        ],
-      },
-    ],
+    // Built from `act2` above.
+    sections: [],
   },
   {
     id: "act-3",

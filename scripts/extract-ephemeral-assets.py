@@ -14,8 +14,9 @@ import io
 import shutil
 from pathlib import Path
 
+import numpy
 import pymupdf
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
 from psd_tools import PSDImage
 
 Image.MAX_IMAGE_PIXELS = None
@@ -56,16 +57,16 @@ CROPS = {
     "ground/site-photos": (10, (30, 1036, 1660, 1210)),
     "idea/arch-collage": (11, (90, 90, 695, 990)),
     "idea/terrain": (11, (845, 112, 1622, 390)),
-    "idea/slope-ratio": (11, (845, 428, 1622, 760)),
+    "idea/slope-ratio": (11, (845, 436, 1622, 802)),
     "idea/accessibility": (11, (845, 804, 1622, 1190)),
     "idea/strategy-canopy": (12, (525, 95, 838, 195)),
     "idea/strategy-tower": (12, (70, 220, 510, 430)),
     "idea/strategy-steps": (12, (860, 210, 1200, 460)),
     "idea/strategy-locator": (12, (1530, 55, 1635, 255)),
-    "idea/strategy-buffer": (12, (535, 455, 815, 590)),
+    "idea/strategy-buffer": (12, (535, 455, 780, 590)),
     "idea/strategy-exchange": (12, (1330, 405, 1670, 605)),
-    "idea/strategy-terrain": (12, (535, 680, 770, 845)),
-    "idea/strategy-market": (12, (858, 715, 1118, 968)),
+    "idea/strategy-terrain": (12, (535, 680, 760, 845)),
+    "idea/strategy-market": (12, (858, 728, 1118, 968)),
     "idea/strategy-wetland": (12, (100, 855, 495, 1010)),
     "idea/strategy-water": (12, (1470, 750, 1708, 1020)),
     "idea/strategy-climate": (12, (575, 1005, 780, 1205)),
@@ -133,6 +134,7 @@ PAINT_WHITE = {
     "settlement/visitors-plan": [(135, 55, 380, 108)],
     "settlement/visitors-section": [(200, 875, 830, 1055)],
     "settlement/cultural-plan": [(700, 90, 1400, 400), (90, 90, 400, 108)],
+    "idea/slope-ratio": [(1100, 438, 1392, 519), (852, 683, 1010, 802)],
 }
 
 # name: (PSD layer id, widest px to keep, crop or None)
@@ -147,7 +149,7 @@ LAYERS = {
     "idea/lone-tree": (1743, 1320, (820, 195, 1090, 556)),
     "idea/walker": (1746, 1075, (495, 570, 1075, 715)),
     "idea/case-brion": (1757, 2152, None),
-    "idea/case-brick": (1761, 1549, None),
+    "idea/case-brick": (1761, 1549, (340, 0, 1549, 530)),
     "idea/render-housing": (1788, 1340, None),
 }
 
@@ -163,11 +165,17 @@ ARCHES = {
 
 # Smart objects hold their own originals, larger than the placed size.
 SMART_OBJECTS = {
-    "idea/render-water": 1784,
-    "idea/render-library": 1785,
     "idea/render-hall": 1783,
     "idea/render-residential": 1787,
 }
+# Her Library panel is two renders, one above the other. (name, top layer, bottom layer)
+STACKED_RENDERS = ("idea/render-library", 1784, 1785)
+
+# Cut from her white page, and shown on paper: white becomes transparent, as if printed on it.
+ON_PAPER = {"idea/arch-collage", "idea/terrain", "idea/slope-ratio", "idea/accessibility"}
+
+# Her sketches sit on the teal page with hard crop edges, so those edges fade out.
+SOFT_EDGE = 12
 
 
 # Phones show the residential half of the isometric plan. (name, source, crop as fractions, widest px)
@@ -179,6 +187,27 @@ def save(image, name, manifest):
     path.parent.mkdir(parents=True, exist_ok=True)
     image.save(path, "WEBP", quality=QUALITY, method=6)
     manifest[name] = (f"/images/ephemeral-ground/{name}.webp", image.width, image.height, path.stat().st_size)
+
+
+def smart_object(layer):
+    return Image.open(io.BytesIO(layer.smart_object.data)).convert("RGB")
+
+
+def white_to_alpha(image):
+    rgb = numpy.asarray(image, dtype=float)
+    alpha = 1 - rgb.min(axis=2) / 255
+    alpha[alpha < 0.03] = 0
+    safe = numpy.maximum(alpha, 1 / 255)[..., None]
+    colour = numpy.clip((rgb - (1 - alpha[..., None]) * 255) / safe, 0, 255)
+    return Image.fromarray(numpy.dstack((colour, alpha * 255)).astype("uint8"), "RGBA")
+
+
+def soften(image):
+    mask = Image.new("L", image.size, 0)
+    ImageDraw.Draw(mask).rectangle((SOFT_EDGE, SOFT_EDGE, image.width - SOFT_EDGE, image.height - SOFT_EDGE), fill=255)
+    soft = image.convert("RGBA")
+    soft.putalpha(mask.filter(ImageFilter.GaussianBlur(SOFT_EDGE / 2)))
+    return soft
 
 
 def crop_page(page, name, box):
@@ -203,7 +232,12 @@ def main():
         pages[printed] = Image.open(io.BytesIO(pdf.extract_image(xref)["image"])).convert("RGB")
 
     for name, (printed, box) in CROPS.items():
-        save(crop_page(pages[printed], name, box), name, manifest)
+        image = crop_page(pages[printed], name, box)
+        if name in ON_PAPER:
+            image = white_to_alpha(image)
+        elif name.startswith("idea/strategy-"):
+            image = soften(image)
+        save(image, name, manifest)
 
     name, source, (left, top, right, bottom), widest = PLAN_MOBILE
     plan = Image.open(source).convert("RGBA")
@@ -230,7 +264,13 @@ def main():
             draw.polygon(polygon, fill=(0, 0, 0, 0))
         save(image.crop(box), name, manifest)
     for name, layer_id in SMART_OBJECTS.items():
-        save(Image.open(io.BytesIO(layers[layer_id].smart_object.data)).convert("RGB"), name, manifest)
+        save(smart_object(layers[layer_id]), name, manifest)
+    name, top, bottom = STACKED_RENDERS
+    top, bottom = smart_object(layers[top]), smart_object(layers[bottom])
+    stacked = Image.new("RGB", (top.width, top.height + bottom.height))
+    stacked.paste(top, (0, 0))
+    stacked.paste(bottom, (0, top.height))
+    save(stacked, name, manifest)
 
     lines = [
         "// Generated by scripts/extract-ephemeral-assets.py. Do not edit by hand.",

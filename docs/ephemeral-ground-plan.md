@@ -211,7 +211,7 @@ Camera parked at the island, dimmed behind paper. See section 5.
 - **2.3 Neuroscience.** 6 tiles. *Motion: slow stagger.*
 - **2.4 Case studies.** Strips with short captions. *Native horizontal strip; no pin.*
 - **2.5 Application.** 4 renders + text. *Motion: line-by-line text.*
-- **2.6 Back to the island.** Arch collage + key paragraph; terrain diagrams. *Motion: the three diagrams stack in.*
+- **2.6 Back to the island.** Arch collage + key paragraph; terrain diagrams. *Motion: the three diagrams stack in.* The paper lifts here, so these are torn cards over the island, as in Act 1.
 - **2.7 Strategies.** Teal page as HTML over her sketches. *Motion: quadrants open from the centre axes.*
 
 ### Act 3: The ground (09–10), "Where exactly?"

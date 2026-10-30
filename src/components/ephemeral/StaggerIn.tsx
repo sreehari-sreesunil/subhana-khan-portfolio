@@ -9,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 type StaggerInProps = {
   children: ReactNode;
+  className?: string;
   step?: number;
   duration?: number;
   /** Each item waits until it's on screen itself, so tall stacks don't finish out of sight. */
@@ -16,7 +17,7 @@ type StaggerInProps = {
 };
 
 // Fades its [data-stagger] children up one after another, once. Reduced motion: fades only.
-export default function StaggerIn({ children, step = 0.09, duration = 0.6, oneByOne }: StaggerInProps) {
+export default function StaggerIn({ children, className, step = 0.09, duration = 0.6, oneByOne }: StaggerInProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   // Next keeps visited pages alive; coming back to one must not replay it.
   const played = useRef(false);
@@ -53,5 +54,9 @@ export default function StaggerIn({ children, step = 0.09, duration = 0.6, oneBy
     { scope: rootRef },
   );
 
-  return <div ref={rootRef}>{children}</div>;
+  return (
+    <div ref={rootRef} className={className}>
+      {children}
+    </div>
+  );
 }
