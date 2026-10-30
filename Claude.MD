@@ -73,15 +73,15 @@ Verify exact hex values by sampling the extracted page images before finalising.
 A subtle animated grain over every section, so the screen feels like her paper pages
 (inspired by antonyraphy.com's moving noise background, but softer and warmer).
 
--  generates all tiles into . Do NOT animate an
-  SVG  filter per frame (too expensive).
-- Fibre:  on coloured sections only (grey-blue, paper-coloured), never on pure
-  white. Static;  is generated, modelled on her page 01 paper.
-- Grain: every section is  and ends with  (soft-light,
-  ) or  (multiply, ), above its images.
-  A new section without one has no grain. Opacity:  (0.12).
-- Animate it by jumping the tile to random offsets with a CSS  keyframe
-  animation at ~8–10 changes per second ("film grain" flicker), using  only.
+- `scripts/generate-grain.mjs` generates all tiles into `public/textures`. Do NOT animate an
+  SVG `feTurbulence` filter per frame (too expensive).
+- Fibre: `.paper-fibre` on coloured sections only (grey-blue, paper-coloured), never on pure
+  white. Static; `paper.png` is generated, modelled on her page 01 paper.
+- Grain: every section is `relative` and ends with `<Grain surface="colour" />` (soft-light,
+  `grain.png`) or `<Grain surface="white" />` (multiply, `grain-white.png`), above its images.
+  A new section without one has no grain. Opacity: `--grain-opacity` (0.12).
+- Animate it by jumping the tile to random offsets with a CSS `steps()` keyframe
+  animation at ~8–10 changes per second ("film grain" flicker), using `transform` only.
 - Reduced motion: keep the grain, stop the animation (static paper texture).
 - Must not cost noticeable performance on phones; check in DevTools Performance.
 
