@@ -17,7 +17,7 @@ function stateFor(target: EventTarget | null): CursorState {
   // Text fields keep the native cursor, so the dot steps aside.
   if (target.closest("input, textarea, select, [contenteditable='true']")) return "hidden";
   if (target.closest("[data-cursor='enter']")) return "enter";
-  if (target.closest("a, button, [role='button'], summary, label")) return "link";
+  if (target.closest("a, button, [role='button'], summary, label, [data-cursor='grow']")) return "link";
   return "dot";
 }
 

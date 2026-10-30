@@ -43,7 +43,7 @@ export default function CopyEmail() {
     <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
       <a
         href={`mailto:${email}`}
-        className="font-heading text-[clamp(1.3rem,4vw,3.25rem)] leading-tight font-semibold text-ink-green underline-offset-4 hover:underline"
+        className="font-heading text-[clamp(1.2rem,3.4vw,2.25rem)] leading-tight font-semibold text-ink-green underline-offset-4 hover:underline"
       >
         {email}
       </a>

@@ -78,7 +78,8 @@ Verify exact hex values by sampling the extracted page images before finalising.
   "Enter" circle. Never put it on something that isn't clickable. Links and buttons grow the dot
   automatically. Text fields keep the native cursor. Fine pointers only, off under reduced motion.
 - `Footer`: in the layout, so on every page. `site.footer.portfolioPdf` is `null` until she provides
-  the file; setting a path shows the download link. The hill and building in `SunPath` are TEMP.
+  the file; setting a path shows the download link. `SunPath` is retired from the footer and kept in
+  `/lab` for reference; its hill and building are TEMP.
 - `/lab`: dev-only workbench (404 in production). Try shared components there first.
 
 ## Paper texture and grain
@@ -143,7 +144,7 @@ detail pages with a shared-element transition (the preview image grows into the 
 5. **03 Timber Veil preview** — the exploded lamp diagram assembles itself on scroll.
 6. **04 Indie Stories preview** — 6–9 hero photos in a mini masonry grid, fading up staggered.
 7. **Essay teaser** — one line from the essay, link to /writing/imperfections.
-8. **Footer** — "Thank you" lettering, contact (email, phone, location), CV link,
+8. **Footer**: rotary dial (0484), email always in plain text, "Thank you" lettering, About / CV links,
    optional "Download portfolio (PDF)" button.
 
 ## Patterns borrowed from the reference site (antonyraphy.com)
@@ -165,9 +166,9 @@ Her site stays calm, warm and papery.
    to the content types.
 3. **Info strip in the site header**: extend the PDF-style header to e.g.
    "Kochi, Kerala · Selected Works 2021-26 · Open to opportunities". Text lives in `site.ts`.
-4. **One signature interaction in the footer/contact** — must come from HER world
-   (architecture / slowness), not a copy of his rotary phone. Propose 2–3 ideas when
-   building the footer; don't build without approval.
+4. **One signature interaction in the footer/contact**: the rotary dial (dial 0484, Kochi's
+   area code). Decided by the developer. It must stay HER paper collage, never a photoreal phone
+   or a copy of his. Contact is never gated: the email is always in plain text below it.
 5. **Photography preview on home**: a drag-to-browse slider (with gentle parallax inside
    each image) as the home preview; the full masonry grid stays on /photography.
 

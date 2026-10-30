@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import SunPath from "@/components/footer/SunPath";
 import RevealImage from "@/components/RevealImage";
 import SiteHeader from "@/components/SiteHeader";
 import TransitionLink from "@/components/TransitionLink";
@@ -44,6 +45,14 @@ export default function LabPage() {
             className="h-28 w-full border border-ink-green/30 bg-paper-white p-3 font-body"
           />
         </div>
+
+        <section aria-labelledby="sun-path-heading" className="mt-16">
+          <h2 id="sun-path-heading" className="font-heading text-2xl font-semibold text-ink-green">
+            Sun path
+          </h2>
+          <p className="mt-1 mb-4 font-ui text-sm text-ink-green">Reference only: the footer uses the rotary dial.</p>
+          <SunPath />
+        </section>
 
         <div className="mt-[90vh] grid gap-[60vh] md:grid-cols-2 md:gap-x-10">
           {images.map((image) => (

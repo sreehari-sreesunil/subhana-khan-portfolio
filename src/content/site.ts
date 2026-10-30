@@ -12,6 +12,17 @@ export const site = {
     email: "subhana3khan@gmail.com",
     location: "Kochi, Kerala",
   },
+  dial: {
+    number: "0484",
+    label: "Contact",
+    dialLabel: "Rotary dial. Type 0484 to reach Kochi, or use the email address below.",
+    prompt: "Dial 0484 to reach Kochi",
+    wrong: "Wrong number. Dial 0484 to reach Kochi",
+    connecting: "Connecting to Kochi…",
+    connected: "Connected to Kochi",
+    writeTo: "Or just write to:",
+    hangUp: "Hang up",
+  },
   sunPath: {
     label: "The sun over Kochi through the day",
     neutral: "Kochi, Kerala",

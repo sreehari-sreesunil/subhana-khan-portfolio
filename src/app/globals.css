@@ -183,6 +183,10 @@ html.js:not([data-hydrated]) [data-reveal] {
   }
 }
 
+.dial-card {
+  clip-path: url(#dial-card);
+}
+
 /* Her paper: static fibres woven into a section's own background colour. */
 .paper-fibre {
   background-image: url("/textures/paper.png");
