@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
 import type { AboutIntroContent } from "@/content/home";
+import SiteHeader from "@/components/SiteHeader";
 import SpeechBubble from "./SpeechBubble";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
@@ -102,6 +103,8 @@ export default function AboutIntro({ content: about, headingLevel: Heading = "h2
       aria-labelledby="about-heading"
       className="relative flex flex-col overflow-hidden bg-about-blue px-4 pt-20 md:min-h-svh md:justify-center md:px-10 md:py-28"
     >
+      <SiteHeader variant="light" />
+
       <div data-about-bubble className="w-full md:ml-[23%] md:w-[58%] md:max-w-[56rem]">
         <SpeechBubble tall={isStatic}>
           <div className="px-[7%] pt-[8%] pb-[9%] md:px-[7%] md:pt-[6%] md:pb-[7%]">

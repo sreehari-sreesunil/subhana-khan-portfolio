@@ -196,3 +196,4 @@ not hard-coded in components, so text and images can be swapped without touching
   from cover.psd are ~420px per cell, below the 2× target).
 - Replace About portrait with original (current one is a TEMP cutout from the flattened
   PDF page, 376×621px).
+- Phone number: only add if Subhana confirms.

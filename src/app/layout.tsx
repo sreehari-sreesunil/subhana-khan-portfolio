@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Nunito, Lora } from "next/font/google";
-import SiteHeader from "@/components/SiteHeader";
 import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
 
@@ -56,10 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${metropolis.variable} ${nunito.variable} ${lora.variable} h-full antialiased`}
     >
       <body className="relative min-h-full flex flex-col">
-        <SmoothScroll>
-          <SiteHeader />
-          {children}
-        </SmoothScroll>
+        <SmoothScroll>{children}</SmoothScroll>
         <div aria-hidden="true" className="paper-grain" />
       </body>
     </html>
