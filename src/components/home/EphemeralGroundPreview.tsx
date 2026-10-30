@@ -81,7 +81,7 @@ export default function EphemeralGroundPreview() {
           .to(plan, { opacity: 1, duration: 1.2, ease: "sine.inOut" }, 3.2)
           .to(map, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, 3.2)
           .to(boundary, { opacity: 0, duration: 0.6, ease: "power2.out" }, 4.6)
-          .to(text, { opacity: 1, duration: 1.2, ease: "power2.out", stagger: 0.2 }, 5.2)
+          .to(text, { opacity: 1, duration: 0.9, ease: "power2.out", stagger: 0.2 }, 0.5)
           .to(replay, { autoAlpha: 1, duration: 0.6, ease: "power2.out" }, 6.2);
 
         let played = false;
@@ -183,7 +183,7 @@ export default function EphemeralGroundPreview() {
               {/* Placed with a transform: at this depth, a position rounded to a whole pixel would show. */}
               <div
                 data-eg-plan
-                className="absolute inset-0 origin-top-left opacity-0"
+                className="absolute inset-0 origin-top-left opacity-0 mix-blend-multiply"
                 style={{
                   transform: `translate(${((imageX / MAP_W) * 100).toFixed(4)}%, ${((imageY / MAP_H) * 100).toFixed(4)}%) scale(${(imageW / MAP_W).toFixed(6)})`,
                 }}
