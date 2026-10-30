@@ -219,6 +219,7 @@ not hard-coded in components, so text and images can be swapped without touching
 
 - Hero tiles 01, 07–10, 12, 13: upgrade if Subhana sends original photos (current crops
   from cover.psd are ~420px per cell, below the 2× target).
+- Ephemeral Ground credits: replace every "Source to confirm" in `ephemeral-ground.ts`; they show on the page.
 - Replace About portrait with original (current one is a TEMP cutout from the flattened
   PDF page, 376×621px).
 - Phone number: only add if Subhana confirms.

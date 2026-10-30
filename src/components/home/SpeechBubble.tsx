@@ -49,9 +49,9 @@ function roundedRect(x: number, y: number, w: number, h: number, r: number, step
  * Torn-paper outline: a fine ragged edge plus occasional bites (and a few small tabs).
  * Seeded, so the shape is identical on every render.
  */
-export function tornBodyPath(seed: number, height: number, radius = RADIUS) {
+export function tornBodyPath(seed: number, height: number, radius = RADIUS, width = W) {
   const rand = mulberry32(seed);
-  const pts = roundedRect(MARGIN, MARGIN, W - 2 * MARGIN, height - 2 * MARGIN, radius, 5);
+  const pts = roundedRect(MARGIN, MARGIN, width - 2 * MARGIN, height - 2 * MARGIN, radius, 5);
   let bite = 0;
   let biteLeft = 0;
   let biteLen = 0;

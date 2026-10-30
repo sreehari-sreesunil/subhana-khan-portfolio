@@ -40,12 +40,6 @@ const TO_CONFIRM = "Source to confirm";
 
 export const credits = { coastline: home.mapCredit };
 
-// Camera stops, in the map's units. The scale is relative to the map covering the whole screen.
-export const zoomStops = {
-  ocean: { center: { x: 500, y: 327 }, scale: 1 },
-  island: { center: { x: 585.5, y: 282 }, scale: 24 },
-};
-
 export const opening = {
   numeral: "01",
   title: "EPHEMERAL GROUND",
@@ -63,6 +57,142 @@ export const opening = {
     "Shared Territories explores an alternative model of settlement for ecologically sensitive island environments. It envisions a community of voluntary residents living through shared resources, collective land stewardship and a nature-embedded lifestyle. By treating the settlement as a network of small, replicable ecosystems rather than a single expanding township, the project explores how human habitation, ecological regeneration and economic activity can coexist.",
 };
 
+// Act 1 (pp.07–08). Stops are in the map's units; scale is relative to the map covering the screen.
+export const act1 = {
+  coastlineCredit: credits.coastline,
+  stops: [
+    { center: { x: 500, y: 327 }, scale: 1, focus: { x: 500, y: 327 } },
+    // Wider than a true close-up: the arc and the strait need about 400 units of height between them.
+    // Any further right and the view runs off the map, which ends at 105°E.
+    { center: { x: 667, y: 225 }, scale: 1.5, focus: { x: 667, y: 225 } },
+    // The island sits left of centre, clear of the cards. `focus` centres it in the static frame.
+    { center: { x: 593.4, y: 284 }, scale: 24, focus: { x: 585.5, y: 282 } },
+  ],
+  ocean: {
+    // OCR, proofread
+    text: "The Andaman and Nicobar Islands are a remote archipelago in the eastern Indian Ocean, stretching over 800 km between the Bay of Bengal and the Andaman Sea. With rich biodiversity and fragile ecosystems, their proximity to the strategically important Malacca Strait gives the islands significant ecological, geopolitical and maritime importance, shaping growing development interests in the region.",
+  },
+  strait: {
+    frameAlt: "Map of the Andaman and Nicobar Islands and the Malacca Strait.",
+    title: "Strait of malacca",
+    // OCR, proofread
+    text: "The Malacca Strait is one of the world’s most critical maritime trade routes, connecting the Indian and Pacific Oceans and carrying a significant share of global shipping and energy transport. Its proximity to the Andaman and Nicobar Islands gives the region strategic importance in terms of trade, defence, and maritime security. This location has played a key role in shaping recent development interests in the islands.",
+    image: { name: "island/malacca-map", alt: "Map of the Strait of Malacca between Malaysia and Sumatra.", credit: TO_CONFIRM } satisfies EgImage,
+  },
+  people: {
+    frameAlt: "Map of Great Nicobar and Little Nicobar.",
+    title: "INTRODUCTION",
+    subtitle: "Patai Takaru’s people",
+    // OCR, proofread
+    text: "The Nicobarese inhabit Great Nicobar’s coastal regions, relying on fishing, coconut cultivation and inter-island exchange, while communal ownership shapes their relationship with the land. The Shompen live in small, dispersed groups within the island’s interior forests, relying on generations of knowledge of forests, rivers and wildlife, and adapting their movements to seasonal changes.",
+    dwellingTitle: "Pattern of dwelling",
+    huts: [
+      { name: "island/dwelling-hut-a", alt: "Archival photograph of a thatched dome hut.", credit: TO_CONFIRM },
+      { name: "island/dwelling-hut-b", alt: "Archival photograph of a thatched hut on stilts.", credit: TO_CONFIRM },
+    ] satisfies EgImage[],
+  },
+  proposal: {
+    title: "The Great Nicobar Development Proposal",
+    map: {
+      name: "island/proposal-map",
+      alt: "Zoning map of the proposed development on Great Nicobar.",
+      credit: "Based on NITI Aayog, Holistic Development of Great Nicobar Island",
+    } satisfies EgImage,
+    scaleTitle: "Scale of development",
+    // OCR, proofread
+    scale: [
+      { value: "166sq.km", label: "Total project area" },
+      { value: "6000+ ha", label: "Land to be developed" },
+      { value: "300,000+", label: "Incoming population" },
+      { value: "Large scale", label: "Reclamation & dredging" },
+    ],
+    // OCR, proofread
+    populationFrom: "7300 (approx)",
+    populationTo: "3,00,000 (approx)",
+    // OCR, proofread
+    population: [
+      { value: "1600", label: "Native people", note: "(Shompen & Nicobarese)" },
+      { value: "5700", label: "Settelers", note: "(Old immigrants)" },
+      { value: "300,000", label: "Proposed", note: "(New population)" },
+    ],
+    // OCR, proofread
+    projects: [
+      {
+        icon: "island/icon-airport",
+        title: "Greenfield International Airport",
+        text: ["New civilian airport with peak capacity for ~4,000 passengers.", "Enhances air connectivity and can support strategic air operations."],
+      },
+      {
+        icon: "island/icon-township",
+        title: "Smart Township & Tourism Infrastructure",
+        text: ["Urban development for ~300,000 people (workforce & residents).", "Includes housing, roads, public utilities, and tourism facilities."],
+      },
+      {
+        icon: "island/icon-terminal",
+        title: "International Container Transshipment Terminal",
+        text: ["At Galathea Bay on the east coast.", "Designed with ~16 million TEU capacity (first phase ~4 million TEUs)."],
+      },
+      {
+        icon: "island/icon-power",
+        title: "Power Plant (Gas + Solar)",
+        text: ["~450 MVA power capacity combining gas and solar power assets.", "To supply electricity for new infrastructure"],
+      },
+    ] satisfies { icon: ImageName; title: string; text: string[] }[],
+    iconsCredit: `Icons: ${TO_CONFIRM.toLowerCase()}`,
+  },
+  // OCR, proofread
+  stake: [
+    {
+      title: "Bio-diversity loss",
+      text: "The proposed clearance of nearly 8.5 lakh trees in Great Nicobar raises concerns beyond local biodiversity. As India faces rising temperatures and heatwaves, losing one of its last intact tropical rainforests threatens carbon storage, climate regulation and ecological resilience, highlighting the conflict between development and long-term environmental stability.",
+      images: [
+        { name: "island/trees-graphic", alt: "News graphic of Great Nicobar's coast from the air.", credit: TO_CONFIRM },
+        { name: "island/heat-map", alt: "Land surface temperature map of India.", credit: TO_CONFIRM },
+      ],
+    },
+    {
+      title: "Leatherback Turtle Nesting Grounds",
+      text: "The proposed transshipment port is located near Galathea Bay, one of the world’s most significant nesting sites for the endangered Leatherback Sea Turtle. Increased coastal activity, artificial lighting and habitat alteration may disrupt nesting and hatching cycles.",
+      images: [{ name: "island/port-map", alt: "Map of the proposed port near Galathea Bay.", credit: TO_CONFIRM }],
+    },
+    {
+      title: "Ecological Fragility",
+      text: "Great Nicobar’s limited freshwater and finite resources make it vulnerable to rapid population growth and rising demand. Its seismic activity and sensitive coastal, forest and river ecosystems further increase the risks of large-scale land transformation, threatening ecological resilience and long-term resource security.",
+      images: [{ name: "island/section-sketch", alt: "Drawn section through forest, wetland and shore." }],
+    },
+    {
+      title: "Impact of population influx",
+      text: "Large-scale migration in the Andaman and Nicobar Islands brought disease, resource competition and cultural disruption, contributing to severe population declines among communities such as the Great Andamanese and Onge. These pressures threaten Indigenous languages, traditional knowledge and cultural survival.",
+      images: [],
+      source: "Subir Bhaumik, “Measles hits rare Andaman tribe”, BBC News, 16 May 2006",
+    },
+  ] as { title: string; text: string; images: EgImage[]; source?: string }[],
+  lessons: {
+    title: "Lessons from earlier interventions",
+    // OCR, proofread
+    text: "Infrastructure, logging, plantations and settlement schemes fragmented Indigenous territories across the Andaman and Nicobar Islands, restricting access to traditional lands and resources. These interventions disrupted established livelihoods and increased exposure to outsiders, disease and dependence on external support.",
+    tableCaption: "Population of Andaman Islands communities by census year, 1901 to 2011.",
+    tableCredit: TO_CONFIRM,
+    tableHead: ["Year", "Great Andamanese", "Onge", "Jarawa", "Sentinelese*", "Total", "Growth rate"],
+    // Read by eye: OCR can't read this table. In every row the four groups add up to her total.
+    tableRows: [
+      ["1901", "625", "672*", "585*", "117", "1999", "–"],
+      ["1911", "455", "631*", "114*", "117", "1317", "-34.12"],
+      ["1921", "209", "346*", "114*", "117", "786", "-40.32"],
+      ["1931", "90", "250*", "70*", "50", "460", "-41.47"],
+      ["1941", "–", "–", "–", "–", "–", "–"],
+      ["1951", "23", "150*", "50*", "50", "273", "-40.65"],
+      ["1961", "19", "129", "500*", "50", "698", "155.6"],
+      ["1971", "24", "112", "250*", "82", "468", "-32.95"],
+      ["1981", "26", "97", "250*", "100", "473", "1.01"],
+      ["1991", "45", "95", "280*", "100", "520", "9.93"],
+      ["2001", "43", "96", "240", "39", "418", "-19.61"],
+      ["2011", "54", "101", "380", "15", "–", "–"],
+    ],
+    maps: { name: "island/island-maps", alt: "Three maps of the Andaman Islands in 1957, 1979 and 2004.", credit: TO_CONFIRM } satisfies EgImage,
+  },
+};
+
 export const acts: EgAct[] = [
   {
     id: "act-1",
@@ -70,53 +200,8 @@ export const acts: EgAct[] = [
     navLabel: "THE ISLAND",
     question: "Why here, and what is at stake?",
     pages: [7, 8],
-    sections: [
-      { id: "ocean", pages: [7], images: [] },
-      {
-        id: "strait-of-malacca",
-        title: "Strait of malacca",
-        pages: [7],
-        images: [{ name: "island/malacca-map", alt: "Map of the Strait of Malacca between Malaysia and Sumatra.", credit: TO_CONFIRM }],
-      },
-      {
-        id: "dwelling",
-        title: "Pattern of dwelling",
-        pages: [7],
-        images: [
-          { name: "island/dwelling-hut-a", alt: "Archival photograph of a thatched dome hut.", credit: TO_CONFIRM },
-          { name: "island/dwelling-hut-b", alt: "Archival photograph of a thatched hut on stilts.", credit: TO_CONFIRM },
-        ],
-      },
-      {
-        id: "proposal",
-        title: "The Great Nicobar Development Proposal",
-        pages: [7],
-        images: [
-          {
-            name: "island/proposal-map",
-            alt: "Zoning map of the proposed development on Great Nicobar.",
-            credit: "Based on NITI Aayog, Holistic Development of Great Nicobar Island",
-          },
-          { name: "island/proposal-icons", alt: "Icons for an airport, township, container terminal and power plant.", credit: TO_CONFIRM },
-        ],
-      },
-      {
-        id: "at-stake",
-        pages: [8],
-        images: [
-          { name: "island/trees-graphic", alt: "News graphic of Great Nicobar's coast from the air.", credit: TO_CONFIRM },
-          { name: "island/heat-map", alt: "Land surface temperature map of India.", credit: TO_CONFIRM },
-          { name: "island/port-map", alt: "Map of the proposed port near Galathea Bay.", credit: TO_CONFIRM },
-          { name: "island/section-sketch", alt: "Drawn section through forest, wetland and shore." },
-        ],
-      },
-      {
-        id: "lessons",
-        title: "Lessons from earlier interventions",
-        pages: [8],
-        images: [{ name: "island/island-maps", alt: "Three maps of the Andaman Islands in 1957, 1979 and 2004.", credit: TO_CONFIRM }],
-      },
-    ],
+    // Built from `act1` below.
+    sections: [],
   },
   {
     id: "act-2",
