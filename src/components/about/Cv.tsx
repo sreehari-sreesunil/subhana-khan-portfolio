@@ -47,6 +47,7 @@ export default function Cv() {
     // Desktop: exactly one screen. Everything inside is sized in em from this font size,
     // which follows the viewport's height as well as its width.
     <section
+      id="cv"
       data-screen
       aria-labelledby="cv-heading"
       className="paper-fibre relative bg-paper-white px-4 pt-16 pb-16 md:flex md:h-svh md:flex-col md:justify-center md:overflow-hidden md:px-10 md:py-0 md:[font-size:clamp(11px,min(1.72svh,1.1vw),20px)]"

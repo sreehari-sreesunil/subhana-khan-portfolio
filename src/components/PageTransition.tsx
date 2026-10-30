@@ -45,16 +45,33 @@ function visibleMain() {
   return [...document.querySelectorAll("main")].find((main) => main.getClientRects().length > 0);
 }
 
-function focusHeading() {
-  const heading = visibleMain()?.querySelector("h1");
+// The section a link's #hash points to, on the page now showing.
+function linkedSection(href: string) {
+  const { hash } = new URL(href, window.location.href);
+  return hash ? visibleMain()?.querySelector(hash) : null;
+}
+
+function focusHeading(href: string) {
+  const heading = (linkedSection(href) ?? visibleMain())?.querySelector<HTMLElement>("h1, h2");
   if (!heading) return;
   heading.setAttribute("tabindex", "-1");
   heading.focus({ preventScroll: true });
 }
 
-function resetScroll() {
-  window.scrollTo(0, 0);
-  getLenis()?.scrollTo(0, { immediate: true, force: true });
+/** For links to the page already showing: Next's own scroll doesn't reach Lenis. */
+export function scrollToLink(href: string) {
+  const section = linkedSection(href);
+  const top = section ? section.getBoundingClientRect().top + window.scrollY : 0;
+  const lenis = getLenis();
+  if (lenis) lenis.scrollTo(top, { duration: 0.8, easing: (t) => 1 - (1 - t) ** 3 });
+  else window.scrollTo(0, top);
+}
+
+function resetScroll(href: string) {
+  const section = linkedSection(href);
+  const top = section ? section.getBoundingClientRect().top + window.scrollY : 0;
+  window.scrollTo(0, top);
+  getLenis()?.scrollTo(top, { immediate: true, force: true });
 }
 
 export default function PageTransition({ children }: { children: ReactNode }) {
@@ -99,7 +116,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
         const next = queued.current;
         end();
         if (next) navigate(next);
-        else focusHeading();
+        else focusHeading(link.current);
       },
     });
   }
@@ -109,14 +126,14 @@ export default function PageTransition({ children }: { children: ReactNode }) {
     if (phase.current !== "waiting") return;
     phase.current = "settling";
     failsafe.current?.kill();
-    resetScroll();
+    resetScroll(link.current);
     // Two frames: effects of the new page, then its layout, before measuring.
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         // A newer click may have sent the sheet back to waiting.
         if (phase.current !== "settling") return;
         ScrollTrigger.refresh();
-        resetScroll();
+        resetScroll(link.current);
         reveal();
       });
     });

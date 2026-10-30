@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Nunito, Lora } from "next/font/google";
 import Cursor from "@/components/Cursor";
+import Footer from "@/components/footer/Footer";
 import PageTransition from "@/components/PageTransition";
 import SmoothScroll from "@/components/SmoothScroll";
 import { preloaderScript } from "@/lib/preloader-script";
@@ -67,7 +68,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="relative min-h-full flex flex-col">
         <SmoothScroll>
-          <PageTransition>{children}</PageTransition>
+          <PageTransition>
+            {children}
+            <Footer />
+          </PageTransition>
         </SmoothScroll>
         <Cursor />
       </body>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ComponentProps, MouseEvent } from "react";
-import { usePageTransition } from "@/components/PageTransition";
+import { scrollToLink, usePageTransition } from "@/components/PageTransition";
 
 type TransitionLinkProps = Omit<ComponentProps<typeof Link>, "href"> & { href: string };
 
@@ -27,7 +27,10 @@ export default function TransitionLink({ href, onClick, ...props }: TransitionLi
         if (!isPlainInternalClick(event, href, props.target)) return;
         // The current page gets no sheet, unless one is already running: then this is the last click.
         const samePage = new URL(href, window.location.href).pathname === window.location.pathname;
-        if (samePage && !isBusy()) return;
+        if (samePage && !isBusy()) {
+          scrollToLink(href);
+          return;
+        }
         event.preventDefault();
         navigate(href);
       }}

@@ -77,6 +77,8 @@ Verify exact hex values by sampling the extracted page images before finalising.
 - `data-cursor="enter"`: on an element that navigates when clicked, the dot grows into an
   "Enter" circle. Never put it on something that isn't clickable. Links and buttons grow the dot
   automatically. Text fields keep the native cursor. Fine pointers only, off under reduced motion.
+- `Footer`: in the layout, so on every page. `site.footer.portfolioPdf` is `null` until she provides
+  the file; setting a path shows the download link. The hill and building in `SunPath` are TEMP.
 - `/lab`: dev-only workbench (404 in production). Try shared components there first.
 
 ## Paper texture and grain

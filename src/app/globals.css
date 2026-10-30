@@ -112,7 +112,8 @@ html:not([data-hydrated]) [data-eg-text] {
   }
 }
 
-h1[tabindex="-1"]:focus {
+h1[tabindex="-1"]:focus,
+h2[tabindex="-1"]:focus {
   outline: none;
 }
 
@@ -230,7 +231,8 @@ html.js:not([data-hydrated]) [data-reveal] {
     scroll-snap-type: y mandatory;
   }
 
-  [data-screen] {
+  [data-screen],
+  html:has([data-screen]) [data-site-footer] {
     scroll-snap-align: start;
   }
 }
