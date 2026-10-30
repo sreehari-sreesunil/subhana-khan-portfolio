@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import SunPath from "@/components/footer/SunPath";
 import RevealImage from "@/components/RevealImage";
 import SiteHeader from "@/components/SiteHeader";
 import TransitionLink from "@/components/TransitionLink";
+import { images as egImages } from "@/content/ephemeral-ground";
 
 export const metadata: Metadata = { title: "Lab — Subhana Khan", robots: { index: false } };
 
@@ -52,6 +54,30 @@ export default function LabPage() {
           </h2>
           <p className="mt-1 mb-4 font-ui text-sm text-ink-green">Reference only: the footer uses the rotary dial.</p>
           <SunPath />
+        </section>
+
+        <section aria-labelledby="eg-assets-heading" className="mt-16">
+          <h2 id="eg-assets-heading" className="font-heading text-2xl font-semibold text-ink-green">
+            Ephemeral Ground assets ({Object.keys(egImages).length})
+          </h2>
+          <ul className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-5">
+            {Object.entries(egImages).map(([name, image]) => (
+              <li key={name} data-eg-asset className="bg-paper-white p-2">
+                <Image
+                  src={image.src}
+                  alt=""
+                  width={image.width}
+                  height={image.height}
+                  sizes="20vw"
+                  loading="eager"
+                  className="h-28 w-full object-contain"
+                />
+                <p className="mt-1 font-ui text-[11px] break-all text-ink-green">
+                  {name} {image.width}×{image.height}
+                </p>
+              </li>
+            ))}
+          </ul>
         </section>
 
         <div className="mt-[90vh] grid gap-[60vh] md:grid-cols-2 md:gap-x-10">
