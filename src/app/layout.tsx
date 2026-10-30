@@ -56,7 +56,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="relative min-h-full flex flex-col">
         <SmoothScroll>{children}</SmoothScroll>
-        <div aria-hidden="true" className="paper-grain" />
       </body>
     </html>
   );

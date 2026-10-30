@@ -1,23 +1,28 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import Grain from "@/components/Grain";
 import { cv, type CvEntry } from "@/content/about";
 import { site } from "@/content/site";
 import CvReveal from "./CvReveal";
 
-function Block({ title, children, className = "" }: { title: string; children: ReactNode; className?: string }) {
+function Block({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section data-cv-block className={className}>
-      <h3 className="font-heading text-base font-bold tracking-wide text-ink-green md:text-lg">{title}</h3>
-      <div className="mt-5">{children}</div>
+    <section data-cv-block>
+      <h3 className="font-heading text-base font-bold tracking-wide text-ink-green md:text-[1.1em]">{title}</h3>
+      <div className="mt-5 md:mt-[0.9em]">{children}</div>
     </section>
   );
 }
 
 function YearList({ entries, className }: { entries: CvEntry[]; className: string }) {
   return (
-    <ul className={`space-y-3.5 leading-snug text-ink-green ${className}`}>
+    <ul className={`space-y-3.5 leading-snug text-ink-green md:space-y-[0.6em] ${className}`}>
       {entries.map((entry) => (
-        <li key={`${entry.year}-${entry.text}`} data-cv-row className="grid grid-cols-[4.25rem_minmax(0,1fr)]">
+        <li
+          key={`${entry.year}-${entry.text}`}
+          data-cv-row
+          className="grid grid-cols-[4.25rem_minmax(0,1fr)] md:grid-cols-[4.4em_minmax(0,1fr)]"
+        >
           <span>{entry.year}</span>
           <span>{entry.text}</span>
         </li>
@@ -28,7 +33,7 @@ function YearList({ entries, className }: { entries: CvEntry[]; className: strin
 
 function PlainList({ items }: { items: string[] }) {
   return (
-    <ul className="space-y-1 font-body leading-snug text-ink-green">
+    <ul className="space-y-1 font-body leading-snug text-ink-green md:space-y-[0.15em]">
       {items.map((item) => (
         <li key={item}>{item}</li>
       ))}
@@ -39,22 +44,30 @@ function PlainList({ items }: { items: string[] }) {
 export default function Cv() {
   const { headings } = cv;
   return (
-    <section aria-labelledby="cv-heading" className="bg-paper-white px-4 pt-16 pb-16 md:px-10 md:pt-20 md:pb-20">
+    // Desktop: exactly one screen. Everything inside is sized in em from this font size,
+    // which follows the viewport's height as well as its width.
+    <section
+      data-screen
+      aria-labelledby="cv-heading"
+      className="paper-fibre relative bg-paper-white px-4 pt-16 pb-16 md:flex md:h-svh md:flex-col md:justify-center md:overflow-hidden md:px-10 md:py-0 md:[font-size:clamp(11px,min(1.72svh,1.1vw),20px)]"
+    >
       <CvReveal>
         <div data-cv-block>
           <h2
             id="cv-heading"
-            className="font-heading text-[clamp(5rem,9vw,8rem)] leading-[0.85] font-bold tracking-tight text-ink-green"
+            className="font-heading text-[clamp(5rem,9vw,8rem)] leading-[0.85] font-bold tracking-tight text-ink-green md:text-[5.6em]"
           >
             {cv.title}
           </h2>
-          <p className="mt-3 font-heading text-lg font-medium text-ink-green md:text-xl">{cv.name}</p>
+          <p className="mt-3 font-heading text-lg font-medium text-ink-green md:mt-[0.35em] md:text-[1.2em]">
+            {cv.name}
+          </p>
         </div>
 
-        <div className="mt-12 grid gap-12 md:grid-cols-[1fr_1.15fr_0.7fr] md:gap-x-14 lg:gap-x-20">
-          <div className="space-y-12">
+        <div className="mt-12 grid gap-12 md:mt-[2em] md:grid-cols-[1fr_1.15fr_0.7fr] md:gap-x-[4em] md:gap-y-0">
+          <div className="space-y-12 md:space-y-[1.9em]">
             <Block title={headings.contact}>
-              <ul className="space-y-1.5 font-heading text-ink-green">
+              <ul className="space-y-1.5 font-heading text-ink-green md:space-y-[0.2em]">
                 <li>
                   <a href={`mailto:${site.contact.email}`} className="underline-offset-4 hover:underline">
                     {site.contact.email}
@@ -64,7 +77,7 @@ export default function Cv() {
               </ul>
             </Block>
             <Block title={headings.education}>
-              <ul className="space-y-3 font-heading leading-snug text-ink-green">
+              <ul className="space-y-3 font-heading leading-snug text-ink-green md:space-y-[0.5em]">
                 {cv.education.map((school) => (
                   <li key={school.name}>
                     {school.name}
@@ -78,18 +91,18 @@ export default function Cv() {
             </Block>
           </div>
 
-          <div className="space-y-12">
+          <div className="space-y-12 md:space-y-[1.9em]">
             <Block title={headings.software}>
-              <ul className="grid max-w-[26rem] grid-cols-5 gap-x-1 gap-y-4">
+              <ul className="grid max-w-[26rem] grid-cols-5 gap-x-1 gap-y-4 md:max-w-[27em] md:gap-y-[0.8em]">
                 {cv.software.map((tool) => (
                   <li key={tool.label} className="flex flex-col items-center text-center">
                     <span
                       aria-hidden="true"
-                      className="flex size-11 items-center justify-center rounded-full border-2 border-accent-terracotta font-heading text-base leading-none font-bold text-accent-terracotta md:size-12 md:text-lg"
+                      className="flex size-11 items-center justify-center rounded-full border-2 border-accent-terracotta font-heading text-base leading-none font-bold text-accent-terracotta md:size-[2.9em] md:text-[1.05em]"
                     >
                       {tool.abbr}
                     </span>
-                    <span className="mt-1.5 font-body text-[11px] leading-tight text-ink-green md:text-xs">
+                    <span className="mt-1.5 font-body text-[11px] leading-tight text-ink-green md:mt-[0.3em] md:text-[0.75em]">
                       {tool.label}
                     </span>
                   </li>
@@ -101,7 +114,7 @@ export default function Cv() {
             </Block>
           </div>
 
-          <div className="space-y-12">
+          <div className="space-y-12 md:space-y-[1.9em]">
             <Block title={headings.workshops}>
               <PlainList items={cv.workshops} />
             </Block>
@@ -115,14 +128,15 @@ export default function Cv() {
         </div>
       </CvReveal>
 
-      <p className="mt-16 md:mt-20">
+      <p className="mt-16 md:mt-[1.8em]">
         <Link
           href={cv.backLink.href}
-          className="font-ui text-sm tracking-wide text-accent-terracotta underline-offset-4 hover:underline md:text-base"
+          className="font-ui text-sm tracking-wide text-accent-terracotta underline-offset-4 hover:underline md:text-[0.95em]"
         >
           <span aria-hidden="true">←</span> {cv.backLink.label}
         </Link>
       </p>
+      <Grain surface="colour" />
     </section>
   );
 }

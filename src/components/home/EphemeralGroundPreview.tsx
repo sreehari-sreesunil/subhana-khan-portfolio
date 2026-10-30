@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ephemeralGroundPreview as content } from "@/content/home";
+import Grain from "@/components/Grain";
 import { getLenis } from "@/components/SmoothScroll";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -273,6 +274,7 @@ export default function EphemeralGroundPreview() {
           </div>
         </div>
       </div>
+      <Grain surface="white" />
     </section>
   );
 }

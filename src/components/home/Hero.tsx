@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { hero, type HeroTile, type PlaceholderTone } from "@/content/home";
+import Grain from "@/components/Grain";
 import PlaceholderFigure from "./PlaceholderFigure";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -195,6 +196,7 @@ export default function Hero() {
           </motion.div>
         </div>
       </div>
+      <Grain surface="white" />
     </section>
   );
 }

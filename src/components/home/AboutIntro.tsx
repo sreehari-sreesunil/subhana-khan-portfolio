@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
 import type { AboutIntroContent } from "@/content/home";
+import Grain from "@/components/Grain";
 import SiteHeader from "@/components/SiteHeader";
 import SpeechBubble from "./SpeechBubble";
 
@@ -101,7 +102,8 @@ export default function AboutIntro({ content: about, headingLevel: Heading = "h2
     <section
       ref={sectionRef}
       aria-labelledby="about-heading"
-      className="relative flex flex-col overflow-hidden bg-about-blue px-4 pt-20 md:min-h-svh md:justify-center md:px-10 md:py-28"
+      data-screen={isStatic ? "" : undefined}
+      className={`paper-fibre relative flex flex-col overflow-hidden bg-about-blue px-4 pt-20 md:min-h-svh md:justify-center md:px-10 md:py-28 ${isStatic ? "about-screen" : ""}`}
     >
       <SiteHeader variant="light" />
 
@@ -152,6 +154,7 @@ export default function AboutIntro({ content: about, headingLevel: Heading = "h2
           className="block h-auto w-full md:h-full md:w-auto"
         />
       </div>
+      <Grain surface="colour" />
     </section>
   );
 }

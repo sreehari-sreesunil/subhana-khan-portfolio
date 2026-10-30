@@ -1,10 +1,13 @@
-// Generates public/textures/grain.png: a seamless 256×256 warm-grey noise tile.
-// Run once with `node scripts/generate-grain.mjs`. Deterministic (fixed seed).
+// Generates the seamless tiles in public/textures. Run with `node scripts/generate-grain.mjs`.
+// Deterministic (fixed seeds).
+//   grain.png        256×256 neutral noise around mid-grey, for soft-light on coloured sections
+//   grain-white.png  the same noise kept light and warm, so multiply doesn't grey pure white
+//   paper.png        512×512 fibres over a soft mottle around mid-grey, modelled on her page 01 paper
 import { mkdirSync, writeFileSync } from "node:fs";
 import { deflateSync } from "node:zlib";
 
-const SIZE = 256;
-const SEED = 20260529;
+const GRAIN_SIZE = 256;
+const PAPER_SIZE = 512;
 
 function mulberry32(seed) {
   let a = seed >>> 0;
@@ -38,38 +41,102 @@ function chunk(type, data) {
   return Buffer.concat([len, body, crc]);
 }
 
-const random = mulberry32(SEED);
-const rowBytes = SIZE * 3 + 1;
-const raw = Buffer.alloc(rowBytes * SIZE);
+/** `pixel(x, y)` returns one value for grey or three for RGB. */
+function writePng(path, size, channels, pixel) {
+  const rowBytes = size * channels + 1;
+  const raw = Buffer.alloc(rowBytes * size);
+  for (let y = 0; y < size; y++) {
+    raw[y * rowBytes] = 0;
+    for (let x = 0; x < size; x++) {
+      const values = pixel(x, y);
+      for (let c = 0; c < channels; c++) {
+        raw[y * rowBytes + 1 + x * channels + c] = Math.max(0, Math.min(255, Math.round(values[c])));
+      }
+    }
+  }
+  const ihdr = Buffer.alloc(13);
+  ihdr.writeUInt32BE(size, 0);
+  ihdr.writeUInt32BE(size, 4);
+  ihdr[8] = 8; // bit depth
+  ihdr[9] = channels === 1 ? 0 : 2; // colour type: grey or RGB
+  const png = Buffer.concat([
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+    chunk("IHDR", ihdr),
+    chunk("IDAT", deflateSync(raw, { level: 9 })),
+    chunk("IEND", Buffer.alloc(0)),
+  ]);
+  writeFileSync(path, png);
+  console.log(`Wrote ${path} (${png.length} bytes)`);
+}
 
-for (let y = 0; y < SIZE; y++) {
-  raw[y * rowBytes] = 0;
-  for (let x = 0; x < SIZE; x++) {
-    // Average of two samples softens the noise; values stay light so multiply only darkens a little.
-    const v = 150 + ((random() + random()) / 2) * 105;
-    const i = y * rowBytes + 1 + x * 3;
-    raw[i] = Math.min(255, Math.round(v));
-    raw[i + 1] = Math.round(v * 0.97);
-    raw[i + 2] = Math.round(v * 0.91);
+mkdirSync("public/textures", { recursive: true });
+
+// Grain: one noise field, -1 to 1, shared by both tiles.
+const random = mulberry32(20260529);
+const noise = Float32Array.from({ length: GRAIN_SIZE * GRAIN_SIZE }, () => random() + random() - 1);
+const at = (x, y) => noise[y * GRAIN_SIZE + x];
+
+writePng("public/textures/grain.png", GRAIN_SIZE, 1, (x, y) => [128 + at(x, y) * 127]);
+writePng("public/textures/grain-white.png", GRAIN_SIZE, 3, (x, y) => {
+  const v = 198 + at(x, y) * 57;
+  return [v, v * 0.97, v * 0.91];
+});
+
+// Paper: periodic value noise for the mottle, then short curved fibres that wrap around the edges.
+const paperRandom = mulberry32(20261030);
+const field = new Float32Array(PAPER_SIZE * PAPER_SIZE);
+
+function addMottle(cells, amplitude) {
+  const lattice = Float32Array.from({ length: cells * cells }, () => paperRandom() * 2 - 1);
+  const smooth = (t) => t * t * (3 - 2 * t);
+  for (let y = 0; y < PAPER_SIZE; y++) {
+    for (let x = 0; x < PAPER_SIZE; x++) {
+      const gx = (x / PAPER_SIZE) * cells;
+      const gy = (y / PAPER_SIZE) * cells;
+      const x0 = Math.floor(gx);
+      const y0 = Math.floor(gy);
+      const fx = smooth(gx - x0);
+      const fy = smooth(gy - y0);
+      const cell = (i, j) => lattice[((j + cells) % cells) * cells + ((i + cells) % cells)];
+      const top = cell(x0, y0) * (1 - fx) + cell(x0 + 1, y0) * fx;
+      const bottom = cell(x0, y0 + 1) * (1 - fx) + cell(x0 + 1, y0 + 1) * fx;
+      field[y * PAPER_SIZE + x] += (top * (1 - fy) + bottom * fy) * amplitude;
+    }
   }
 }
 
-const ihdr = Buffer.alloc(13);
-ihdr.writeUInt32BE(SIZE, 0);
-ihdr.writeUInt32BE(SIZE, 4);
-ihdr[8] = 8; // bit depth
-ihdr[9] = 2; // colour type: RGB
-ihdr[10] = 0;
-ihdr[11] = 0;
-ihdr[12] = 0;
+function stamp(x, y, strength) {
+  const x0 = Math.floor(x);
+  const y0 = Math.floor(y);
+  for (let j = 0; j <= 1; j++) {
+    for (let i = 0; i <= 1; i++) {
+      const weight = (i ? x - x0 : 1 - (x - x0)) * (j ? y - y0 : 1 - (y - y0));
+      const px = (x0 + i + PAPER_SIZE) % PAPER_SIZE;
+      const py = (y0 + j + PAPER_SIZE) % PAPER_SIZE;
+      field[py * PAPER_SIZE + px] += strength * weight;
+    }
+  }
+}
 
-const png = Buffer.concat([
-  Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
-  chunk("IHDR", ihdr),
-  chunk("IDAT", deflateSync(raw, { level: 9 })),
-  chunk("IEND", Buffer.alloc(0)),
-]);
+addMottle(6, 5);
+addMottle(24, 4);
+addMottle(96, 4);
+for (let n = 0; n < 900; n++) {
+  let x = paperRandom() * PAPER_SIZE;
+  let y = paperRandom() * PAPER_SIZE;
+  let angle = paperRandom() * Math.PI * 2;
+  const bend = (paperRandom() - 0.5) * 0.08;
+  const length = 5 + paperRandom() ** 3 * 24;
+  // Mostly dark strands, as on her page, with a few pale ones.
+  const strength = (paperRandom() < 0.78 ? -1 : 0.7) * (8 + paperRandom() * 16);
+  for (let s = 0; s < length; s += 0.5) {
+    const fade = Math.sin((Math.PI * s) / length);
+    stamp(x, y, strength * fade * 0.5);
+    x += Math.cos(angle) * 0.5;
+    y += Math.sin(angle) * 0.5;
+    angle += bend * 0.5;
+  }
+}
 
-mkdirSync("public/textures", { recursive: true });
-writeFileSync("public/textures/grain.png", png);
-console.log(`Wrote public/textures/grain.png (${png.length} bytes)`);
+const mean = field.reduce((sum, v) => sum + v, 0) / field.length;
+writePng("public/textures/paper.png", PAPER_SIZE, 1, (x, y) => [128 + field[y * PAPER_SIZE + x] - mean]);

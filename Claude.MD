@@ -60,6 +60,7 @@ Headings are often large, tight and uppercase (e.g. "EPHEMERAL GROUND"). Chapter
 Verify exact hex values by sampling the extracted page images before finalising.
 
 ### Recurring details
+- `SiteHeader` is added per page, not in the layout (`AboutIntro` renders its own `light` one).
 - Site header mirrors the PDF header: "Portfolio - Subhana Khan" (left),
   "Selected works - 2021-26" (right), both small Nunito in terracotta.
 - Paper texture background, torn-paper edges, arch-shaped image frames (thesis page 11).
@@ -67,18 +68,20 @@ Verify exact hex values by sampling the extracted page images before finalising.
   reappear across the site as small parallax figures.
 - Generous white space. Nothing loud. No neon, no gradients that aren't in her work.
 
-## Paper grain (site-wide background texture)
+## Paper texture and grain
 
-A subtle animated grain over the whole site, so the screen feels like her paper pages
+A subtle animated grain over every section, so the screen feels like her paper pages
 (inspired by antonyraphy.com's moving noise background, but softer and warmer).
 
-- Generate ONE small noise tile once (e.g. 256×256 PNG, warm grey grain) with a script;
-  save to `public/textures/grain.png`. Do NOT animate an SVG `feTurbulence` filter
-  per frame (too expensive).
-- A fixed, full-screen overlay div above all content: `pointer-events: none`,
-  `mix-blend-mode: multiply`, opacity ~0.04–0.08 (tune by eye; it should be felt, not seen).
-- Animate it by jumping the tile to random offsets with a CSS `steps()` keyframe
-  animation at ~8–10 changes per second ("film grain" flicker), using `transform` only.
+-  generates all tiles into . Do NOT animate an
+  SVG  filter per frame (too expensive).
+- Fibre:  on coloured sections only (grey-blue, paper-coloured), never on pure
+  white. Static;  is generated, modelled on her page 01 paper.
+- Grain: every section is  and ends with  (soft-light,
+  ) or  (multiply, ), above its images.
+  A new section without one has no grain. Opacity:  (0.12).
+- Animate it by jumping the tile to random offsets with a CSS  keyframe
+  animation at ~8–10 changes per second ("film grain" flicker), using  only.
 - Reduced motion: keep the grain, stop the animation (static paper texture).
 - Must not cost noticeable performance on phones; check in DevTools Performance.
 

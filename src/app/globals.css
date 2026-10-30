@@ -18,8 +18,8 @@
 
   --header-h: 3rem;
 
-  /* Paper grain strength: ~0.04 (barely there) to ~0.08 (clearly visible). */
-  --grain-opacity: 0.08;
+  /* Paper grain strength. */
+  --grain-opacity: 0.12;
 }
 
 @media (width >= 48rem) {
@@ -52,18 +52,42 @@ body {
   color: var(--ink-green);
 }
 
-/* Oversized by one tile on each side so the random offsets never expose an edge. */
-.paper-grain {
-  position: fixed;
-  inset: -256px;
-  z-index: 50;
+/* Her paper: static fibres woven into a section's own background colour. */
+.paper-fibre {
+  background-image: url("/textures/paper.png");
+  background-size: 512px 512px;
+  background-blend-mode: soft-light;
+}
+
+/* The inner layer is oversized by one tile on each side so random offsets never expose an edge. */
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  overflow: hidden;
   pointer-events: none;
+  opacity: var(--grain-opacity);
+}
+
+.grain-colour {
+  mix-blend-mode: soft-light;
+}
+
+.grain-white {
+  mix-blend-mode: multiply;
+}
+
+.grain > div {
+  position: absolute;
+  inset: -256px;
   background-image: url("/textures/grain.png");
   background-size: 256px 256px;
-  mix-blend-mode: multiply;
-  opacity: var(--grain-opacity);
   will-change: transform;
   animation: paper-grain 1s steps(1, end) infinite;
+}
+
+.grain-white > div {
+  background-image: url("/textures/grain-white.png");
 }
 
 @keyframes paper-grain {
@@ -81,7 +105,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .paper-grain {
+  .grain > div {
     animation: none;
   }
 }
@@ -99,6 +123,37 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .map-pulse {
     animation: none;
+  }
+}
+
+/*
+ * /about intro as one screen. --u is 1% of a 1440×900 screen's height, so the whole
+ * composition scales from whichever of height or width runs out first.
+ */
+@media (width >= 48rem) {
+  .about-screen {
+    --u: min(1svh, 0.625vw);
+    height: 100svh;
+    min-height: 0;
+    justify-content: flex-start;
+    padding-top: calc(var(--header-h) + 3 * var(--u));
+    padding-bottom: 0;
+  }
+
+  .about-screen [data-about-bubble] {
+    width: calc(104 * var(--u));
+    max-width: none;
+    margin-left: calc(44 * var(--u));
+  }
+
+  .about-screen h1 {
+    font-size: calc(3.7 * var(--u));
+  }
+
+  .about-screen p[data-about-text] {
+    margin-top: 0.8em;
+    font-size: calc(1.85 * var(--u));
+    line-height: 1.38;
   }
 }
 
