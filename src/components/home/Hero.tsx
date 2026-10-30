@@ -23,6 +23,8 @@ const toneClass: Record<PlaceholderTone, string> = {
 const ease = [0.22, 1, 0.36, 1] as const;
 const tileStagger = 0.07;
 const rise = 16;
+// Back to hidden in one step: this happens behind the page-transition sheet.
+const instant = { duration: 0 };
 
 const lastRow = Math.max(...hero.tiles.map((t) => t.row + t.rowSpan - 1));
 
@@ -111,7 +113,7 @@ export default function Hero() {
                 tile.image ? "" : toneClass[tile.placeholderTone]
               }`}
               initial={{ opacity: 0, y: rise }}
-              animate={revealed ? { opacity: 1, y: 0 } : undefined}
+              animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: rise, transition: instant }}
               transition={{ duration: 0.6, ease, delay: i * tileStagger }}
             >
               {tile.image ? (
@@ -157,7 +159,7 @@ export default function Hero() {
                   data-hero-reveal
                   className="h-full"
                   initial={{ opacity: 0 }}
-                  animate={revealed ? { opacity: 1 } : undefined}
+                  animate={revealed ? { opacity: 1 } : { opacity: 0, transition: instant }}
                   transition={{ duration: 0.8, ease, delay: afterTiles }}
                 >
                   {figure.image ? (
@@ -185,7 +187,7 @@ export default function Hero() {
             data-hero-reveal
             className="flex flex-col items-start md:w-max md:items-end"
             initial={{ opacity: 0, y: rise }}
-            animate={revealed ? { opacity: 1, y: 0 } : undefined}
+            animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: rise, transition: instant }}
             transition={{ duration: 0.8, ease, delay: afterTiles }}
           >
             <h1 className="hero-name font-heading text-[10.8vw] leading-[0.9] font-semibold whitespace-nowrap text-ink-green">

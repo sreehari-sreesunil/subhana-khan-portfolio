@@ -31,7 +31,9 @@ export default function CvReveal({ children }: { children: ReactNode }) {
             onEnter: (batch) => {
               gsap.to(batch, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out", stagger: 0.1 });
               batch.forEach((block, i) => {
-                gsap.to(block.querySelectorAll("[data-cv-row]"), {
+                const blockRows = block.querySelectorAll("[data-cv-row]");
+                if (!blockRows.length) return;
+                gsap.to(blockRows, {
                   opacity: 1,
                   y: 0,
                   duration: 0.5,

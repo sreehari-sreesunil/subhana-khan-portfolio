@@ -1,6 +1,6 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
 import Grain from "@/components/Grain";
+import TransitionLink from "@/components/TransitionLink";
 import { cv, type CvEntry } from "@/content/about";
 import { site } from "@/content/site";
 import CvReveal from "./CvReveal";
@@ -129,12 +129,12 @@ export default function Cv() {
       </CvReveal>
 
       <p className="mt-16 md:mt-[1.8em]">
-        <Link
+        <TransitionLink
           href={cv.backLink.href}
           className="font-ui text-sm tracking-wide text-accent-terracotta underline-offset-4 hover:underline md:text-[0.95em]"
         >
           <span aria-hidden="true">←</span> {cv.backLink.label}
-        </Link>
+        </TransitionLink>
       </p>
       <Grain surface="colour" />
     </section>

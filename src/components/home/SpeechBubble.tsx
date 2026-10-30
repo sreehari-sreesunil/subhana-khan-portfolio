@@ -4,6 +4,7 @@ type Pt = [number, number];
 
 // Body drawn in a 1000×600 box and stretched to fit the text (preserveAspectRatio="none").
 const W = 1000;
+export const TORN_WIDTH = W;
 const H = 600;
 const MARGIN = 14;
 const RADIUS = 46;
@@ -48,9 +49,9 @@ function roundedRect(x: number, y: number, w: number, h: number, r: number, step
  * Torn-paper outline: a fine ragged edge plus occasional bites (and a few small tabs).
  * Seeded, so the shape is identical on every render.
  */
-function tornBodyPath(seed: number, height: number) {
+export function tornBodyPath(seed: number, height: number, radius = RADIUS) {
   const rand = mulberry32(seed);
-  const pts = roundedRect(MARGIN, MARGIN, W - 2 * MARGIN, height - 2 * MARGIN, RADIUS, 5);
+  const pts = roundedRect(MARGIN, MARGIN, W - 2 * MARGIN, height - 2 * MARGIN, radius, 5);
   let bite = 0;
   let biteLeft = 0;
   let biteLen = 0;

@@ -84,6 +84,38 @@ html:not([data-hydrated]) [data-eg-text] {
   }
 }
 
+/*
+ * Page-transition sheet. Taller than the screen so its torn edges sit off screen when covering;
+ * wider so its torn sides never show. Clipped, not drawn as SVG, so the paper isn't stretched.
+ */
+.page-sheet {
+  display: none;
+  position: fixed;
+  inset-inline: 0;
+  top: -5svh;
+  z-index: 70;
+  height: 110svh;
+  overflow: hidden;
+}
+
+.page-sheet-paper {
+  position: absolute;
+  inset-block: 0;
+  left: -3%;
+  width: 106%;
+  clip-path: url(#sheet-tall);
+}
+
+@media (width >= 48rem) {
+  .page-sheet-paper {
+    clip-path: url(#sheet-wide);
+  }
+}
+
+h1[tabindex="-1"]:focus {
+  outline: none;
+}
+
 /* Her paper: static fibres woven into a section's own background colour. */
 .paper-fibre {
   background-image: url("/textures/paper.png");

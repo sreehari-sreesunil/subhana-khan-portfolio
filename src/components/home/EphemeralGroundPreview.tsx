@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import { ephemeralGroundPreview as content } from "@/content/home";
 import Grain from "@/components/Grain";
 import { getLenis } from "@/components/SmoothScroll";
+import TransitionLink from "@/components/TransitionLink";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -161,12 +161,12 @@ export default function EphemeralGroundPreview() {
             {content.story}
           </p>
           <p data-eg-text className="mt-6 md:motion-safe:opacity-0">
-            <Link
+            <TransitionLink
               href={content.link.href}
               className="inline-block font-ui text-sm tracking-wide text-accent-terracotta underline-offset-4 hover:underline md:text-base"
             >
               {content.link.label} <span aria-hidden="true">→</span>
-            </Link>
+            </TransitionLink>
           </p>
         </div>
 

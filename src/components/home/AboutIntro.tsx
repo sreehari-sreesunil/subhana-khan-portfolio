@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,6 +9,7 @@ import { useGSAP } from "@gsap/react";
 import type { AboutIntroContent } from "@/content/home";
 import Grain from "@/components/Grain";
 import SiteHeader from "@/components/SiteHeader";
+import TransitionLink from "@/components/TransitionLink";
 import SpeechBubble from "./SpeechBubble";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
@@ -128,12 +128,12 @@ export default function AboutIntro({ content: about, headingLevel: Heading = "h2
             ))}
             {about.link && (
               <p data-about-link className="mt-6 text-center">
-                <Link
+                <TransitionLink
                   href={about.link.href}
                   className="font-ui text-sm tracking-wide text-accent-terracotta underline-offset-4 hover:underline md:text-base"
                 >
                   {about.link.label} <span aria-hidden="true">→</span>
-                </Link>
+                </TransitionLink>
               </p>
             )}
           </div>

@@ -110,6 +110,9 @@ A subtle animated grain over every section, so the screen feels like her paper p
 | `/photography` | Indie Stories — masonry grid with filters (p.37–43 + extra photos) |
 | `/writing/imperfections` | Essay "Are we scared of imperfections?" (p.44) |
 
+Internal links use `TransitionLink` (torn-paper sheet). A new page needs a `metadata.title` of its own
+(the route announcer only speaks when the title changes) and an entry in `site.pageNames`.
+
 No ordinary tab/button navigation between sections. Home-page previews expand into their
 detail pages with a shared-element transition (the preview image grows into the page hero).
 

@@ -5,8 +5,8 @@ import { Component, useEffect, useRef, type ReactNode } from "react";
 import gsap from "gsap";
 import { preloader as content } from "@/content/home";
 import { getLenis } from "@/components/SmoothScroll";
-import { markPreloaderDone } from "@/lib/preloader";
-import { PRELOADER_ATTR, PRELOADER_KEY } from "@/lib/preloader-script";
+import { markPreloaderDone, markPreloaderSeen } from "@/lib/preloader";
+import { PRELOADER_ATTR } from "@/lib/preloader-script";
 
 const YEAR_STEP = 0.3;
 const MIN_SECONDS = 2.2;
@@ -62,12 +62,7 @@ function Overlay() {
     const finish = () => {
       if (finished) return;
       finished = true;
-      try {
-        sessionStorage.setItem(PRELOADER_KEY, "1");
-      } catch {
-        // Storage unavailable: it simply shows again on the next load.
-      }
-      html.setAttribute(PRELOADER_ATTR, "");
+      markPreloaderSeen();
       main?.removeAttribute("aria-busy");
       getLenis()?.start();
       markPreloaderDone();
