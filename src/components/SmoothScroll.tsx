@@ -15,6 +15,7 @@ export const getLenis = () => instance;
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   // Before children's effects, so they can use getLenis() on a first load.
   useLayoutEffect(() => {
+    document.documentElement.setAttribute("data-hydrated", "");
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({ autoRaf: false });

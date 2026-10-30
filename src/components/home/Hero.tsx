@@ -104,6 +104,7 @@ export default function Hero() {
           return (
             <motion.div
               key={tile.id}
+              data-hero-reveal
               data-cell={isSingle ? "" : undefined}
               style={gridArea(tile)}
               className={`relative overflow-hidden ${isSingle ? "aspect-square md:aspect-auto" : ""} ${
@@ -153,6 +154,7 @@ export default function Hero() {
                 }}
               >
                 <motion.div
+                  data-hero-reveal
                   className="h-full"
                   initial={{ opacity: 0 }}
                   animate={revealed ? { opacity: 1 } : undefined}
@@ -180,6 +182,7 @@ export default function Hero() {
 
         <div className="hero-name-block relative z-10">
           <motion.div
+            data-hero-reveal
             className="flex flex-col items-start md:w-max md:items-end"
             initial={{ opacity: 0, y: rise }}
             animate={revealed ? { opacity: 1, y: 0 } : undefined}

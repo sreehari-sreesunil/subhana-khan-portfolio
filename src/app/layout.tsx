@@ -54,13 +54,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${metropolis.variable} ${nunito.variable} ${lora.variable} h-full antialiased`}
-      // The <head> script may add the preloader attribute before hydration.
+      // The <head> script and SmoothScroll add attributes before hydration finishes.
       suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: preloaderScript }} />
         <noscript>
-          <style>{`.preloader{display:none}`}</style>
+          <style>{`.preloader{display:none}[data-hero-reveal],[data-eg-text]{opacity:1!important;transform:none!important}`}</style>
         </noscript>
       </head>
       <body className="relative min-h-full flex flex-col">

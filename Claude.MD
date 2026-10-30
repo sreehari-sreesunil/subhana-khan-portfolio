@@ -117,6 +117,7 @@ detail pages with a shared-element transition (the preview image grows into the 
 
 0. **Preloader** — year counter 2021–2026, first home load per session. Its `<head>` script tags
    `<html>` so CSS hides it on repeat visits; the hero entrance waits on `usePreloaderDone()`.
+   A CSS failsafe clears it at ~6s if its script dies; keep anything hidden until JS runs in that rule.
 1. **Hero** — her cover collage (grid of 12 tiles) with the name "SUBHANA KHAN". Cutout
    people sit on a separate layer and move at a different speed on scroll (parallax).
 2. **About intro** — short version of "Hello! I'm Subhana" with portrait; link to /about.

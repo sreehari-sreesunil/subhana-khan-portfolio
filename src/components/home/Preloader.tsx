@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { Component, useEffect, useRef, type ReactNode } from "react";
 import gsap from "gsap";
 import { preloader as content } from "@/content/home";
 import { getLenis } from "@/components/SmoothScroll";
@@ -11,10 +11,39 @@ import { PRELOADER_ATTR, PRELOADER_KEY } from "@/lib/preloader-script";
 const YEAR_STEP = 0.3;
 const MIN_SECONDS = 2.2;
 const MAX_SECONDS = 5;
+// After the CSS failsafe (globals.css) has faded the overlay: hands scrolling and state back.
+const WATCHDOG_MS = 6600;
+
+// A render error would otherwise replace the whole page, which no CSS failsafe can undo.
+class PreloaderBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error: Error) {
+    console.error("Preloader failed", error);
+    document.querySelector("main[aria-busy]")?.removeAttribute("aria-busy");
+    markPreloaderDone();
+  }
+
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
+
+export default function Preloader() {
+  return (
+    <PreloaderBoundary>
+      <Overlay />
+    </PreloaderBoundary>
+  );
+}
 
 // Rendered the same for everyone: the <head> script hides it on repeat visits, and CSS picks
 // the reduced-motion version, so nothing here branches on storage or media queries.
-export default function Preloader() {
+function Overlay() {
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,7 +59,10 @@ export default function Preloader() {
       return;
     }
 
+    let finished = false;
     const finish = () => {
+      if (finished) return;
+      finished = true;
       try {
         sessionStorage.setItem(PRELOADER_KEY, "1");
       } catch {
@@ -43,17 +75,24 @@ export default function Preloader() {
     };
 
     // Shared by the lift and the reduced-motion fade: `ratio` is how far the overlay has actually
-    // moved, so the hero starts once it's half gone and there's never an empty page.
+    // moved, so the hero starts while it's still leaving and there's never an empty page.
     const leave = {
       onUpdate(this: gsap.core.Tween) {
-        if (this.ratio >= 0.5) markPreloaderDone();
+        if (this.ratio >= 0.25) markPreloaderDone();
       },
       onComplete: finish,
     };
 
-    getLenis()?.stop();
+    // Scripts arrived after the CSS failsafe already removed the overlay: nothing left to play.
+    if (getComputedStyle(root).visibility === "hidden") {
+      finish();
+      return;
+    }
+
     const images = new AbortController();
-    const ctx = gsap.context(() => {
+    const watchdog = window.setTimeout(finish, WATCHDOG_MS);
+    let ctx: gsap.Context | undefined;
+    const play = () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         gsap.to(root, { opacity: 0, delay: 0.6, duration: 0.4, ease: "power2.out", ...leave });
         return;
@@ -109,11 +148,21 @@ export default function Preloader() {
         img.addEventListener("load", settle, { once: true, signal: images.signal });
         img.addEventListener("error", settle, { once: true, signal: images.signal });
       });
-    }, root);
+    };
+
+    // An error thrown from an effect would take the whole page down with it.
+    try {
+      getLenis()?.stop();
+      ctx = gsap.context(play, root);
+    } catch (error) {
+      console.error("Preloader failed", error);
+      finish();
+    }
 
     return () => {
+      window.clearTimeout(watchdog);
       images.abort();
-      ctx.revert();
+      ctx?.revert();
       getLenis()?.start();
     };
   }, []);
