@@ -33,7 +33,9 @@ const SHEET_TALL_PATH = tornBodyPath(20261031, SHEET_TALL_H, 0);
 
 type Phase = "idle" | "covering" | "waiting" | "settling" | "revealing";
 
-const PageTransitionContext = createContext<(href: string) => void>(() => {});
+type PageTransitionApi = { navigate: (href: string) => void; isBusy: () => boolean };
+
+const PageTransitionContext = createContext<PageTransitionApi>({ navigate: () => {}, isBusy: () => false });
 export const usePageTransition = () => useContext(PageTransitionContext);
 
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -63,6 +65,9 @@ export default function PageTransition({ children }: { children: ReactNode }) {
   const nameRef = useRef<HTMLParagraphElement>(null);
   const phase = useRef<Phase>("idle");
   const target = useRef("");
+  const link = useRef("");
+  const queued = useRef<string | null>(null);
+  const pushed = useRef(false);
   const failsafe = useRef<gsap.core.Tween | null>(null);
   const motion = useRef<gsap.core.Tween | null>(null);
   const fromHistory = useRef(false);
@@ -74,10 +79,12 @@ export default function PageTransition({ children }: { children: ReactNode }) {
     if (sheet) gsap.set(sheet, { display: "none", clearProps: "opacity,transform" });
     releaseHero();
     getLenis()?.start();
+    queued.current = null;
+    pushed.current = false;
     phase.current = "idle";
   }, []);
 
-  const reveal = () => {
+  function reveal() {
     const sheet = sheetRef.current;
     if (!sheet) return;
     phase.current = "revealing";
@@ -89,14 +96,16 @@ export default function PageTransition({ children }: { children: ReactNode }) {
         if (this.ratio >= 0.25) releaseHero();
       },
       onComplete() {
+        const next = queued.current;
         end();
-        focusHeading();
+        if (next) navigate(next);
+        else focusHeading();
       },
     });
-  };
+  }
 
   // Runs while covered, whether the page arrived or the failsafe gave up waiting.
-  const settle = () => {
+  function settle() {
     if (phase.current !== "waiting") return;
     phase.current = "settling";
     failsafe.current?.kill();
@@ -104,47 +113,79 @@ export default function PageTransition({ children }: { children: ReactNode }) {
     // Two frames: effects of the new page, then its layout, before measuring.
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
+        // A newer click may have sent the sheet back to waiting.
+        if (phase.current !== "settling") return;
         ScrollTrigger.refresh();
         resetScroll();
         reveal();
       });
     });
-  };
+  }
 
-  const navigate = (href: string) => {
-    const sheet = sheetRef.current;
-    if (!sheet || phase.current !== "idle") return;
+  function aim(href: string) {
     const path = new URL(href, window.location.href).pathname;
+    link.current = href;
     target.current = path;
-    phase.current = "covering";
     router.prefetch(href);
-
+    if (nameRef.current) nameRef.current.textContent = site.pageNames[path] ?? "";
     // The sheet is the welcome here: skip the preloader, and replay the hero behind the sheet.
-    if (path === "/") {
+    if (path === "/" && window.location.pathname !== "/") {
       markPreloaderSeen();
       holdHero();
     }
-    if (nameRef.current) nameRef.current.textContent = site.pageNames[path] ?? "";
-    getLenis()?.stop();
+  }
 
-    const covered = () => {
-      phase.current = "waiting";
-      failsafe.current = gsap.delayedCall(READY_TIMEOUT_SECONDS, settle);
-      startNavigation(() => router.push(href));
-    };
+  function go() {
+    phase.current = "waiting";
+    failsafe.current?.kill();
+    failsafe.current = gsap.delayedCall(READY_TIMEOUT_SECONDS, settle);
+    // Already there, with nothing on its way: only the reveal is left.
+    if (target.current === window.location.pathname && !pushed.current) {
+      settle();
+      return;
+    }
+    // A retarget replaces the entry, so Back never lands on a page the reader never saw.
+    const replace = pushed.current;
+    pushed.current = true;
+    startNavigation(() => (replace ? router.replace(link.current) : router.push(link.current)));
+  }
+
+  // The last click always wins, whichever part of the transition it lands in.
+  function navigate(href: string) {
+    const sheet = sheetRef.current;
+    if (!sheet) return;
+
+    if (phase.current === "covering") {
+      aim(href);
+      return;
+    }
+    if (phase.current === "waiting" || phase.current === "settling") {
+      aim(href);
+      go();
+      return;
+    }
+    if (phase.current === "revealing") {
+      const path = new URL(href, window.location.href).pathname;
+      queued.current = path === target.current ? null : href;
+      return;
+    }
+
+    aim(href);
+    phase.current = "covering";
+    getLenis()?.stop();
     gsap.set(sheet, { display: "block" });
     motion.current = prefersReducedMotion()
       ? gsap.fromTo(
           sheet,
           { opacity: 0, yPercent: 0 },
-          { opacity: 1, duration: FADE_SECONDS, ease: "power1.out", onComplete: covered },
+          { opacity: 1, duration: FADE_SECONDS, ease: "power1.out", onComplete: go },
         )
       : gsap.fromTo(
           sheet,
           { opacity: 1, yPercent: 100 },
-          { yPercent: 0, duration: COVER_SECONDS, ease: "power2.inOut", onComplete: covered },
+          { yPercent: 0, duration: COVER_SECONDS, ease: "power2.inOut", onComplete: go },
         );
-  };
+  }
 
   // Back and Forward never wait for the sheet; one already in progress is dropped.
   useEffect(() => {
@@ -170,7 +211,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
   });
 
   return (
-    <PageTransitionContext.Provider value={navigate}>
+    <PageTransitionContext.Provider value={{ navigate, isBusy: () => phase.current !== "idle" }}>
       {children}
       <div ref={sheetRef} aria-hidden="true" className="page-sheet">
         <svg width="0" height="0" className="absolute">
