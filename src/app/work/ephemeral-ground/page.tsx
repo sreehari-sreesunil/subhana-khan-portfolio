@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Ephemeral Ground — Subhana Khan" }
 export default function EphemeralGroundPage() {
   return (
     <>
-      <SiteHeader />
+      <SiteHeader variant="halo" />
       <main className="flex-1">
         <Opening />
         <ActNavigator acts={acts.map(({ id, number, navLabel }) => ({ id, number, label: navLabel }))} />

@@ -48,16 +48,17 @@ export default function Opening() {
     <>
       <section aria-labelledby="eg-title" className="relative overflow-x-clip bg-white md:h-svh">
         <div className="relative px-4 pt-14 pb-8 md:grid md:h-full md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:items-center md:gap-12 md:px-10 md:py-0">
-          <div className="relative z-10 md:order-2 md:flex md:h-full md:flex-col md:justify-center">
-            <span
-              aria-hidden="true"
-              className="-ml-[calc(1rem+0.08em)] block font-heading text-[44vw] leading-[0.78] font-bold tracking-tight text-ink-green md:absolute md:top-0 md:left-0 md:m-0 md:-translate-x-[0.07em] md:-translate-y-[0.14em] md:text-[clamp(9rem,34vh,22rem)]"
-            >
-              {opening.numeral}
-            </span>
+          {/* Same place as the home dive's numeral, over the plan. */}
+          <span
+            aria-hidden="true"
+            className="-ml-[calc(1rem+0.08em)] block font-heading text-[44vw] leading-[0.78] font-bold tracking-tight text-ink-green md:pointer-events-none md:absolute md:top-0 md:left-0 md:z-20 md:m-0 md:-translate-x-[0.07em] md:-translate-y-[0.14em] md:text-[clamp(9rem,34vh,22rem)]"
+          >
+            {opening.numeral}
+          </span>
+          <div className="relative z-10 md:order-2">
             <h1
               id="eg-title"
-              className="mt-6 font-heading text-[clamp(1.9rem,3.2vw,3.25rem)] leading-[1.05] font-semibold text-ink-green md:mt-[22vh]"
+              className="mt-6 font-heading text-[clamp(1.9rem,3.2vw,3.25rem)] leading-[1.05] font-semibold text-ink-green md:mt-0"
             >
               {opening.title}
             </h1>
