@@ -48,31 +48,6 @@ export default function LabPage() {
           />
         </div>
 
-        <section aria-labelledby="coast-heading" className="mt-16">
-          <h2 id="coast-heading" className="font-heading text-2xl font-semibold text-ink-green">
-            Great Nicobar at 24×
-          </h2>
-          <div className="mt-4 grid gap-4 md:grid-cols-2">
-            {[
-              { src: "/images/home/ephemeral-ground/map-osm-raw.svg", label: "OpenStreetMap, raw" },
-              { src: "/images/home/ephemeral-ground/map-osm.svg", label: "OpenStreetMap, softened" },
-            ].map((map) => (
-              <figure key={map.src} data-coast>
-                <div className="relative aspect-[1000/654] overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element -- raw SVG, scaled far past next/image sizes */}
-                  <img
-                    src={map.src}
-                    alt=""
-                    className="absolute max-w-none"
-                    style={{ width: "2400%", left: `${50 - 58.52 * 24}%`, top: `${50 - 43.11 * 24}%` }}
-                  />
-                </div>
-                <figcaption className="mt-2 font-ui text-sm text-ink-green">{map.label}</figcaption>
-              </figure>
-            ))}
-          </div>
-        </section>
-
         <section aria-labelledby="sun-path-heading" className="mt-16">
           <h2 id="sun-path-heading" className="font-heading text-2xl font-semibold text-ink-green">
             Sun path

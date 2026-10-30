@@ -19,7 +19,8 @@ not a page-flipper.
   list only): "innnovation" → "innovation", "consious" → "conscious", "PLANING" → "PLANNING",
   "permanant" → "permanent", "Mangroove" → "Mangrove", "Spactial" → "Spatial",
   "Settelers" → "Settlers", "Strait of malacca" → "Strait of Malacca", "166sq.km" → "166 sq.km",
-  "Bio-diversity" → "Biodiversity", "Jun'ichirō" → "Jun’ichirō".
+  "Bio-diversity" → "Biodiversity", "Jun'ichirō" → "Jun’ichirō", "inbuild" → "inbuilt", "Community hall" → "Community Hall",
+  "veranda" → "verandah", "build structures are build" → "built structures are built". Dashes in her text: the shorter en dash (–).
 
 ## Stack
 

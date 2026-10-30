@@ -5,16 +5,15 @@
 //   curl -L -o assets-src/natural-earth/ne_10m_land.geojson \
 //     https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_land.geojson
 // The Nicobars come from OpenStreetMap (scripts/fetch-osm-coast.mjs): simplified, then drawn as smooth
-// curves to suit her watercolour style. --raw writes map-osm-raw.svg, the unsoftened version, for comparing.
+// curves to suit her watercolour style.
 // Then run `node scripts/generate-map.mjs`. Prints `mapDot`, `mapRing` and `site.target` for home.ts.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const SRC = "assets-src/natural-earth/ne_10m_land.geojson";
-const RAW = process.argv.includes("--raw");
 const OSM_SRC = "assets-src/osm/nicobar-coast.json";
 // In map units, 1 ≈ 3km. Soft takes out the jitter and keeps the bays; raw is finer than a pixel at 24×.
-const OSM_TOLERANCE = RAW ? 0.01 : 0.09;
-const OUT = `public/images/home/ephemeral-ground/map-osm${RAW ? "-raw" : ""}.svg`;
+const OSM_TOLERANCE = 0.09;
+const OUT = "public/images/home/ephemeral-ground/map-osm.svg";
 
 // Region (degrees) and output width (SVG units).
 const LON_MIN = 78;
@@ -203,7 +202,7 @@ function smoothPath(r) {
 const d =
   rings.map((r) => `M${r.map((p) => `${f(p[0])} ${f(p[1])}`).join("L")}Z`).join("") +
   smoothRings
-    .map(RAW ? (r) => `M${r.map((p) => `${f2(p[0])} ${f2(p[1])}`).join("L")}Z` : smoothPath)
+    .map(smoothPath)
     .join("");
 const svg =
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${WIDTH} ${f(HEIGHT)}" width="${WIDTH}" height="${Math.round(HEIGHT)}">` +

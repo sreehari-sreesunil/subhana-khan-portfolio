@@ -308,7 +308,7 @@ export const act2 = {
         captions: [
           { left: 3, top: 2.7, width: 30, line: { left: 1.8, top: 2.7, height: 39 }, parts: [{ text: "The braided leather handle creates a tactile memory while preventing the metal from feeling cold in winter." }] },
           { left: 36, top: 0, width: 34, line: { left: 34.6, top: 0, height: 38 }, parts: [{ text: "A gradual ascent through brick-lined stairways and shifting clerestory light slows movement and prepares occupants for collective decision-making." }] },
-          { left: 75.9, top: 14.4, width: 24, line: { left: 74.6, top: 14.4, height: 24 }, parts: [{ text: "The seat has inbuild heaters so that users feel comfortable" }] },
+          { left: 75.9, top: 14.4, width: 24, line: { left: 74.6, top: 14.4, height: 24 }, parts: [{ text: "The seat has inbuilt heaters so that users feel comfortable." }] },
         ],
       },
     ] as {
@@ -326,7 +326,7 @@ export const act2 = {
       text: "A narrow slit compresses perception before opening onto a sheltered verandah and reflecting pool that extends the horizon. The low ceiling offers refuge within the vast landscape, creating pause through anticipation, wonder and framed views.",
     },
     {
-      name: "Community hall",
+      name: "Community Hall",
       image: { name: "idea/render-hall", alt: "Render of a community hall on stilts above a stone landscape." },
       text: "The community hall’s elevated auditorium establishes monumentality, while stone landscapes and tactile surfaces bring the ground to a human scale, transforming awe into familiarity through touch and movement.",
     },
@@ -356,7 +356,7 @@ export const act2 = {
         image: { name: "idea/slope-ratio", alt: "Isometric diagram of the site's slopes, with the high contours marked." },
         text: [
           "The community buildings are positioned in the high contours as a protective measure against tsunami or flooding that the site is prone to.",
-          "The permanent build structures are build away from the ocean",
+          "The permanent built structures are built away from the ocean.",
         ],
       },
       { title: "Accessibility", image: { name: "idea/accessibility", alt: "Isometric diagram of the site's access, with the road, zones and nearest town marked." }, text: [] },
@@ -391,11 +391,11 @@ export const act2 = {
             image: { name: "idea/strategy-locator", alt: "Small locator map of Great Nicobar." },
           },
           {
-            text: "Forced adjacency through architecture. The shared veranda, community kitchen, and hollow are not optional amenities – they are the primary circulation and social infrastructure. To move through the settlement is to encounter your neighbours.",
+            text: "Forced adjacency through architecture. The shared verandah, community kitchen, and hollow are not optional amenities – they are the primary circulation and social infrastructure. To move through the settlement is to encounter your neighbours.",
             image: { name: "idea/strategy-steps", alt: "Sketch of people on a shared stepped street." },
           },
           {
-            text: "Local ecological knowledge of the island is treated as expertise. Residents are trained in forest stewardship, seasonal water management, and island ecology by those who already understand it — not by imported consultants.",
+            text: "Local ecological knowledge of the island is treated as expertise. Residents are trained in forest stewardship, seasonal water management, and island ecology by those who already understand it – not by imported consultants.",
             image: { name: "idea/strategy-exchange", alt: "Sketch of residents sharing knowledge." },
           },
         ],
