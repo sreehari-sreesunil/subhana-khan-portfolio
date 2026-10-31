@@ -17,6 +17,9 @@ export type EgImage = {
   credit?: string;
 };
 
+/** Where a callout circles a drawing: centre and width, as fractions of the image. */
+export type EgSpot = { x: number; y: number; size: number };
+
 /** Her bold words, kept. */
 export type TextPart = { text: string; bold?: boolean };
 
@@ -204,11 +207,13 @@ export const act2 = {
     "Slowness in design is not inactivity, but intentional architecture that values people, place and time over speed and quantity. Through human-scaled spaces, shared courtyards and shaded transitions, architecture encourages pause, interaction and meaningful everyday experiences.",
   walker: { name: "idea/walker", alt: "A lone figure walking, leaving a line of footprints." } satisfies EgImage,
   tree: { name: "idea/lone-tree", alt: "A single tree standing on its own." } satisfies EgImage,
+  philosophersSheet: "23",
   philosophersTitle: "PHILOSOPHICAL PERSPECTIVES",
   // PSD, with her bold kept.
   philosophers: [
     {
       name: "Hartmut Rosa",
+      callout: { x: 0.85, y: 0.336, size: 0.29 },
       image: { name: "idea/arch-rosa", alt: "Arched collage of a crowd, a phone, and people connected across a forest walkway.", credit: TO_CONFIRM },
       caption: [
         { text: "Resonance over Acceleration", bold: true },
@@ -217,6 +222,7 @@ export const act2 = {
     },
     {
       name: "Juhani Pallasmaa",
+      callout: { x: 0.65, y: 0.7, size: 0.4 },
       image: { name: "idea/arch-pallasmaa", alt: "Arched collage of a portrait of Pallasmaa, a stone wall and a child curled inside a hollow rock.", credit: TO_CONFIRM },
       caption: [
         { text: "Architecture creates " },
@@ -226,6 +232,7 @@ export const act2 = {
     },
     {
       name: "Jun’ichirō Tanizaki",
+      callout: { x: 0.4, y: 0.535, size: 0.36 },
       image: { name: "idea/arch-tanizaki", alt: "Arched collage of a portrait of Tanizaki, a temple roof, paper lanterns and shoji screens at dusk.", credit: TO_CONFIRM },
       caption: [
         { text: "In praise of shadows,", bold: true },
@@ -234,13 +241,14 @@ export const act2 = {
     },
     {
       name: "Peter Zumthor",
+      callout: { x: 0.52, y: 0.63, size: 0.25 },
       image: { name: "idea/arch-zumthor", alt: "Arched collage of a portrait of Zumthor, cupped hands, a stone labyrinth and a large leaf.", credit: TO_CONFIRM },
       caption: [
         { text: "Atmosphere and emotion", bold: true },
         { text: " emerge through light, material and proportion, shaping memorable spaces that foster comfort, belonging and well-being." },
       ],
     },
-  ] as { name: string; image: EgImage; caption: TextPart[] }[],
+  ] as { name: string; image: EgImage; callout: EgSpot; caption: TextPart[] }[],
   neuroscienceTitle: "NEUROSCIENTIFIC PERSPECTIVES",
   // PSD
   tiles: [
@@ -342,6 +350,9 @@ export const act2 = {
     },
   ] as { name: string; image: EgImage; text: string }[],
   island: {
+    sheet: "11",
+    collageCallout: { x: 0.635, y: 0.885, size: 0.26 } satisfies EgSpot,
+    slopeCallout: { x: 0.553, y: 0.382, size: 0.16 } satisfies EgSpot,
     collage: { name: "idea/arch-collage", alt: "Arched collage of a whale, a turtle, a tree held by hands, and a hut." } satisfies EgImage,
     // OCR, proofread
     key: "The Great Nicobar development brings 300,000 people to one of the least disturbed rainforest landscapes in India. This neighbourhood of 1,000 – the teachers, doctors, shopkeepers and guides who make that development liveable – is designed on a different logic entirely. Not against development, but proposing that development can leave a place better than it found it. A settlement whose daily life is its ecology.",
@@ -518,6 +529,9 @@ export const act3 = {
     },
   },
 };
+
+/** The title block's fixed words, on every living sheet. */
+export const sheetLabels = { project: "Ephemeral Ground", sheet: "Sheet", scale: "Scale", north: "North" };
 
 export const acts: EgAct[] = [
   {

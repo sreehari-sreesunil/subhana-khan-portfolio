@@ -209,11 +209,11 @@ A visible affordance (a sliver of the next image, plus a small "drag / swipe" la
 ### Act 2: The idea (23–24, then 11–12), "What is slowness in design?"
 Camera parked at the island, dimmed behind paper. See section 5.
 - **2.1 The question.** Her heading alone on a screen, the walking figure. *Motion: figure crosses as you scroll.* The stage is shared by Acts 1 and 2 (`CameraStory`), so the paper fades over the parked camera; the walker and tree live on the stage on desktop, so nothing else needs to pin.
-- **2.2 Philosophers.** 4 arches, one at a time. *Motion: `RevealImage` wipe, slow.*
+- **2.2 Philosophers.** Living sheet pilot: two sheets of two arches each (her sheet 23), with a callout per arch. *Motion: drawing → callout → text → people, slow.*
 - **2.3 Neuroscience.** 6 tiles. *Motion: slow stagger.*
 - **2.4 Case studies.** Strips with short captions. *Native horizontal strip; no pin.*
 - **2.5 Application.** 4 renders + text. *Motion: line-by-line text.*
-- **2.6 Back to the island.** Arch collage + key paragraph; terrain diagrams. *Motion: the three diagrams stack in.* The paper lifts here, so these are torn cards over the island, as in Act 1.
+- **2.6 Back to the island.** Living sheet pilot: arch collage + key paragraph on one sheet, the three terrain diagrams on another (her sheet 11). The paper lifts here, so the island shows in the gaps between the sheets; `stage-window` is the later answer for keeping it in view. *Motion: same order, slow; the walking woman moves with scroll.*
 - **2.7 Strategies.** Teal page as HTML over her sketches. *Motion: quadrants open from the centre axes.*
 
 ### Act 3: The ground (09–10), "Where exactly?"

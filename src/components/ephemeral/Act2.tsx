@@ -7,13 +7,14 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Grain from "@/components/Grain";
 import RevealImage from "@/components/RevealImage";
-import { act1, act2, images, type EgImage, type TextPart } from "@/content/ephemeral-ground";
+import { act1, act2, images, type EgImage } from "@/content/ephemeral-ground";
+import { IslandSheets, PhilosophersSheets, withBold } from "./Act2Sheets";
 import LineReveal from "./LineReveal";
 import SlownessMotif, { WALK_FROM } from "./SlownessMotif";
 import SnapStrip from "./SnapStrip";
 import StaggerIn from "./StaggerIn";
 import Strategies from "./Strategies";
-import { Card, StaticFrame } from "./StoryFrames";
+import { StaticFrame } from "./StoryFrames";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -24,15 +25,10 @@ const creditClass = "mt-2 font-ui text-[11px] leading-snug text-ink-green/70";
 const sectionTitle = "font-heading text-[clamp(1.5rem,3vw,2.75rem)] font-semibold text-ink-green";
 const bodyText = "font-body text-[clamp(1rem,1.25vw,1.2rem)] leading-relaxed text-ink-green";
 
-const withBold = (parts: TextPart[]) => parts.map((part) => (part.bold ? <strong key={part.text}>{part.text}</strong> : part.text));
-
-// The tallest arch fills 80% of the screen; the others keep the same scale.
-const ARCH_TALLEST = 1265;
-
-type SlowArticleProps = { image: EgImage; name: string; maxHeight?: string; parts?: TextPart[]; text?: string };
+type SlowArticleProps = { image: EgImage; name: string; text: string };
 
 /** One image and one thought to a screen. */
-function SlowArticle({ image, name, maxHeight = "80svh", parts, text }: SlowArticleProps) {
+function SlowArticle({ image, name, text }: SlowArticleProps) {
   const { src, width, height } = images[image.name];
   return (
     <article className="grid items-center gap-8 py-10 md:grid-cols-[auto_minmax(0,34rem)] md:justify-center md:gap-16 md:motion-safe:min-h-[190svh] md:motion-safe:py-0">
@@ -45,7 +41,7 @@ function SlowArticle({ image, name, maxHeight = "80svh", parts, text }: SlowArti
           sizes="(max-width: 768px) 90vw, 50vw"
           duration={1.4}
           start="top 65%"
-          style={{ width: `calc(${maxHeight} * ${width / height})` }}
+          style={{ width: `calc(80svh * ${width / height})` }}
           wrapperClassName="mx-auto w-fit"
           className="block h-auto max-w-full md:max-w-[50vw]"
         />
@@ -54,7 +50,7 @@ function SlowArticle({ image, name, maxHeight = "80svh", parts, text }: SlowArti
       <div>
         <h4 className="font-heading text-[clamp(1.35rem,2.2vw,2.1rem)] font-semibold text-ink-green">{name}</h4>
         <LineReveal className={`${bodyText} mt-4`} {...SLOW}>
-          {parts ? withBold(parts) : text}
+          {text}
         </LineReveal>
       </div>
     </article>
@@ -149,18 +145,8 @@ export default function Act2({ id, label }: { id: string; label: string }) {
         <Grain surface="colour" />
       </div>
 
-      <div id="philosophers" className="relative px-4 pt-10 md:px-10 md:motion-safe:pt-0">
-        <h3 className={sectionTitle}>{act2.philosophersTitle}</h3>
-        {act2.philosophers.map((person) => (
-          <SlowArticle
-            key={person.name}
-            image={person.image}
-            name={person.name}
-            parts={person.caption}
-            maxHeight={`${(images[person.image.name].height / ARCH_TALLEST) * 80}svh`}
-          />
-        ))}
-        <Grain surface="colour" />
+      <div id="philosophers">
+        <PhilosophersSheets act={label} />
       </div>
 
       <div id="neuroscience" className="relative px-4 py-10 md:px-10 md:motion-safe:py-[32svh]">
@@ -217,56 +203,9 @@ export default function Act2({ id, label }: { id: string; label: string }) {
       {/* The paper has lifted by now: these are cards over the island again, as in Act 1. */}
       <div id="back-to-the-island" className="relative">
         <StaticFrame focus={act1.stops[2].focus} scale={act1.stops[2].scale} ratio={0.9} alt={act1.people.frameAlt} />
-        <Card id="a-different-logic" seed={111} wide gap="move">
-          <div className="grid items-center gap-8 md:grid-cols-2">
-            <figure>
-              <RevealImage
-                src={images[act2.island.collage.name].src}
-                alt={act2.island.collage.alt}
-                width={images[act2.island.collage.name].width}
-                height={images[act2.island.collage.name].height}
-                sizes="(max-width: 768px) 80vw, 30vw"
-                duration={1.4}
-                className="block h-auto w-full"
-              />
-            </figure>
-            <div className="space-y-5">
-              <LineReveal className={bodyText} {...SLOW}>
-                {act2.island.key}
-              </LineReveal>
-              <LineReveal className={bodyText} {...SLOW}>
-                {act2.island.closing}
-              </LineReveal>
-            </div>
-          </div>
-        </Card>
-        <Card id="terrain-diagrams" seed={112} wide gap="hold">
-          <StaggerIn className="space-y-8" step={0.4} duration={1.4} oneByOne>
-            {act2.island.diagrams.map((diagram) => {
-              const image = images[diagram.image.name];
-              return (
-                <div key={diagram.title} data-stagger className="grid items-center gap-4 md:grid-cols-[3fr_2fr] md:gap-8">
-                  <Image
-                    src={image.src}
-                    alt={diagram.image.alt}
-                    width={image.width}
-                    height={image.height}
-                    sizes="(max-width: 768px) 80vw, 40vw"
-                    className="block h-auto w-full"
-                  />
-                  <div>
-                    <h4 className="font-heading text-[clamp(1.1rem,1.5vw,1.4rem)] font-semibold text-ink-green">{diagram.title}</h4>
-                    {diagram.text.map((line) => (
-                      <p key={line} className="mt-2 font-body text-[clamp(0.9rem,1vw,1rem)] leading-relaxed text-ink-green">
-                        {line}
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </StaggerIn>
-        </Card>
+        <div className="lg:motion-safe:pt-[45svh] lg:motion-safe:pb-[28svh]">
+          <IslandSheets act={label} />
+        </div>
       </div>
 
       <Strategies />

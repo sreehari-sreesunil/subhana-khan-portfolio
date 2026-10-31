@@ -3,9 +3,14 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import SunPath from "@/components/footer/SunPath";
 import RevealImage from "@/components/RevealImage";
+import Inhabitant from "@/components/sheet/Inhabitant";
+import SheetBlock from "@/components/sheet/SheetBlock";
+import SheetGrid from "@/components/sheet/SheetGrid";
 import SiteHeader from "@/components/SiteHeader";
 import TransitionLink from "@/components/TransitionLink";
-import { images as egImages } from "@/content/ephemeral-ground";
+import { act1, images as egImages } from "@/content/ephemeral-ground";
+import { ephemeralGroundPreview as home, hero } from "@/content/home";
+import { MAP_H, MAP_W } from "@/lib/ephemeral-geometry";
 
 export const metadata: Metadata = { title: "Lab — Subhana Khan", robots: { index: false } };
 
@@ -54,6 +59,34 @@ export default function LabPage() {
           </h2>
           <p className="mt-1 mb-4 font-ui text-sm text-ink-green">Reference only: the footer uses the rotary dial.</p>
           <SunPath />
+        </section>
+
+        <section aria-labelledby="sheet-heading" className="-mx-4 mt-16 md:-mx-10">
+          <h2 id="sheet-heading" className="mb-4 px-4 font-heading text-2xl font-semibold text-ink-green md:px-10">
+            Living sheet: stage-window
+          </h2>
+          {/* A static map standing in for the camera stage. Scale and north are sample values. */}
+          <div className="relative">
+            <div className="absolute inset-0 hidden md:motion-safe:block">
+              <Image src={home.map.src} alt="" fill sizes="100vw" className="object-cover" />
+            </div>
+            <SheetGrid title={{ act: "Lab", sheet: "00", scale: "1:500", north: 20 }}>
+              <SheetBlock
+                type="stage-window"
+                at="A1:H8"
+                fallback={<Image src={home.map.src} alt="" width={MAP_W} height={MAP_H} sizes="100vw" className="block h-auto w-full" />}
+              />
+              <SheetBlock at="I1:L3">
+                <p data-sheet-step="text" data-sheet-group={0} className="font-body text-ink-green">
+                  Sample text beside the window.
+                </p>
+                <p data-sheet-step="text" data-sheet-group={0} className="mt-2 font-ui text-[11px] text-ink-green/70">
+                  {act1.coastlineCredit}
+                </p>
+              </SheetBlock>
+              <Inhabitant image={hero.figures[1].image!} at="I4:J8" />
+            </SheetGrid>
+          </div>
         </section>
 
         <section aria-labelledby="eg-assets-heading" className="mt-16">

@@ -172,6 +172,24 @@ html.js [data-reveal] {
   }
 }
 
+/* Same for a sheet's steps: drawings wipe up, everything else fades. */
+html.js [data-sheet-step] {
+  opacity: 0;
+}
+
+html.js [data-sheet-step="drawing"] {
+  opacity: 1;
+  clip-path: inset(100% 0% 0% 0%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-sheet-step="drawing"] {
+    clip-path: none;
+    opacity: 0;
+  }
+}
+
+html.js:not([data-hydrated]) [data-sheet-step],
 html.js:not([data-hydrated]) [data-reveal] {
   animation: reveal-failsafe 0.6s ease-out 6s forwards;
 }
@@ -185,6 +203,211 @@ html.js:not([data-hydrated]) [data-reveal] {
 
 .dial-card {
   clip-path: url(#dial-card);
+}
+
+/*
+ * The living sheet. Phones: 4 columns, natural height. From lg: a full screen of 12×8 cells, each of which
+ * is a size container, so a drawing can fill its cells without ever changing the grid.
+ */
+.sheet {
+  --sheet-edge: 0.5rem;
+  position: relative;
+  padding: 1.75rem 1rem 1rem;
+}
+
+.sheet-paper {
+  position: absolute;
+  inset: 0;
+}
+
+.sheet-frame {
+  position: absolute;
+  inset: var(--sheet-edge);
+  border: 1px solid color-mix(in srgb, var(--accent-terracotta) 45%, transparent);
+  pointer-events: none;
+}
+
+.sheet-marks {
+  position: absolute;
+  font-family: var(--font-ui);
+  font-size: 0.625rem;
+  line-height: 1;
+  text-align: center;
+  color: var(--accent-terracotta);
+  pointer-events: none;
+}
+
+.sheet-marks-x {
+  top: calc(var(--sheet-edge) + 0.3rem);
+  inset-inline: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.sheet-cells {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem 0.375rem;
+}
+
+.sheet-block {
+  grid-column: var(--sheet-phone);
+  min-width: 0;
+}
+
+.sheet-fit {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--sheet-ratio);
+}
+
+.sheet-ring {
+  position: absolute;
+  aspect-ratio: 1;
+  border: 1.5px solid var(--accent-terracotta);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.sheet-crop {
+  overflow: hidden;
+  border: 1px solid var(--accent-terracotta);
+  border-radius: 50%;
+}
+
+.sheet-leader {
+  display: none;
+}
+
+.sheet-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 0.75rem;
+  border-top: 1px solid color-mix(in srgb, var(--accent-terracotta) 45%, transparent);
+  padding-top: 0.375rem;
+  font-size: 0.625rem;
+  line-height: 1.4;
+}
+
+.sheet-north {
+  width: 1rem;
+  height: 1rem;
+}
+
+.sheet-window {
+  position: relative;
+  border: 1px solid var(--accent-terracotta);
+}
+
+@media (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
+  html.js .sheet-window {
+    min-height: 50svh;
+  }
+
+  html.js .sheet-window-fallback {
+    display: none;
+  }
+}
+
+@media (min-width: 64rem) {
+  .sheet {
+    --sheet-top: 2.5rem;
+    --sheet-edge: 0.625rem;
+    --sheet-pad: 1.75rem;
+    height: max(100svh, 760px);
+    padding: calc(var(--sheet-top) + var(--sheet-pad)) var(--sheet-pad) var(--sheet-pad);
+  }
+
+  .sheet-frame {
+    top: calc(var(--sheet-top) + var(--sheet-edge));
+  }
+
+  .sheet-marks-x {
+    top: calc(var(--sheet-top) + var(--sheet-edge) + 0.3rem);
+    inset-inline: var(--sheet-pad);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 6px;
+  }
+
+  .sheet-marks-y {
+    top: calc(var(--sheet-top) + var(--sheet-pad));
+    bottom: var(--sheet-pad);
+    left: calc(var(--sheet-edge) + 0.3rem);
+    grid-template-rows: repeat(8, minmax(0, 1fr));
+    row-gap: 6px;
+    align-items: center;
+  }
+
+  .sheet-cells {
+    height: 100%;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: repeat(8, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .sheet-block {
+    grid-column: var(--sheet-col);
+    grid-row: var(--sheet-row);
+    container-type: size;
+  }
+
+  .sheet-drawing {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .sheet-standing {
+    align-items: flex-end;
+  }
+
+  .sheet-fit {
+    width: min(100cqw, calc(100cqh * var(--sheet-ratio) * var(--sheet-scale, 1)));
+    flex: none;
+  }
+
+  .sheet-leader {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    color: var(--accent-terracotta);
+    pointer-events: none;
+  }
+
+  .sheet-title {
+    height: 100%;
+    position: relative;
+    display: block;
+    border: 1px solid color-mix(in srgb, var(--accent-terracotta) 45%, transparent);
+    padding: 0.5rem 0.625rem;
+    font-size: 0.6875rem;
+  }
+
+  .sheet-north {
+    position: absolute;
+    right: 0.625rem;
+    bottom: 0.5rem;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
+/* A taller wrapper with the sheet stuck inside it: time to read, with no pin. */
+@media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+  .sheet-hold {
+    height: 170svh;
+  }
+
+  .sheet-hold > .sheet {
+    position: sticky;
+    top: 0;
+  }
 }
 
 /* Her paper: static fibres woven into a section's own background colour. */

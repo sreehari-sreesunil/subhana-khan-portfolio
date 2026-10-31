@@ -89,6 +89,13 @@ Verify exact hex values by sampling the extracted page images before finalising.
   `[data-snap]` inside it, which must have real size (`inset-y-0 w-px`): Chrome ignores empty snap targets.
 - `createCamera` (`src/lib/camera.ts`): one camera, any number of stops. `map-osm.svg` is shared by home and
   the project page, so its credit ("Coastline © OpenStreetMap contributors") must show wherever the map does.
+- Living sheet (`src/components/sheet/`, pilot: thesis 2.2 and 2.6 only, the rest awaits approval): `SheetGrid` is a
+  full-screen sheet, 12×8 from `lg`, 4 columns below, with its own paper and grain. Inside it, `SheetBlock`, `Drawing`,
+  `Callout` and `Inhabitant` take cells (`at="A1:C8"`) and `phone` spans. Text goes beside a drawing, marked with
+  `data-sheet-step="text"` and `data-sheet-group`. Each group reveals drawing → callout → text; people come last.
+  `slow` is Act 2's pace, `hold` keeps the sheet on screen for it (desktop with motion). `TitleBlock` shows scale and
+  north only where her drawing has them; never invent them. `SheetBlock type="stage-window"` is a transparent hole in
+  the paper so the camera stage shows through; it needs a `fallback` for phones. Used only in `/lab` so far.
 - `/lab`: dev-only workbench (404 in production). Try shared components there first.
 
 ## Paper texture and grain
