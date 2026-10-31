@@ -7,10 +7,14 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Grain from "@/components/Grain";
 import { act2, images } from "@/content/ephemeral-ground";
+import { fetchEarly } from "@/lib/fetch-early";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const { title, quadrants } = act2.strategies;
+
+// The whole sequence, as on a sheet: slowness comes from the order, not the duration.
+const REVEAL_SECONDS = 3;
 
 // Her sketches are small crops: shown a little under their own size, so they stay sharp.
 const SKETCH_SCALE = 0.85;
@@ -54,6 +58,8 @@ export default function Strategies() {
     () => {
       if (played.current) return;
       const root = rootRef.current;
+      if (!root) return;
+      fetchEarly(root);
       const groups = gsap.utils.toArray<HTMLElement>("[data-quadrant]", root);
       const items = gsap.utils.toArray<HTMLElement>("[data-strategy]", root);
       const labels = gsap.utils.toArray<HTMLElement>("[data-axis-label]", root);
@@ -72,7 +78,7 @@ export default function Strategies() {
             gsap.set(labels, { opacity: 0 });
             gsap.set(items, { opacity: 0, y: 10 });
             const timeline = gsap.timeline({
-              scrollTrigger: { trigger: "[data-axes]", start: "center 60%", once: true },
+              scrollTrigger: { trigger: "[data-axes]", start: "top 75%", once: true },
               defaults: { ease: "power2.out" },
               onComplete: () => {
                 played.current = true;
@@ -86,6 +92,7 @@ export default function Strategies() {
               const group = groups[index].querySelectorAll("[data-strategy]");
               timeline.to(group, { opacity: 1, y: 0, duration: 1.2, stagger: 0.25 }, i ? "-=0.5" : "-=0.2");
             });
+            timeline.timeScale(timeline.duration() / REVEAL_SECONDS);
             return;
           }
           const y = context.conditions?.reduce ? 0 : 10;

@@ -23,6 +23,7 @@ export const site = {
     writeTo: "Or just write to:",
     hangUp: "Hang up",
   },
+  viewer: { label: "Photo viewer", close: "Close", previous: "Previous", next: "Next" },
   sunPath: {
     label: "The sun over Kochi through the day",
     neutral: "Kochi, Kerala",

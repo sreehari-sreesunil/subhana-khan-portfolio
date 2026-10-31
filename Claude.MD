@@ -20,7 +20,8 @@ not a page-flipper.
   "permanant" → "permanent", "Mangroove" → "Mangrove", "Spactial" → "Spatial",
   "Settelers" → "Settlers", "Strait of malacca" → "Strait of Malacca", "166sq.km" → "166 sq.km",
   "Bio-diversity" → "Biodiversity", "Jun'ichirō" → "Jun’ichirō", "inbuild" → "inbuilt", "Community hall" → "Community Hall",
-  "veranda" → "verandah", "build structures are build" → "built structures are built". Dashes in her text: the shorter en dash (–).
+  "veranda" → "verandah", "build structures are build" → "built structures are built",
+  "six potential" → "Six potential", "Campbell bay" → "Campbell Bay". Dashes in her text: the shorter en dash (–).
 
 ## Stack
 
@@ -79,6 +80,11 @@ Verify exact hex values by sampling the extracted page images before finalising.
   `next/image` props, plus `wrapperClassName` for the outer box. Reduced motion: a fade. The
   hidden state is CSS under `html.js`, with a failsafe if the main bundle never runs. Don't use it
   for anything above the fold on load (it would flash in after hydration). In view and unrevealed after 2s, it reveals anyway.
+  It fetches its image one screen early, and waits up to 2s for it, so a wipe doesn't open on an empty box.
+- `fetchEarly(root, selector)` (`src/lib/fetch-early.ts`): call inside `useGSAP`. An image hidden by `clip-path` counts as
+  off screen, so lazy loading alone would start it only once the wipe has run. This loads it one screen before arrival.
+- `PhotoViewer`: full-screen viewer on a native `<dialog>`, with arrows, swipe, Escape. Takes `photos`, `index` (`null` when
+  shut) and `onChange`. It stops at 3× a photo's real size rather than blur it, so originals fill the screen with no change.
 - `data-cursor="enter"`: on an element that navigates when clicked, the dot grows into an
   "Enter" circle. Never put it on something that isn't clickable. Links and buttons grow the dot
   automatically. Text fields keep the native cursor. Fine pointers only, off under reduced motion.
@@ -89,13 +95,14 @@ Verify exact hex values by sampling the extracted page images before finalising.
   `[data-snap]` inside it, which must have real size (`inset-y-0 w-px`): Chrome ignores empty snap targets.
 - `createCamera` (`src/lib/camera.ts`): one camera, any number of stops. `map-osm.svg` is shared by home and
   the project page, so its credit ("Coastline © OpenStreetMap contributors") must show wherever the map does.
-- Living sheet (`src/components/sheet/`, pilot: thesis 2.2 and 2.6 only, the rest awaits approval): `SheetGrid` is a
-  full-screen sheet, 12×8 from `lg`, 4 columns below, with its own paper and grain. Inside it, `SheetBlock`, `Drawing`,
-  `Callout` and `Inhabitant` take cells (`at="A1:C8"`) and `phone` spans. Text goes beside a drawing, marked with
+- Living sheet (`src/components/sheet/`, thesis 2.2, 2.5, 2.6, 3.5): `SheetGrid` is a full-screen sheet, 12×8 from `lg`,
+  4 columns below, with its own paper and grain, down to 700px tall (`.sheet` type sizes use `min(vw, svh)`). Inside it,
+  `SheetBlock`, `Drawing`, `KeyPlan`, `Callout` and `Inhabitant` take cells (`at="A1:C8"`, the code's way of placing
+  things; the page shows only tick marks) and `phone` spans. Text goes beside a drawing, marked with
   `data-sheet-step="text"` and `data-sheet-group`. Each group reveals drawing → callout → text; people come last.
   `slow` is Act 2's pace, `hold` keeps the sheet on screen for it (desktop with motion). `TitleBlock` shows scale and
   north only where her drawing has them; never invent them. `SheetBlock type="stage-window"` is a transparent hole in
-  the paper so the camera stage shows through; it needs a `fallback` for phones. Used only in `/lab` so far.
+  the paper so the camera stage shows through; it needs a `fallback` for phones, and its own label carries the map credit.
 - `/lab`: dev-only workbench (404 in production). Try shared components there first.
 
 ## Paper texture and grain
@@ -125,13 +132,30 @@ A subtle animated grain over every section, so the screen feels like her paper p
 - Never branch initial render output on reduced motion (causes hydration mismatches). Use
   MotionConfig reducedMotion='user' for Motion, CSS motion-safe: variants for layout, and
   gsap.matchMedia for GSAP.
-- In the thesis "slowness" act, motion deliberately slows down (1.2–1.6s, line-by-line text).
+- Reveal cap: a whole sheet's reveal finishes within 3s in the thesis "slowness" act and 2s elsewhere. Sequences such as
+  2.7's axes and quadrants use the same 3s. Phones reveal one group at a time, so the cap there is 2s (slow) or 1.2s per
+  group. `SheetGrid` builds the timeline, then squeezes it to fit. Slowness comes from reveal ORDER, not duration.
 - Every image (`next/image`, `RevealImage`, images inside a `SnapStrip`) must reserve its space
   before it loads: a set `width`/`height`, or `fill` on a parent sized with `aspect-ratio`. Never
   pair `w-auto` with `h-auto` — the box is zero tall until the image loads, which shifts everything
-  below it after ScrollTrigger has measured the page. As a safety net, `PageTransition` calls
-  `ScrollTrigger.refresh()` once on mount after fonts and images settle (`document.fonts.ready`
-  and window `load`) — a backstop, not a substitute for reserving space.
+  below it after ScrollTrigger has measured the page. As a safety net, `PageTransition` watches the
+  visible `main` with a `ResizeObserver` and calls `ScrollTrigger.refresh()` after 150ms of quiet — a
+  backstop, not a substitute for reserving space.
+
+## Thesis sheet rules
+
+Every living sheet follows these. Anything short of them is reported, not hidden.
+
+- No magnification callouts. `Callout` only links a drawing to a DIFFERENT, more detailed drawing of hers (masterplan →
+  cluster → unit in Act 4), never a crop of the same source.
+- Key plans: on sheets showing part of the site (3.5 now, Act 4 zones later), `KeyPlan` shows her plan small with the
+  area boxed, as on her pp.18 and 22. Not in Act 2.
+- Figure numbers: every drawing or image gets "Fig. <act>.<section>.<n> — <title>" (small `font-ui`), its credit beneath.
+  The numbers are generated in order in the content file by `figures(section)`. Use her titles where they exist.
+- Honest furniture: keep the title block (project, act, her original sheet number). Quiet tick marks, no A–L / 1–8 letters.
+  `Inhabitant` only inside sections, elevations and renders at drawing scale, never beside a diagram.
+- Composition: one dominant drawing per sheet (about 50% of the area or more); text tops and edges line up with drawing
+  edges; text columns about 45–70 characters; about 5 elements a sheet; coverage about 50–70%, not 100%.
 
 ## Site map
 
@@ -240,6 +264,8 @@ not hard-coded in components, so text and images can be swapped without touching
 - Hero tiles 01, 07–10, 12, 13: upgrade if Subhana sends original photos (current crops
   from cover.psd are ~420px per cell, below the 2× target).
 - Ephemeral Ground credits: replace every "Source to confirm" in `ephemeral-ground.ts`; they show on the page.
+- Site photos (3.5): the 12 crops are only 174–195px tall, so they look soft and the viewer stops at 3×. Replace with
+  originals, and confirm their credits ("Photographer to confirm") and the figure titles written for them.
 - Replace About portrait with original (current one is a TEMP cutout from the flattened
   PDF page, 376×621px).
 - Phone number: only add if Subhana confirms.

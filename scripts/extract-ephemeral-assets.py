@@ -52,11 +52,21 @@ CROPS = {
     "ground/project-land-map": (9, (680, 40, 1140, 705)),
     "ground/land-use-map": (9, (1260, 40, 1735, 700)),
     "ground/settlements-strip": (9, (0, 735, 1753, 1215)),
-    "ground/infrastructure-strip": (10, (28, 40, 1445, 235)),
+    "ground/infra-1": (10, (28, 88, 280, 235)),
+    "ground/infra-2": (10, (280, 78, 577, 235)),
+    "ground/infra-3": (10, (577, 40, 805, 235)),
+    "ground/infra-4": (10, (805, 100, 995, 235)),
+    "ground/infra-5": (10, (995, 125, 1215, 235)),
+    "ground/infra-6": (10, (1215, 78, 1445, 235)),
     "ground/contour-plan": (10, (65, 290, 1222, 835)),
     "ground/site-section": (10, (80, 825, 1245, 990)),
     "ground/site-context": (10, (1243, 765, 1712, 1024)),
-    "ground/site-photos": (10, (30, 1036, 1660, 1210)),
+    "ground/site-1": (10, (30, 1036, 278, 1210)),
+    "ground/site-2": (10, (278, 1036, 518, 1210)),
+    "ground/site-3": (10, (518, 1036, 862, 1210)),
+    "ground/site-4": (10, (862, 1036, 1146, 1210)),
+    "ground/site-5": (10, (1146, 1036, 1422, 1210)),
+    "ground/site-6": (10, (1422, 1036, 1660, 1210)),
     "idea/arch-collage": (11, (90, 90, 695, 990)),
     "idea/terrain": (11, (845, 112, 1622, 390)),
     "idea/slope-ratio": (11, (845, 436, 1622, 802)),
@@ -118,7 +128,6 @@ CROPS = {
 # In page coordinates. Rectangles are (l, t, r, b); longer tuples are polygon points.
 PAINT_WHITE = {
     "ground/tribal-map": [(85, 40, 310, 54)],
-    "ground/infrastructure-strip": [(28, 40, 215, 75)],
     "ground/contour-plan": [(640, 737, 1222, 835), (420, 835, 505, 742, 640, 728, 640, 835)],
     "ground/site-section": [(700, 825, 1245, 905), (85, 825, 215, 885), (370, 825, 530, 825, 490, 868, 370, 868)],
     "ground/site-context": [(1615, 770, 1712, 842)],
@@ -184,7 +193,8 @@ STACKED_RENDERS = ("idea/render-library", 1784, 1785)
 # Cut from her white page, and shown on paper: white becomes transparent, as if printed on it.
 ON_PAPER = {
     "idea/arch-collage", "idea/terrain", "idea/slope-ratio", "idea/accessibility", "ground/settlements-strip",
-    "ground/infrastructure-strip", "ground/contour-plan", "ground/site-section", "ground/site-context",
+    "ground/infra-1", "ground/infra-2", "ground/infra-3", "ground/infra-4", "ground/infra-5", "ground/infra-6",
+    "ground/contour-plan", "ground/site-section", "ground/site-context",
 }
 
 # Her sketches sit on the teal page with hard crop edges, so those edges fade out.

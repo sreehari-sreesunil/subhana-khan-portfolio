@@ -118,7 +118,7 @@ The PDF is out of order: **printed 17–18 are PDF p.11; printed 19–20 are PDF
 5. A vector or high-resolution PDF export of the jury sheets, for "View all sheets" at 2400px.
 6. Site plan with contours (p.10) and tsunami zoning (p.14).
 7. Originals for her p.24 renders (`library`, `water element`, `community hall`, `prospect and refugee`).
-8. Her site photos (p.10) at full size, and confirmation they're hers.
+8. Her site photos (p.10) at full size, and confirmation they're hers. The 12 we have are 174–195px tall, so the full-screen viewer stops at 3×.
 
 **Found while extracting (step 1):**
 9. Her text sits directly on the artwork on the tourist cluster plan and the street and kitchen elevations (pp.18, 20). The tourist plan is cropped to avoid it, so it loses its right side; the elevations still carry it until clean versions arrive.
@@ -209,19 +209,19 @@ A visible affordance (a sliver of the next image, plus a small "drag / swipe" la
 ### Act 2: The idea (23–24, then 11–12), "What is slowness in design?"
 Camera parked at the island, dimmed behind paper. See section 5.
 - **2.1 The question.** Her heading alone on a screen, the walking figure. *Motion: figure crosses as you scroll.* The stage is shared by Acts 1 and 2 (`CameraStory`), so the paper fades over the parked camera; the walker and tree live on the stage on desktop, so nothing else needs to pin.
-- **2.2 Philosophers.** Living sheet pilot: two sheets of two arches each (her sheet 23), with a callout per arch. *Motion: drawing → callout → text → people, slow.*
+- **2.2 Philosophers.** Living sheet: one sheet (her sheet 23), the four arches in a row as one dominant drawing, each with its name, caption and figure number beneath. *Motion: drawing → text, arch by arch, within 3s.*
 - **2.3 Neuroscience.** 6 tiles. *Motion: slow stagger.*
 - **2.4 Case studies.** Strips with short captions. *Native horizontal strip; no pin.*
-- **2.5 Application.** 4 renders + text. *Motion: line-by-line text.*
-- **2.6 Back to the island.** Living sheet pilot: arch collage + key paragraph on one sheet, the three terrain diagrams on another (her sheet 11). The paper lifts here, so the island shows in the gaps between the sheets; `stage-window` is the later answer for keeping it in view. *Motion: same order, slow; the walking woman moves with scroll.*
-- **2.7 Strategies.** Teal page as HTML over her sketches. *Motion: quadrants open from the centre axes.*
+- **2.5 Application.** Living sheets: two sheets (her sheet 24), keeping her order and pairs, so each has one large render. *Motion: drawing → line-by-line text, within 3s.*
+- **2.6 Back to the island.** Living sheets: the island framed in a `stage-window` beside the arch collage and key paragraph, then the three terrain diagrams (her sheet 11). The paper lifts here, so the island also shows in the gap between the sheets. *Motion: same order, within 3s; the walking woman moves with scroll.*
+- **2.7 Strategies.** Teal page as HTML over her sketches. *Motion: quadrants open from the centre axes, within 3s; sketches fetch one screen early.*
 
 ### Act 3: The ground (09–10), "Where exactly?"
 - **3.1 Land analysis.** 3 island maps + text over held camera. *Motion: maps crossfade in place.* The maps live on the stage (`LandMaps`), so no second sticky element is needed.
 - **3.2 The settlements.** Hand-coloured strip. *Native horizontal strip; no pin.*
 - **3.3 The site.** Camera to the site stop; outline draws on the coast (reuse the home boundary). *Motion: signature zoom continues.*
 - **3.4 Contours.** Contour site plan, site data as text. *Motion: `RevealImage` for now.* Optional later: contour lines drawing in (last build step).
-- **3.5 Infrastructure, section, photos.** *Motion: `RevealImage`.*
+- **3.5 Infrastructure, section, photos.** Infrastructure and site photos: one masonry living sheet (her sheet 10) with a key plan; each photo opens the full-screen `PhotoViewer`. Site section and site context stay as they were. *Motion: fast wipe across the photos, 2s; `RevealImage` for the rest.*
 
 ### Act 4: The settlement (13–22), "What did she design?"
 - **4.1 Opening text.** Her "Everything that lives, passes…" alone. *Motion: line-by-line.*

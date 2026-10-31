@@ -17,8 +17,8 @@ export type EgImage = {
   credit?: string;
 };
 
-/** Where a callout circles a drawing: centre and width, as fractions of the image. */
-export type EgSpot = { x: number; y: number; size: number };
+/** One photo in a masonry sheet: its credit is the group's. */
+type EgPhoto = { name: ImageName; alt: string; figure: string };
 
 /** Her bold words, kept. */
 export type TextPart = { text: string; bold?: boolean };
@@ -43,8 +43,15 @@ export type EgAct = {
 };
 
 const TO_CONFIRM = "Source to confirm";
+const PHOTOGRAPHER_TO_CONFIRM = "Photographer to confirm";
 
 export const credits = { coastline: home.mapCredit };
+
+/** Numbers one section's figures, in the order this is called: "Fig. 2.2.1 — Hartmut Rosa". */
+function figures(section: string) {
+  let number = 0;
+  return (title: string) => `Fig. ${section}.${++number} — ${title}`;
+}
 
 export const opening = {
   numeral: "01",
@@ -200,6 +207,11 @@ export const act1 = {
 };
 
 // Act 2 (pp.23, 24, 11, 12). Text is from her PSD layers unless marked OCR.
+const fig22 = figures("2.2");
+const fig25 = figures("2.5");
+const fig26 = figures("2.6");
+const fig35 = figures("3.5");
+
 export const act2 = {
   question: "WHAT IS SLOWNESS IN DESIGN?",
   // PSD
@@ -213,7 +225,7 @@ export const act2 = {
   philosophers: [
     {
       name: "Hartmut Rosa",
-      callout: { x: 0.85, y: 0.336, size: 0.29 },
+      figure: fig22("Hartmut Rosa"),
       image: { name: "idea/arch-rosa", alt: "Arched collage of a crowd, a phone, and people connected across a forest walkway.", credit: TO_CONFIRM },
       caption: [
         { text: "Resonance over Acceleration", bold: true },
@@ -222,7 +234,7 @@ export const act2 = {
     },
     {
       name: "Juhani Pallasmaa",
-      callout: { x: 0.65, y: 0.7, size: 0.4 },
+      figure: fig22("Juhani Pallasmaa"),
       image: { name: "idea/arch-pallasmaa", alt: "Arched collage of a portrait of Pallasmaa, a stone wall and a child curled inside a hollow rock.", credit: TO_CONFIRM },
       caption: [
         { text: "Architecture creates " },
@@ -232,7 +244,7 @@ export const act2 = {
     },
     {
       name: "Jun’ichirō Tanizaki",
-      callout: { x: 0.4, y: 0.535, size: 0.36 },
+      figure: fig22("Jun’ichirō Tanizaki"),
       image: { name: "idea/arch-tanizaki", alt: "Arched collage of a portrait of Tanizaki, a temple roof, paper lanterns and shoji screens at dusk.", credit: TO_CONFIRM },
       caption: [
         { text: "In praise of shadows,", bold: true },
@@ -241,14 +253,14 @@ export const act2 = {
     },
     {
       name: "Peter Zumthor",
-      callout: { x: 0.52, y: 0.63, size: 0.25 },
+      figure: fig22("Peter Zumthor"),
       image: { name: "idea/arch-zumthor", alt: "Arched collage of a portrait of Zumthor, cupped hands, a stone labyrinth and a large leaf.", credit: TO_CONFIRM },
       caption: [
         { text: "Atmosphere and emotion", bold: true },
         { text: " emerge through light, material and proportion, shaping memorable spaces that foster comfort, belonging and well-being." },
       ],
     },
-  ] as { name: string; image: EgImage; callout: EgSpot; caption: TextPart[] }[],
+  ] as { name: string; figure: string; image: EgImage; caption: TextPart[] }[],
   neuroscienceTitle: "NEUROSCIENTIFIC PERSPECTIVES",
   // PSD
   tiles: [
@@ -325,35 +337,43 @@ export const act2 = {
       captions: { left: number; top: number; width: number; line?: { left: number; top: number; height: number }; parts: TextPart[] }[];
     }[],
   },
+  applicationSheet: "24",
   applicationTitle: "APPLICATION",
   // PSD
   application: [
     {
       name: "Library Building",
+      figure: fig25("Library Building"),
       image: { name: "idea/render-library", alt: "Render of a figure seated at a reflecting pool facing the sea, above a dark hall opening through a narrow slit." },
       text: "A narrow slit compresses perception before opening onto a sheltered verandah and reflecting pool that extends the horizon. The low ceiling offers refuge within the vast landscape, creating pause through anticipation, wonder and framed views.",
     },
     {
       name: "Community Hall",
+      figure: fig25("Community Hall"),
       image: { name: "idea/render-hall", alt: "Render of a community hall on stilts above a stone landscape." },
       text: "The community hall’s elevated auditorium establishes monumentality, while stone landscapes and tactile surfaces bring the ground to a human scale, transforming awe into familiarity through touch and movement.",
     },
     {
       name: "Residential Building",
+      figure: fig25("Residential Building"),
       image: { name: "idea/render-residential", alt: "Render of a woman on a sheltered balcony." },
       text: "Sheltered balconies frame views of the landscape and community, offering refuge for pause and observation, while cluster orientation connects homes to the surrounding landscape and shared courtyard, encouraging interaction and strengthening belonging.",
     },
     {
       name: "Incremental Housing",
+      figure: fig25("Incremental Housing"),
       image: { name: "idea/render-housing", alt: "Painted elevation of a timber house." },
       text: "Residential units are conceived as incremental frameworks capable of growth, contraction and modification over time. Rather than prescribing a fixed mode of living, the design acknowledges that homes must evolve alongside the changing needs of their inhabitants.",
     },
-  ] as { name: string; image: EgImage; text: string }[],
+  ] as { name: string; figure: string; image: EgImage; text: string }[],
   island: {
     sheet: "11",
-    collageCallout: { x: 0.635, y: 0.885, size: 0.26 } satisfies EgSpot,
-    slopeCallout: { x: 0.553, y: 0.382, size: 0.16 } satisfies EgSpot,
-    collage: { name: "idea/arch-collage", alt: "Arched collage of a whale, a turtle, a tree held by hands, and a hut." } satisfies EgImage,
+    window: { figure: fig26("Great Nicobar"), credit: credits.coastline },
+    collage: {
+      name: "idea/arch-collage",
+      alt: "Arched collage of a whale, a turtle, a tree held by hands, and a hut.",
+      figure: fig26("A different logic"),
+    } satisfies EgImage & { figure: string },
     // OCR, proofread
     key: "The Great Nicobar development brings 300,000 people to one of the least disturbed rainforest landscapes in India. This neighbourhood of 1,000 – the teachers, doctors, shopkeepers and guides who make that development liveable – is designed on a different logic entirely. Not against development, but proposing that development can leave a place better than it found it. A settlement whose daily life is its ecology.",
     // PSD
@@ -361,17 +381,17 @@ export const act2 = {
       "Island development must balance ecological limits, biodiversity, tourism and local livelihoods through slow, context-sensitive design that protects nature and strengthens resilient communities.",
     // OCR, proofread
     diagrams: [
-      { title: "Terrain", image: { name: "idea/terrain", alt: "Isometric diagram of the site's terrain." }, text: [] },
       {
-        title: "Slope Ratio",
+        figure: fig26("Slope Ratio"),
         image: { name: "idea/slope-ratio", alt: "Isometric diagram of the site's slopes, with the high contours marked." },
         text: [
           "The community buildings are positioned in the high contours as a protective measure against tsunami or flooding that the site is prone to.",
           "The permanent built structures are built away from the ocean.",
         ],
       },
-      { title: "Accessibility", image: { name: "idea/accessibility", alt: "Isometric diagram of the site's access, with the road, zones and nearest town marked." }, text: [] },
-    ] as { title: string; image: EgImage; text: string[] }[],
+      { figure: fig26("Terrain"), image: { name: "idea/terrain", alt: "Isometric diagram of the site's terrain." }, text: [] },
+      { figure: fig26("Accessibility"), image: { name: "idea/accessibility", alt: "Isometric diagram of the site's access, with the road, zones and nearest town marked." }, text: [] },
+    ] as { figure: string; image: EgImage; text: string[] }[],
   },
   strategies: {
     title: "STRATEGIES",
@@ -473,10 +493,10 @@ export const act3 = {
     label: "The settlements",
     image: { name: "ground/settlements-strip", alt: "Hand-coloured strip of the coast with its settlements circled and joined by the road." } satisfies EgImage,
     // OCR, proofread
-    text: "six potential locations were assessed based on institutional proximity, tourism potential, access to infrastructure, ecological sensitivity, suitability for forest-edge development and compatibility with indigenous land rights. The assessment aimed to identify a location that balances user accessibility with minimal environmental disturbance and respect for existing communities.",
+    text: "Six potential locations were assessed based on institutional proximity, tourism potential, access to infrastructure, ecological sensitivity, suitability for forest-edge development and compatibility with indigenous land rights. The assessment aimed to identify a location that balances user accessibility with minimal environmental disturbance and respect for existing communities.",
     // Where her names sit, as % of the strip.
     names: [
-      { name: "Campbell bay", left: 0.6, top: 5 },
+      { name: "Campbell Bay", left: 0.6, top: 5 },
       { name: "Govind Nagar", left: 16.7, top: 15.2 },
       { name: "Joginder Nagar", left: 24.9, top: 1.5 },
       { name: "Laxmi Nagar", left: 53.7, top: 43 },
@@ -485,8 +505,8 @@ export const act3 = {
     ],
   },
   site: {
-    /** The coast at Campbell Bay. Her plan is drawn about 47× true size, as on the home page. */
-    stop: { center: home.site.target, scale: 80 },
+    /** On her outline at the Campbell Bay coast (`home.site.story`). */
+    stop: { center: { x: 587.3, y: 284.05 }, scale: 80 },
     frameAlt: "The coast at Campbell Bay on Great Nicobar, with the site outlined in red dots.",
     // OCR, proofread
     text: "Located near Campbell Bay, Great Nicobar’s main urban centre, the site is surrounded by an educational campus, housing, agricultural land and established road networks. Nearby markets, schools, healthcare, administrative offices and recreational facilities provide essential amenities, offering a connected base for a nature-integrated neighbourhood.",
@@ -509,9 +529,18 @@ export const act3 = {
       "The transect shows the transition from the island’s interior forests to the Bay of Bengal coast. The layout follows the natural contours, preserving water catchments, wetlands and coastal ecosystems while integrating low-impact buildings and pedestrian connections.",
   },
   context: {
+    sitePhotosSheet: "10",
     infrastructure: {
       title: "Infrastructure",
-      image: { name: "ground/infrastructure-strip", alt: "Photographs of buildings and streets near the site.", credit: "Photographer to confirm" } satisfies EgImage,
+      credit: PHOTOGRAPHER_TO_CONFIRM,
+      list: [
+        { name: "ground/infra-1", alt: "A two-storey white building with a blue roof.", figure: fig35("Two-storey building") },
+        { name: "ground/infra-2", alt: "A lawn, a path and low buildings under a large tree.", figure: fig35("Lawn and path") },
+        { name: "ground/infra-3", alt: "A man walking through a gate along a footpath, beneath a pale pink sun and a flock of birds.", figure: fig35("Gate and footpath") },
+        { name: "ground/infra-4", alt: "A shop hung with clothes and bags.", figure: fig35("Shop") },
+        { name: "ground/infra-5", alt: "A person leaning on a blue railing beside a large playing field.", figure: fig35("Playing field") },
+        { name: "ground/infra-6", alt: "A brightly painted temple with a tall yellow flagstaff.", figure: fig35("Temple") },
+      ] satisfies EgPhoto[],
     },
     section: {
       title: "Site section",
@@ -525,7 +554,22 @@ export const act3 = {
     },
     photos: {
       title: "Site photos",
-      image: { name: "ground/site-photos", alt: "Aerial photographs of forest, mangrove and beach.", credit: "Photographer to confirm" } satisfies EgImage,
+      credit: PHOTOGRAPHER_TO_CONFIRM,
+      list: [
+        { name: "ground/site-1", alt: "Aerial view of forest canopy, with white line drawings of circles laid over it.", figure: fig35("Forest canopy") },
+        { name: "ground/site-2", alt: "Aerial view of forest meeting a pale rocky shore.", figure: fig35("Rocky shore") },
+        { name: "ground/site-3", alt: "Aerial view of a road curving between bare ground and forest.", figure: fig35("Road and forest") },
+        { name: "ground/site-4", alt: "Aerial view of mangroves at the edge of a mudflat.", figure: fig35("Mangroves") },
+        { name: "ground/site-5", alt: "Aerial view of a curved white beach and turquoise water below forest.", figure: fig35("Beach") },
+        { name: "ground/site-6", alt: "Aerial view of a tidal creek with palms along its bank.", figure: fig35("Tidal creek") },
+      ] satisfies EgPhoto[],
+    },
+    keyPlan: {
+      heading: "Key Plan",
+      image: { name: "ground/site-context", alt: "Her map of the site's surroundings, with the selected site boxed.", credit: "Satellite imagery: provider to confirm" } satisfies EgImage,
+      figure: fig35("Selected site"),
+      // Round the block marked 1 on her map.
+      area: { left: 0.02, top: 0.16, width: 0.09, height: 0.17 },
     },
   },
 };

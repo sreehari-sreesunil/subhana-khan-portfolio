@@ -193,6 +193,11 @@ export type EphemeralGroundPreviewContent = ChapterPreview & {
     drawing: { left: number; right: number; top: number; bottom: number };
     /** Boundary traced from her plan's edge, as fractions of the image (she drew no site boundary). */
     outline: [number, number][];
+    /**
+     * The same outline standing on the island for the project page, in map units. Over the sea at her plan's size,
+     * so smaller: its corners touch the Campbell Bay coast, and it stops short of running coast to coast.
+     */
+    story: { left: number; top: number; width: number };
   };
 };
 
@@ -226,6 +231,7 @@ export const ephemeralGroundPreview: EphemeralGroundPreviewContent = {
       [0.35, 0.628],
       [0.06, 0.682],
     ],
+    story: { left: 584.05, top: 283.4, width: 6 },
   },
 };
 

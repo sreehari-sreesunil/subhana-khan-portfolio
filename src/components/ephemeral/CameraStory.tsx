@@ -9,7 +9,7 @@ import Grain from "@/components/Grain";
 import { act1, act3 } from "@/content/ephemeral-ground";
 import { ephemeralGroundPreview as home } from "@/content/home";
 import { createCamera } from "@/lib/camera";
-import { MAP_H, MAP_W } from "@/lib/ephemeral-geometry";
+import { MAP_H, MAP_W, storyOutlinePoints } from "@/lib/ephemeral-geometry";
 import LandMaps from "./LandMaps";
 import SiteBoundary from "./SiteBoundary";
 import SlownessMotif, { WALK_FROM } from "./SlownessMotif";
@@ -115,7 +115,7 @@ export default function CameraStory({ titleId, title, children }: CameraStoryPro
           <div data-act-world className="absolute inset-0">
             <Image src={home.map.src} alt={home.mapAlt} fill sizes="100vw" loading="eager" />
             <svg aria-hidden="true" viewBox={`0 0 ${MAP_W} ${MAP_H}`} className="absolute inset-0 size-full overflow-visible">
-              <SiteBoundary id="story-site" dots="0 0.24" />
+              <SiteBoundary id="story-site" dots="0 0.24" points={storyOutlinePoints} />
             </svg>
           </div>
         </div>

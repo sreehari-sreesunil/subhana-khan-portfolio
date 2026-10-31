@@ -8,6 +8,7 @@
   --paper-white: #faf8f4;
   --thesis-teal: #70bbb7;
   --sage: #9db58a;
+  --key-red: #8b2c2c;
   --sand: #e9d6b6;
   --sun: #eed98a;
 
@@ -157,6 +158,12 @@ html.has-cursor select {
   cursor: auto !important;
 }
 
+/* A dialog sits above everything, the cursor's dot included. */
+html.has-cursor dialog,
+html.has-cursor dialog * {
+  cursor: auto !important;
+}
+
 /*
  * RevealImage start state. Under html.js only, so images stay visible without JavaScript.
  * The inline script can run while the main bundle fails, so a failsafe still shows them.
@@ -201,6 +208,29 @@ html.js:not([data-hydrated]) [data-reveal] {
   }
 }
 
+.viewer-photo {
+  animation: viewer-in 0.35s ease-out both;
+}
+
+@keyframes viewer-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewer-photo {
+    animation-name: viewer-fade;
+  }
+}
+
+@keyframes viewer-fade {
+  from {
+    opacity: 0;
+  }
+}
+
 .dial-card {
   clip-path: url(#dial-card);
 }
@@ -211,6 +241,10 @@ html.js:not([data-hydrated]) [data-reveal] {
  */
 .sheet {
   --sheet-edge: 0.5rem;
+  --sheet-body: 1rem;
+  --sheet-small: 0.95rem;
+  --sheet-name: 1.35rem;
+  --sheet-heading: 1.35rem;
   position: relative;
   padding: 1.75rem 1rem 1rem;
 }
@@ -227,18 +261,30 @@ html.js:not([data-hydrated]) [data-reveal] {
   pointer-events: none;
 }
 
+/* Quiet ticks along the frame: a drawing sheet's divisions, without the letters. */
 .sheet-marks {
   position: absolute;
-  font-family: var(--font-ui);
-  font-size: 0.625rem;
-  line-height: 1;
-  text-align: center;
-  color: var(--accent-terracotta);
+  justify-items: center;
   pointer-events: none;
 }
 
+.sheet-marks span {
+  display: block;
+  background: color-mix(in srgb, var(--accent-terracotta) 55%, transparent);
+}
+
+.sheet-marks-x span {
+  width: 1px;
+  height: 0.3125rem;
+}
+
+.sheet-marks-y span {
+  width: 0.3125rem;
+  height: 1px;
+}
+
 .sheet-marks-x {
-  top: calc(var(--sheet-edge) + 0.3rem);
+  top: var(--sheet-edge);
   inset-inline: 1rem;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -257,9 +303,24 @@ html.js:not([data-hydrated]) [data-reveal] {
 }
 
 .sheet-fit {
-  position: relative;
   width: 100%;
+}
+
+.sheet-image {
+  position: relative;
   aspect-ratio: var(--sheet-ratio);
+}
+
+.sheet-caption {
+  margin-top: 0.3rem;
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  color: color-mix(in srgb, var(--ink-green) 70%, transparent);
+}
+
+.sheet-caption-title {
+  display: block;
+  color: var(--ink-green);
 }
 
 .sheet-ring {
@@ -269,12 +330,6 @@ html.js:not([data-hydrated]) [data-reveal] {
   border-radius: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
-}
-
-.sheet-crop {
-  overflow: hidden;
-  border: 1px solid var(--accent-terracotta);
-  border-radius: 50%;
 }
 
 .sheet-leader {
@@ -299,7 +354,55 @@ html.js:not([data-hydrated]) [data-reveal] {
 
 .sheet-window {
   position: relative;
+  overflow: hidden;
   border: 1px solid var(--accent-terracotta);
+}
+
+.sheet-window-label {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: var(--paper);
+  padding: 0.25rem 0.5rem 0.3rem;
+}
+
+.sheet-window-label .sheet-caption {
+  margin-top: 0;
+}
+
+.sheet-key-area {
+  position: absolute;
+  border: 1.5px dashed var(--key-red);
+}
+
+/* Columns of photos of different heights. Phones: two text columns. From lg: each column fills the sheet exactly. */
+.sheet-masonry {
+  columns: 2;
+  column-gap: 0.375rem;
+}
+
+.sheet-masonry-column {
+  display: contents;
+}
+
+.sheet-masonry-heading,
+.sheet-photo {
+  margin-bottom: 0.75rem;
+  break-inside: avoid;
+}
+
+.sheet-photo-button {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--sheet-ratio);
+  overflow: hidden;
+}
+
+/* A row of drawings with their text beneath, as one composition. */
+.sheet-arcade {
+  display: grid;
+  gap: 1rem;
 }
 
 @media (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
@@ -317,7 +420,11 @@ html.js:not([data-hydrated]) [data-reveal] {
     --sheet-top: 2.5rem;
     --sheet-edge: 0.625rem;
     --sheet-pad: 1.75rem;
-    height: max(100svh, 760px);
+    --sheet-body: clamp(0.875rem, min(1.1vw, 2.1svh), 1.2rem);
+    --sheet-small: clamp(0.8125rem, min(0.98vw, 1.85svh), 1.05rem);
+    --sheet-name: clamp(1.05rem, min(1.5vw, 2.6svh), 1.6rem);
+    --sheet-heading: clamp(1.05rem, min(1.65vw, 2.9svh), 1.75rem);
+    height: max(100svh, 700px);
     padding: calc(var(--sheet-top) + var(--sheet-pad)) var(--sheet-pad) var(--sheet-pad);
   }
 
@@ -326,7 +433,7 @@ html.js:not([data-hydrated]) [data-reveal] {
   }
 
   .sheet-marks-x {
-    top: calc(var(--sheet-top) + var(--sheet-edge) + 0.3rem);
+    top: calc(var(--sheet-top) + var(--sheet-edge));
     inset-inline: var(--sheet-pad);
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: 6px;
@@ -335,7 +442,7 @@ html.js:not([data-hydrated]) [data-reveal] {
   .sheet-marks-y {
     top: calc(var(--sheet-top) + var(--sheet-pad));
     bottom: var(--sheet-pad);
-    left: calc(var(--sheet-edge) + 0.3rem);
+    left: var(--sheet-edge);
     grid-template-rows: repeat(8, minmax(0, 1fr));
     row-gap: 6px;
     align-items: center;
@@ -357,7 +464,6 @@ html.js:not([data-hydrated]) [data-reveal] {
   .sheet-drawing {
     display: flex;
     align-items: flex-start;
-    justify-content: center;
   }
 
   .sheet-standing {
@@ -365,8 +471,70 @@ html.js:not([data-hydrated]) [data-reveal] {
   }
 
   .sheet-fit {
-    width: min(100cqw, calc(100cqh * var(--sheet-ratio) * var(--sheet-scale, 1)));
+    width: min(100cqw, calc((100cqh - var(--sheet-caption, 0px)) * var(--sheet-ratio) * var(--sheet-scale, 1)));
     flex: none;
+  }
+
+  .sheet-masonry {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.625rem;
+    columns: auto;
+  }
+
+  .sheet-masonry-column {
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .sheet-masonry-heading {
+    flex: none;
+    margin-bottom: 0;
+  }
+
+  .sheet-photo {
+    display: flex;
+    min-height: 0;
+    flex-basis: 0;
+    flex-direction: column;
+    margin-bottom: 0;
+  }
+
+  .sheet-photo-button {
+    flex: 1;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+
+  .sheet-arcade {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 0.625rem 0.875rem;
+  }
+
+  .sheet-arch {
+    display: contents;
+  }
+
+  .sheet-arch-image {
+    grid-column: var(--arch);
+    grid-row: 1;
+    min-height: 0;
+    container-type: size;
+  }
+
+  .sheet-arch-text {
+    display: flex;
+    flex-direction: column;
+    grid-column: var(--arch);
+    grid-row: 2;
+  }
+
+  .sheet-arch-text .sheet-caption {
+    margin-top: auto;
+    padding-top: 0.3rem;
   }
 
   .sheet-leader {

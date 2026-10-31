@@ -17,6 +17,19 @@ export const outlinePoints = site.outline
   .map(([x, y]) => `${(planX + x * planW).toFixed(2)},${(planY + y * planH).toFixed(2)}`)
   .join(" ");
 
+const xs = site.outline.map(([x]) => x);
+const ys = site.outline.map(([, y]) => y);
+const storyScale = site.story.width / (Math.max(...xs) - Math.min(...xs));
+
+/** The outline on the island itself, for the project page's map. */
+export const storyOutlinePoints = site.outline
+  .map(([x, y]) => {
+    const mapX = site.story.left + (x - Math.min(...xs)) * storyScale;
+    const mapY = site.story.top + ((y - Math.min(...ys)) * storyScale * sitePlan.height) / sitePlan.width;
+    return `${mapX.toFixed(2)},${mapY.toFixed(2)}`;
+  })
+  .join(" ");
+
 // The drawing ends at 86% of the visual's width, which sets how deep the camera goes.
 export const DEPTH = (0.86 * MAP_W) / site.widthUnits;
 

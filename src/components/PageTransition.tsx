@@ -24,6 +24,7 @@ const COVER_SECONDS = 0.45;
 const REVEAL_SECONDS = 0.45;
 const FADE_SECONDS = 0.2;
 const READY_TIMEOUT_SECONDS = 3;
+const REFRESH_DEBOUNCE_MS = 150;
 
 // One outline per shape of screen, so stretching doesn't turn the torn bites into spikes.
 const SHEET_WIDE_H = 700;
@@ -204,13 +205,21 @@ export default function PageTransition({ children }: { children: ReactNode }) {
         );
   }
 
-  // Safety net: fonts and images can still shift layout after ScrollTrigger has measured it.
+  // Safety net: fonts and images can shift layout after ScrollTrigger has measured it, at any point on the page.
   useEffect(() => {
-    const refresh = () => ScrollTrigger.refresh();
-    document.fonts?.ready?.then(refresh).catch(() => {});
-    if (document.readyState === "complete") refresh();
-    else window.addEventListener("load", refresh, { once: true });
-  }, []);
+    const main = visibleMain();
+    if (!main) return;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const observer = new ResizeObserver(() => {
+      clearTimeout(timer);
+      timer = setTimeout(() => ScrollTrigger.refresh(), REFRESH_DEBOUNCE_MS);
+    });
+    observer.observe(main);
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, [pathname]);
 
   // Back and Forward never wait for the sheet; one already in progress is dropped.
   useEffect(() => {

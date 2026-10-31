@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
 import Grain from "@/components/Grain";
+import { fetchEarly } from "@/lib/fetch-early";
 import SheetBlock from "./SheetBlock";
 import SheetFrame from "./SheetFrame";
 import TitleBlock, { type TitleBlockProps } from "./TitleBlock";
@@ -13,6 +14,11 @@ import TitleBlock, { type TitleBlockProps } from "./TitleBlock";
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
 const FAILSAFE_MS = 2000;
+
+// A whole reveal, however much is on the sheet. Slowness comes from the order, not the duration.
+const SHEET_SECONDS = { slow: 3, regular: 2 };
+// Phones reveal one group at a time, as it arrives.
+const GROUP_SECONDS = { slow: 2, regular: 1.2 };
 
 type SheetGridProps = {
   id?: string;
@@ -28,6 +34,11 @@ type SheetGridProps = {
 
 const steps = (root: HTMLElement, step: string, group: number) =>
   gsap.utils.toArray<HTMLElement>(`[data-sheet-step="${step}"][data-sheet-group="${group}"]`, root);
+
+function fit(timeline: gsap.core.Timeline, seconds: number) {
+  if (timeline.duration() > seconds) timeline.timeScale(timeline.duration() / seconds);
+  return timeline;
+}
 
 /** Drawing → callout → text → people. */
 function groupTimeline(root: HTMLElement, group: number, slow: boolean, reduce: boolean) {
@@ -130,18 +141,7 @@ export default function SheetGrid({ id, title, titleAt = "K8:L8", slow = false, 
         ...new Set(gsap.utils.toArray<HTMLElement>("[data-sheet-group]", root).map((element) => Number(element.dataset.sheetGroup))),
       ].sort((a, b) => a - b);
 
-      // A clipped image counts as off screen, so lazy loading would wait until its wipe has begun.
-      const fetcher = new IntersectionObserver(
-        ([entry]) => {
-          if (!entry.isIntersecting) return;
-          fetcher.disconnect();
-          gsap.utils.toArray<HTMLImageElement>('[data-sheet-step="drawing"] img', root).forEach((image) => {
-            image.loading = "eager";
-          });
-        },
-        { rootMargin: "100% 0px" },
-      );
-      fetcher.observe(root);
+      fetchEarly(root, '[data-sheet-step="drawing"] img');
 
       const mm = gsap.matchMedia();
       mm.add(
@@ -162,10 +162,11 @@ export default function SheetGrid({ id, title, titleAt = "K8:L8", slow = false, 
                 arm(root, "top 55%", () => {
                   const sheet = gsap.timeline();
                   waiting.forEach((group, i) => {
-                    // The next drawing starts once this one's drawing and callout are up; people come last.
-                    const position = i === 0 ? 0 : steps(root, "drawing", group).length ? (slow ? "<+=3.2" : "<+=1.2") : ">-0.2";
+                    // The next drawing starts while this one is still arriving; people come last.
+                    const position = i === 0 ? 0 : steps(root, "drawing", group).length ? (slow ? "<+=1" : "<+=0.4") : ">-0.2";
                     sheet.add(groupTimeline(root, group, slow, reduce).eventCallback("onComplete", () => finish(group)), position);
                   });
+                  fit(sheet, slow ? SHEET_SECONDS.slow : SHEET_SECONDS.regular);
                 }),
               ]
             : // On a phone the sheet is many screens tall: each group waits until it arrives.
@@ -174,7 +175,7 @@ export default function SheetGrid({ id, title, titleAt = "K8:L8", slow = false, 
                 if (!first) return [];
                 return [
                   arm(first, "top 80%", () => {
-                    groupTimeline(root, group, slow, reduce).eventCallback("onComplete", () => finish(group));
+                    fit(groupTimeline(root, group, slow, reduce), slow ? GROUP_SECONDS.slow : GROUP_SECONDS.regular).eventCallback("onComplete", () => finish(group));
                   }),
                 ];
               });
@@ -195,7 +196,6 @@ export default function SheetGrid({ id, title, titleAt = "K8:L8", slow = false, 
           };
         });
       }
-      return () => fetcher.disconnect();
     },
     { scope: rootRef },
   );

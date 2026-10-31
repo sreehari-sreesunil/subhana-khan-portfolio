@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import Grain from "@/components/Grain";
 import RevealImage from "@/components/RevealImage";
 import { act3, images, type EgImage } from "@/content/ephemeral-ground";
+import SitePhotos from "./SitePhotos";
 import SnapStrip from "./SnapStrip";
 import { SiteOutline } from "./SiteBoundary";
 import { Card, Credit, StaticFrame } from "./StoryFrames";
@@ -162,12 +163,7 @@ export default function Act3({ id, title }: { id: string; title: string }) {
       </div>
 
       <div id="site-context" className="paper-fibre relative space-y-14 bg-paper pb-16 md:motion-safe:space-y-[14svh] md:motion-safe:pb-[20svh]">
-        <div>
-          <h3 className={`${sectionTitle} px-4 md:px-10`}>{context.infrastructure.title}</h3>
-          <div className="mt-6">
-            <WideImage image={context.infrastructure.image} label={context.infrastructure.title} photos={6} />
-          </div>
-        </div>
+        <SitePhotos act={title} />
         <div>
           <h3 className={`${sectionTitle} px-4 md:px-10`}>{context.section.title}</h3>
           <div className="mt-6">
@@ -177,12 +173,6 @@ export default function Act3({ id, title }: { id: string; title: string }) {
         <div className="px-4 md:px-10">
           <h3 className={sectionTitle}>{context.map.title}</h3>
           <ContextMap />
-        </div>
-        <div>
-          <h3 className={`${sectionTitle} px-4 md:px-10`}>{context.photos.title}</h3>
-          <div className="mt-6">
-            <WideImage image={context.photos.image} label={context.photos.title} photos={6} />
-          </div>
         </div>
         <Grain surface="colour" />
       </div>

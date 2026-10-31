@@ -1,9 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useId, useRef, type CSSProperties } from "react";
 import Drawing, { type DrawingProps } from "./Drawing";
-import SheetBlock from "./SheetBlock";
 
 export type CalloutSpot = {
   /** Centre of the spot, as fractions of the image. */
@@ -15,17 +13,15 @@ export type CalloutSpot = {
 
 type CalloutProps = Omit<DrawingProps, "children"> & {
   spot: CalloutSpot;
-  /** Cells for the enlarged crop. */
-  cropAt: string;
-  /** Column placement of the crop on phones, where it sits right under its drawing. */
-  cropPhone?: string;
+  /** A different, more detailed drawing of hers. Never a magnified crop of the same one. */
+  detail: Omit<DrawingProps, "children" | "group">;
 };
 
 function centre(rect: DOMRect, box: DOMRect) {
-  return { x: rect.left - box.left + rect.width / 2, y: rect.top - box.top + rect.height / 2, r: rect.width / 2 };
+  return { x: rect.left - box.left + rect.width / 2, y: rect.top - box.top + rect.height / 2, r: Math.min(rect.width, rect.height) / 2 };
 }
 
-/** Runs from circle to crop, measured so it stays right at any window size. */
+/** Runs from circle to detail, measured so it stays right at any window size. */
 function Leader({ id, group }: { id: string; group: number }) {
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -34,13 +30,13 @@ function Leader({ id, group }: { id: string; group: number }) {
     const cells = svg?.parentElement;
     const line = svg?.querySelector("path");
     const ring = cells?.querySelector(`[data-callout-ring="${id}"]`);
-    const crop = cells?.querySelector(`[data-callout-crop="${id}"]`);
-    if (!cells || !line || !ring || !crop) return;
+    const detail = cells?.querySelector(`[data-callout-detail="${id}"]`);
+    if (!cells || !line || !ring || !detail) return;
 
     const place = () => {
       const box = cells.getBoundingClientRect();
       const from = centre(ring.getBoundingClientRect(), box);
-      const to = centre(crop.getBoundingClientRect(), box);
+      const to = centre(detail.getBoundingClientRect(), box);
       const length = Math.hypot(to.x - from.x, to.y - from.y) || 1;
       const [ux, uy] = [(to.x - from.x) / length, (to.y - from.y) / length];
       line.setAttribute("d", `M${from.x + ux * from.r} ${from.y + uy * from.r}L${to.x - ux * to.r} ${to.y - uy * to.r}`);
@@ -57,18 +53,11 @@ function Leader({ id, group }: { id: string; group: number }) {
   );
 }
 
-/** A circle on a drawing, a leader line and an enlarged crop of that spot from the same source image. */
-export default function Callout({ spot, cropAt, cropPhone = "2 / span 2", ...drawing }: CalloutProps) {
+/** A circle on a drawing and a leader line to a more detailed drawing of that spot, such as masterplan → cluster → unit. */
+export default function Callout({ spot, detail, ...drawing }: CalloutProps) {
   const id = useId();
-  const { image, group = 0 } = drawing;
-  const ratio = image.width / image.height;
-
+  const { group = 0 } = drawing;
   const ring: CSSProperties = { left: `${spot.x * 100}%`, top: `${spot.y * 100}%`, width: `${spot.size * 100}%` };
-  const crop: CSSProperties = {
-    width: `${100 / spot.size}%`,
-    left: `${50 - (spot.x * 100) / spot.size}%`,
-    top: `${50 - (spot.y * 100) / (spot.size * ratio)}%`,
-  };
 
   return (
     <>
@@ -76,17 +65,9 @@ export default function Callout({ spot, cropAt, cropPhone = "2 / span 2", ...dra
         <span data-callout-ring={id} data-sheet-step="callout" data-sheet-group={group} className="sheet-ring" style={ring} />
       </Drawing>
       <Leader id={id} group={group} />
-      <SheetBlock at={cropAt} phone={cropPhone} className="sheet-drawing">
-        <div
-          data-callout-crop={id}
-          data-sheet-step="callout"
-          data-sheet-group={group}
-          className="sheet-fit sheet-crop"
-          style={{ "--sheet-ratio": 1 } as CSSProperties}
-        >
-          <Image src={image.src} alt="" width={image.width} height={image.height} sizes="60vw" className="absolute h-auto max-w-none" style={crop} />
-        </div>
-      </SheetBlock>
+      <Drawing {...detail} group={group}>
+        <span data-callout-detail={id} className="pointer-events-none absolute inset-0" />
+      </Drawing>
     </>
   );
 }

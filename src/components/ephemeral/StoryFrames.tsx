@@ -14,12 +14,20 @@ export function Credit({ children }: { children: ReactNode }) {
 }
 
 /** The map cropped to one camera stop, for phones and reduced motion. */
-type StaticFrameProps = { focus: { x: number; y: number }; scale: number; ratio: number; alt: string; children?: ReactNode };
+type StaticFrameProps = {
+  focus: { x: number; y: number };
+  scale: number;
+  ratio: number;
+  alt: string;
+  /** No page margins or credit, for a sheet that gives it both. */
+  bare?: boolean;
+  children?: ReactNode;
+};
 
-export function StaticFrame({ focus, scale, ratio, alt, children }: StaticFrameProps) {
+export function StaticFrame({ focus, scale, ratio, alt, bare, children }: StaticFrameProps) {
   const width = (scale * 100 * MAP_RATIO) / ratio;
   return (
-    <figure className="px-4 pt-8 md:mx-auto md:max-w-2xl md:motion-safe:hidden">
+    <figure className={bare ? undefined : "px-4 pt-8 md:mx-auto md:max-w-2xl md:motion-safe:hidden"}>
       <div className="relative overflow-hidden" style={{ aspectRatio: ratio }}>
         <div
           className="absolute"
@@ -34,7 +42,7 @@ export function StaticFrame({ focus, scale, ratio, alt, children }: StaticFrameP
           {children}
         </div>
       </div>
-      <Credit>{act1.coastlineCredit}</Credit>
+      {!bare && <Credit>{act1.coastlineCredit}</Credit>}
     </figure>
   );
 }

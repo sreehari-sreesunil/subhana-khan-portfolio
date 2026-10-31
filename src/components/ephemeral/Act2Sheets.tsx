@@ -1,24 +1,17 @@
-import type { ReactNode } from "react";
-import Callout from "@/components/sheet/Callout";
-import Drawing from "@/components/sheet/Drawing";
-import Inhabitant from "@/components/sheet/Inhabitant";
+import Image from "next/image";
+import type { CSSProperties, ReactNode } from "react";
+import Drawing, { FigureCaption } from "@/components/sheet/Drawing";
 import SheetBlock from "@/components/sheet/SheetBlock";
 import SheetGrid from "@/components/sheet/SheetGrid";
-import { act2, images, type TextPart } from "@/content/ephemeral-ground";
-import { hero } from "@/content/home";
+import { act1, act2, images, type TextPart } from "@/content/ephemeral-ground";
+import { StaticFrame } from "./StoryFrames";
 
-const titleClass = "font-heading text-[clamp(1.35rem,2vw,1.9rem)] leading-tight font-semibold text-ink-green";
-const nameClass = "font-heading text-[clamp(1.35rem,2.2vw,2.1rem)] leading-tight font-semibold text-ink-green";
-const bodyClass = "mt-3 font-body text-[clamp(1rem,1.35vw,1.3rem)] leading-relaxed text-ink-green";
-const creditClass = "mt-3 font-ui text-[11px] leading-snug text-ink-green/70";
+const headingClass = "font-heading text-[length:var(--sheet-heading)] leading-tight font-semibold text-ink-green";
+const nameClass = "font-heading text-[length:var(--sheet-name)] leading-tight font-semibold text-ink-green";
+const bodyClass = "font-body text-[length:var(--sheet-body)] leading-relaxed text-ink-green lg:max-w-[33em]";
+const smallClass = "font-body text-[length:var(--sheet-small)] leading-snug text-ink-green";
 
 export const withBold = (parts: TextPart[]) => parts.map((part) => (part.bold ? <strong key={part.text}>{part.text}</strong> : part.text));
-
-function figure(id: string) {
-  const image = hero.figures.find((item) => item.id === id)?.image;
-  if (!image) throw new Error(`No figure: ${id}`);
-  return image;
-}
 
 function Lines({ group, className = bodyClass, children }: { group: number; className?: string; children: ReactNode }) {
   return (
@@ -28,60 +21,92 @@ function Lines({ group, className = bodyClass, children }: { group: number; clas
   );
 }
 
-type Philosopher = (typeof act2.philosophers)[number];
-
-/** One arch, with its callout beside it and her caption above that. Arches keep their sizes from her sheet. */
-function Arch({ person, group, at, cropAt, textAt, scale, children }: { person: Philosopher; group: number; at: string; cropAt: string; textAt: string; scale?: number; children?: ReactNode }) {
+function Name({ group, children }: { group: number; children: ReactNode }) {
   return (
-    <>
-      <Callout
-        image={images[person.image.name]}
-        alt={person.image.alt}
-        at={at}
-        cropAt={cropAt}
-        cropPhone={children ? "span 3" : undefined}
-        spot={person.callout}
-        scale={scale}
-        group={group}
-        sizes="(max-width: 1024px) 92vw, 26vw"
-      />
+    <h4 data-sheet-step="text" data-sheet-group={group} className={`${nameClass} mb-2`}>
       {children}
-      <SheetBlock at={textAt}>
-        <h4 data-sheet-step="text" data-sheet-group={group} className={nameClass}>
-          {person.name}
-        </h4>
-        <Lines group={group}>{withBold(person.caption)}</Lines>
-        {person.image.credit && (
-          <p data-sheet-step="text" data-sheet-group={group} className={creditClass}>
-            {person.image.credit}
-          </p>
-        )}
-      </SheetBlock>
-    </>
+    </h4>
   );
 }
 
-export function PhilosophersSheets({ act }: { act: string }) {
-  const [rosa, pallasmaa, tanizaki, zumthor] = act2.philosophers;
-  const title = { act, sheet: act2.philosophersSheet };
+// Her arches keep the sizes they have on her sheet, so all four are measured against the tallest.
+const TALLEST_ARCH = Math.max(...act2.philosophers.map((person) => images[person.image.name].height));
+
+/** Her p.23: the four arches in a row, each with its name and caption beneath. */
+export function PhilosophersSheet({ act }: { act: string }) {
+  return (
+    <SheetGrid title={{ act, sheet: act2.philosophersSheet }} slow hold>
+      <SheetBlock at="K1:L3">
+        <h3 data-sheet-step="text" data-sheet-group={0} className={headingClass}>
+          {act2.philosophersTitle}
+        </h3>
+      </SheetBlock>
+      <SheetBlock at="A1:J8" className="sheet-arcade">
+        {act2.philosophers.map((person, group) => {
+          const { src, width, height } = images[person.image.name];
+          return (
+            <figure key={person.name} className="sheet-arch" style={{ "--arch": group + 1 } as CSSProperties}>
+              <div className="sheet-arch-image sheet-drawing sheet-standing">
+                <div className="sheet-fit" style={{ "--sheet-ratio": width / height, "--sheet-scale": height / TALLEST_ARCH } as CSSProperties}>
+                  <div className="sheet-image">
+                    <div data-sheet-step="drawing" data-sheet-group={group}>
+                      <Image src={src} alt={person.image.alt} width={width} height={height} sizes="(max-width: 1024px) 92vw, 20vw" className="block h-auto w-full" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="sheet-arch-text">
+                <Name group={group}>{person.name}</Name>
+                <Lines group={group} className={smallClass}>
+                  {withBold(person.caption)}
+                </Lines>
+                <FigureCaption figure={person.figure} credit={person.image.credit} group={group} />
+              </div>
+            </figure>
+          );
+        })}
+      </SheetBlock>
+    </SheetGrid>
+  );
+}
+
+type Project = (typeof act2.application)[number];
+
+function ProjectText({ project, group, at, heading, className }: { project: Project; group: number; at: string; heading?: string; className?: string }) {
+  return (
+    <SheetBlock at={at} className={className}>
+      {heading && (
+        <h3 data-sheet-step="text" data-sheet-group={group} className={`${headingClass} mb-3`}>
+          {heading}
+        </h3>
+      )}
+      <Name group={group}>{project.name}</Name>
+      <Lines group={group}>{project.text}</Lines>
+    </SheetBlock>
+  );
+}
+
+function ProjectDrawing({ project, group, at, sizes }: { project: Project; group: number; at: string; sizes: string }) {
+  return <Drawing image={images[project.image.name]} alt={project.image.alt} at={at} figure={project.figure} credit={project.image.credit} group={group} sizes={sizes} />;
+}
+
+/** Her p.24 in two sheets, keeping her order, so each pair can have one large drawing. */
+export function ApplicationSheets({ act }: { act: string }) {
+  const [library, hall, residential, housing] = act2.application;
+  const title = { act, sheet: act2.applicationSheet };
   return (
     <>
       <SheetGrid title={title} slow hold>
-        <SheetBlock at="D1:F1">
-          <h3 data-sheet-step="text" data-sheet-group={0} className={titleClass}>
-            {act2.philosophersTitle}
-          </h3>
-        </SheetBlock>
-        <Arch person={rosa} group={0} at="A1:C8" textAt="D2:F4" cropAt="D5:E7" scale={0.94}>
-          <Inhabitant image={figure("leaning-woman")} at="F5:F8" />
-        </Arch>
-        <Arch person={pallasmaa} group={1} at="G1:I8" textAt="J1:L3" cropAt="J4:L7" scale={0.94} />
+        <ProjectDrawing project={library} group={0} at="A1:F8" sizes="(max-width: 1024px) 92vw, 50vw" />
+        <ProjectText project={library} group={0} at="G1:I5" heading={act2.applicationTitle} className="lg:pl-4" />
+        <ProjectDrawing project={hall} group={1} at="J1:L4" sizes="(max-width: 1024px) 92vw, 24vw" />
+        <ProjectText project={hall} group={1} at="J5:L7" className="lg:pt-3" />
       </SheetGrid>
       <SheetGrid title={title} slow hold>
-        <Arch person={tanizaki} group={0} at="A1:C6" textAt="D1:F3" cropAt="D4:F7">
-          <Inhabitant image={figure("yellow-dress-woman")} at="B7:C8" />
-        </Arch>
-        <Arch person={zumthor} group={1} at="G1:I8" textAt="J1:L3" cropAt="J4:L7" />
+        <ProjectDrawing project={housing} group={0} at="A1:I6" sizes="(max-width: 1024px) 92vw, 72vw" />
+        <ProjectText project={housing} group={0} at="A7:E8" />
+        <ProjectDrawing project={residential} group={1} at="J1:L4" sizes="(max-width: 1024px) 92vw, 24vw" />
+        <ProjectText project={residential} group={1} at="J5:L7" className="lg:pt-3" />
       </SheetGrid>
     </>
   );
@@ -89,69 +114,43 @@ export function PhilosophersSheets({ act }: { act: string }) {
 
 export function IslandSheets({ act }: { act: string }) {
   const { island } = act2;
+  const { focus, scale } = act1.stops[2];
   const title = { act, sheet: island.sheet };
-  const [terrain, slope, access] = island.diagrams;
+  const [slope, terrain, access] = island.diagrams;
   return (
     <>
       <SheetGrid id="a-different-logic" title={title} slow hold>
-        <Callout
+        <SheetBlock type="stage-window" at="A1:F8" fallback={<StaticFrame bare focus={focus} scale={scale} ratio={0.9} alt={act1.people.frameAlt} />}>
+          <div className="sheet-window-label">
+            <FigureCaption figure={island.window.figure} credit={island.window.credit} />
+          </div>
+        </SheetBlock>
+        <Drawing
           image={images[island.collage.name]}
           alt={island.collage.alt}
-          at="A1:F8"
-          cropAt="J4:L7"
-          cropPhone="span 3"
-          spot={island.collageCallout}
-          sizes="(max-width: 1024px) 92vw, 45vw"
+          at="G1:I6"
+          figure={island.collage.figure}
+          sizes="(max-width: 1024px) 92vw, 26vw"
         />
-        <Inhabitant image={figure("children")} at="G7:H8" />
-        <SheetBlock at="G1:L3">
-          <Lines group={0} className="font-body text-[clamp(1rem,1.3vw,1.25rem)] leading-relaxed text-ink-green">
-            {island.key}
-          </Lines>
+        <SheetBlock at="J1:L4" className="lg:pl-4">
+          <Lines group={0}>{island.key}</Lines>
         </SheetBlock>
-        <SheetBlock at="G4:I6">
-          <Lines group={0} className="font-body text-[clamp(1rem,1.3vw,1.25rem)] leading-relaxed text-ink-green">
-            {island.closing}
-          </Lines>
+        <SheetBlock at="J5:L7" className="lg:pl-4">
+          <Lines group={0}>{island.closing}</Lines>
         </SheetBlock>
       </SheetGrid>
       <div className="lg:motion-safe:mt-[60svh]">
         <SheetGrid id="terrain-diagrams" title={title} slow hold>
-          <Callout
-            image={images[slope.image.name]}
-            alt={slope.image.alt}
-            at="A1:H5"
-            cropAt="J3:L6"
-            cropPhone="span 3"
-            spot={island.slopeCallout}
-            label={slope.title}
-            group={0}
-            sizes="(max-width: 1024px) 92vw, 62vw"
-          />
-          <Inhabitant image={figure("walking-woman")} at="I7:J8" walk={110} />
-          <SheetBlock at="I1:L2">
+          <Drawing image={images[slope.image.name]} alt={slope.image.alt} at="A1:I5" figure={slope.figure} group={0} sizes="(max-width: 1024px) 92vw, 72vw" />
+          <SheetBlock at="A6:F7">
             {slope.text.map((line) => (
-              <Lines key={line} group={0} className="mb-2 font-body text-[clamp(0.95rem,1.1vw,1.1rem)] leading-snug text-ink-green">
+              <Lines key={line} group={0} className={`${bodyClass} mb-2`}>
                 {line}
               </Lines>
             ))}
           </SheetBlock>
-          <Drawing
-            image={images[terrain.image.name]}
-            alt={terrain.image.alt}
-            at="A6:D8"
-            label={terrain.title}
-            group={1}
-            sizes="(max-width: 1024px) 92vw, 31vw"
-          />
-          <Drawing
-            image={images[access.image.name]}
-            alt={access.image.alt}
-            at="E6:H8"
-            label={access.title}
-            group={2}
-            sizes="(max-width: 1024px) 92vw, 31vw"
-          />
+          <Drawing image={images[terrain.image.name]} alt={terrain.image.alt} at="J1:L3" figure={terrain.figure} group={1} sizes="(max-width: 1024px) 92vw, 24vw" />
+          <Drawing image={images[access.image.name]} alt={access.image.alt} at="J4:L7" figure={access.figure} group={2} sizes="(max-width: 1024px) 92vw, 24vw" />
         </SheetGrid>
       </div>
     </>

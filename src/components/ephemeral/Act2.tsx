@@ -7,14 +7,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Grain from "@/components/Grain";
 import RevealImage from "@/components/RevealImage";
-import { act1, act2, images, type EgImage } from "@/content/ephemeral-ground";
-import { IslandSheets, PhilosophersSheets, withBold } from "./Act2Sheets";
+import { act2, images } from "@/content/ephemeral-ground";
+import { ApplicationSheets, IslandSheets, PhilosophersSheet, withBold } from "./Act2Sheets";
 import LineReveal from "./LineReveal";
 import SlownessMotif, { WALK_FROM } from "./SlownessMotif";
 import SnapStrip from "./SnapStrip";
 import StaggerIn from "./StaggerIn";
 import Strategies from "./Strategies";
-import { StaticFrame } from "./StoryFrames";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -24,38 +23,6 @@ const SLOW = { duration: 1.4, stagger: 0.3 };
 const creditClass = "mt-2 font-ui text-[11px] leading-snug text-ink-green/70";
 const sectionTitle = "font-heading text-[clamp(1.5rem,3vw,2.75rem)] font-semibold text-ink-green";
 const bodyText = "font-body text-[clamp(1rem,1.25vw,1.2rem)] leading-relaxed text-ink-green";
-
-type SlowArticleProps = { image: EgImage; name: string; text: string };
-
-/** One image and one thought to a screen. */
-function SlowArticle({ image, name, text }: SlowArticleProps) {
-  const { src, width, height } = images[image.name];
-  return (
-    <article className="grid items-center gap-8 py-10 md:grid-cols-[auto_minmax(0,34rem)] md:justify-center md:gap-16 md:motion-safe:min-h-[190svh] md:motion-safe:py-0">
-      <figure>
-        <RevealImage
-          src={src}
-          alt={image.alt}
-          width={width}
-          height={height}
-          sizes="(max-width: 768px) 90vw, 50vw"
-          duration={1.4}
-          start="top 65%"
-          style={{ width: `calc(80svh * ${width / height})` }}
-          wrapperClassName="mx-auto w-fit"
-          className="block h-auto max-w-full md:max-w-[50vw]"
-        />
-        {image.credit && <figcaption className={`${creditClass} text-center`}>{image.credit}</figcaption>}
-      </figure>
-      <div>
-        <h4 className="font-heading text-[clamp(1.35rem,2.2vw,2.1rem)] font-semibold text-ink-green">{name}</h4>
-        <LineReveal className={`${bodyText} mt-4`} {...SLOW}>
-          {text}
-        </LineReveal>
-      </div>
-    </article>
-  );
-}
 
 function CaseStrip({ strip }: { strip: (typeof act2.caseStudies.strips)[number] }) {
   const { src, width, height } = images[strip.image.name];
@@ -146,7 +113,7 @@ export default function Act2({ id, label }: { id: string; label: string }) {
       </div>
 
       <div id="philosophers">
-        <PhilosophersSheets act={label} />
+        <PhilosophersSheet act={label} />
       </div>
 
       <div id="neuroscience" className="relative px-4 py-10 md:px-10 md:motion-safe:py-[32svh]">
@@ -192,17 +159,12 @@ export default function Act2({ id, label }: { id: string; label: string }) {
         <Grain surface="colour" />
       </div>
 
-      <div id="application" className="relative px-4 pt-10 md:px-10 md:motion-safe:pt-0 md:motion-safe:pb-[30svh]">
-        <h3 className={sectionTitle}>{act2.applicationTitle}</h3>
-        {act2.application.map((project) => (
-          <SlowArticle key={project.name} image={project.image} name={project.name} text={project.text} />
-        ))}
-        <Grain surface="colour" />
+      <div id="application">
+        <ApplicationSheets act={label} />
       </div>
 
-      {/* The paper has lifted by now: these are cards over the island again, as in Act 1. */}
+      {/* The paper has lifted by now: the island shows through the first sheet's window, and in the gaps. */}
       <div id="back-to-the-island" className="relative">
-        <StaticFrame focus={act1.stops[2].focus} scale={act1.stops[2].scale} ratio={0.9} alt={act1.people.frameAlt} />
         <div className="lg:motion-safe:pt-[45svh] lg:motion-safe:pb-[28svh]">
           <IslandSheets act={label} />
         </div>

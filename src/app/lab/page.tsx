@@ -3,7 +3,10 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import SunPath from "@/components/footer/SunPath";
 import RevealImage from "@/components/RevealImage";
+import Callout from "@/components/sheet/Callout";
+import Drawing from "@/components/sheet/Drawing";
 import Inhabitant from "@/components/sheet/Inhabitant";
+import KeyPlan from "@/components/sheet/KeyPlan";
 import SheetBlock from "@/components/sheet/SheetBlock";
 import SheetGrid from "@/components/sheet/SheetGrid";
 import SiteHeader from "@/components/SiteHeader";
@@ -11,6 +14,7 @@ import TransitionLink from "@/components/TransitionLink";
 import { act1, images as egImages } from "@/content/ephemeral-ground";
 import { ephemeralGroundPreview as home, hero } from "@/content/home";
 import { MAP_H, MAP_W } from "@/lib/ephemeral-geometry";
+import ViewerDemo from "./ViewerDemo";
 
 export const metadata: Metadata = { title: "Lab — Subhana Khan", robots: { index: false } };
 
@@ -84,8 +88,39 @@ export default function LabPage() {
                   {act1.coastlineCredit}
                 </p>
               </SheetBlock>
-              <Inhabitant image={hero.figures[1].image!} at="I4:J8" />
             </SheetGrid>
+          </div>
+        </section>
+
+        <section aria-labelledby="sheet-parts-heading" className="-mx-4 mt-16 md:-mx-10">
+          <h2 id="sheet-parts-heading" className="mb-4 px-4 font-heading text-2xl font-semibold text-ink-green md:px-10">
+            Living sheet: callout, key plan, inhabitant
+          </h2>
+          <SheetGrid title={{ act: "Lab", sheet: "00" }}>
+            <Callout
+              image={egImages["settlement/masterplan"]}
+              alt=""
+              at="A1:H4"
+              figure="Fig. 0.0.1 — A drawing"
+              spot={{ x: 0.3, y: 0.5, size: 0.14 }}
+              sizes="60vw"
+              detail={{ image: egImages["settlement/residential-plan"], alt: "", at: "I1:L4", figure: "Fig. 0.0.2 — A different, more detailed drawing", sizes: "30vw" }}
+            />
+            <Drawing image={egImages["settlement/kitchen-elevation"]} alt="" at="A5:H8" figure="Fig. 0.0.3 — An elevation, with a person inside it" group={1} sizes="60vw" />
+            <Inhabitant image={hero.figures[1].image!} at="F6:F7" />
+            <KeyPlan
+              heading="Key Plan"
+              image={egImages["ground/site-context"]}
+              alt=""
+              at="I5:L7"
+              figure="Fig. 0.0.4 — A key plan"
+              area={{ left: 0.02, top: 0.16, width: 0.09, height: 0.17 }}
+              group={2}
+              sizes="30vw"
+            />
+          </SheetGrid>
+          <div className="mt-6 px-4 md:px-10">
+            <ViewerDemo />
           </div>
         </section>
 

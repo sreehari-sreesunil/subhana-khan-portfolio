@@ -5,11 +5,30 @@ import { useRef, type ComponentProps } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { fetchEarly } from "@/lib/fetch-early";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 // However a trigger gets missed, an image on screen must never stay hidden.
 const FAILSAFE_MS = 2000;
+
+/** A wipe over an empty box shows nothing, so on a slow connection wait for the image, but not for long. */
+function whenLoaded(image: HTMLImageElement | null, run: () => void) {
+  if (!image || image.complete) {
+    run();
+    return;
+  }
+  const once = { once: true };
+  const go = () => {
+    clearTimeout(timeout);
+    image.removeEventListener("load", go);
+    image.removeEventListener("error", go);
+    run();
+  };
+  const timeout = setTimeout(go, FAILSAFE_MS);
+  image.addEventListener("load", go, once);
+  image.addEventListener("error", go, once);
+}
 
 type RevealImageProps = ComponentProps<typeof Image> & {
   wrapperClassName?: string;
@@ -47,6 +66,8 @@ export default function RevealImage({
         return;
       }
 
+      fetchEarly(root);
+
       const mm = gsap.matchMedia();
       mm.add(
         { reduce: "(prefers-reduced-motion: reduce)", full: "(prefers-reduced-motion: no-preference)" },
@@ -60,16 +81,18 @@ export default function RevealImage({
             played = true;
             clearTimeout(failsafe);
             observer.disconnect();
-            if (reduce) {
-              gsap.to(root, { opacity: 1, duration: 0.8, ease: "power2.out", onComplete: finish });
-              return;
-            }
-            gsap.fromTo(
-              root,
-              { clipPath: "inset(100% 0% 0% 0%)" },
-              { clipPath: "inset(0% 0% 0% 0%)", duration, ease: "power3.out", onComplete: finish },
-            );
-            gsap.fromTo(inner, { scale: 1.08 }, { scale: 1, duration, ease: "power3.out" });
+            whenLoaded(root.querySelector("img"), () => {
+              if (reduce) {
+                gsap.to(root, { opacity: 1, duration: 0.8, ease: "power2.out", onComplete: finish });
+                return;
+              }
+              gsap.fromTo(
+                root,
+                { clipPath: "inset(100% 0% 0% 0%)" },
+                { clipPath: "inset(0% 0% 0% 0%)", duration, ease: "power3.out", onComplete: finish },
+              );
+              gsap.fromTo(inner, { scale: 1.08 }, { scale: 1, duration, ease: "power3.out" });
+            });
           };
 
           const observer = new IntersectionObserver(([entry]) => {
