@@ -204,6 +204,14 @@ export default function PageTransition({ children }: { children: ReactNode }) {
         );
   }
 
+  // Safety net: fonts and images can still shift layout after ScrollTrigger has measured it.
+  useEffect(() => {
+    const refresh = () => ScrollTrigger.refresh();
+    document.fonts?.ready?.then(refresh).catch(() => {});
+    if (document.readyState === "complete") refresh();
+    else window.addEventListener("load", refresh, { once: true });
+  }, []);
+
   // Back and Forward never wait for the sheet; one already in progress is dropped.
   useEffect(() => {
     const onPopState = () => {

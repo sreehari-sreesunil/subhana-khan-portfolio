@@ -73,6 +73,8 @@ Verify exact hex values by sampling the extracted page images before finalising.
 
 ## Shared components
 
+- Images on the scroll story need a set width (`w-full`, or a `style` width) with `h-auto`. `w-auto h-auto` is zero
+  tall until the image loads, which moves everything below it after ScrollTrigger has measured the page.
 - `<RevealImage>`: use for images that should wipe up as they enter view (once). Takes all
   `next/image` props, plus `wrapperClassName` for the outer box. Reduced motion: a fade. The
   hidden state is CSS under `html.js`, with a failsafe if the main bundle never runs. Don't use it
@@ -117,6 +119,12 @@ A subtle animated grain over every section, so the screen feels like her paper p
   MotionConfig reducedMotion='user' for Motion, CSS motion-safe: variants for layout, and
   gsap.matchMedia for GSAP.
 - In the thesis "slowness" act, motion deliberately slows down (1.2–1.6s, line-by-line text).
+- Every image (`next/image`, `RevealImage`, images inside a `SnapStrip`) must reserve its space
+  before it loads: a set `width`/`height`, or `fill` on a parent sized with `aspect-ratio`. Never
+  pair `w-auto` with `h-auto` — the box is zero tall until the image loads, which shifts everything
+  below it after ScrollTrigger has measured the page. As a safety net, `PageTransition` calls
+  `ScrollTrigger.refresh()` once on mount after fonts and images settle (`document.fonts.ready`
+  and window `load`) — a backstop, not a substitute for reserving space.
 
 ## Site map
 
