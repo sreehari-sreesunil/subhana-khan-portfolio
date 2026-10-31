@@ -128,9 +128,10 @@ The PDF is out of order: **printed 17–18 are PDF p.11; printed 19–20 are PDF
 
 13. 3,00,000 vs 300,000 (pick one style).
 14. Sentinelese* and starred figures: what do the asterisks refer to?
-15. "Humnn-place relationship" is a typo baked into the Rosa arch (p.23). A corrected image would fix it.
+15. "Humnn-place relationship" is a typo baked into the Rosa arch (p.23). We need a corrected arch collage.
 16. Originals of the settlements strip (p.9) without her text, since the text was lifted off the watercolour digitally and leaves faint smudges.
 17. Who took the site and infrastructure photos (p.10), and which satellite provider the context inset uses.
+18. Approve the figure titles we wrote, as she has no name for these: the 2.6 collage ("A different logic"), the island window ("Great Nicobar") and the 12 site photos.
 
 **Fallback if unavailable:** redraw unit plans as SVG from the p.19 crop, needing her check. Cluster plans stay at about 1×, shown smaller, with no deep zoom.
 
@@ -209,7 +210,7 @@ A visible affordance (a sliver of the next image, plus a small "drag / swipe" la
 ### Act 2: The idea (23–24, then 11–12), "What is slowness in design?"
 Camera parked at the island, dimmed behind paper. See section 5.
 - **2.1 The question.** Her heading alone on a screen, the walking figure. *Motion: figure crosses as you scroll.* The stage is shared by Acts 1 and 2 (`CameraStory`), so the paper fades over the parked camera; the walker and tree live on the stage on desktop, so nothing else needs to pin.
-- **2.2 Philosophers.** Living sheet: one sheet (her sheet 23), the four arches in a row as one dominant drawing, each with its name, caption and figure number beneath. *Motion: drawing → text, arch by arch, within 3s.*
+- **2.2 Philosophers.** Living sheet: one sheet (her sheet 23), the four arches in a row as a series of equals, each with its name, caption and figure number beneath. *Motion: drawing → text, arch by arch, within 3s.*
 - **2.3 Neuroscience.** 6 tiles. *Motion: slow stagger.*
 - **2.4 Case studies.** Strips with short captions. *Native horizontal strip; no pin.*
 - **2.5 Application.** Living sheets: two sheets (her sheet 24), keeping her order and pairs, so each has one large render. *Motion: drawing → line-by-line text, within 3s.*

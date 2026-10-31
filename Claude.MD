@@ -21,7 +21,8 @@ not a page-flipper.
   "Settelers" → "Settlers", "Strait of malacca" → "Strait of Malacca", "166sq.km" → "166 sq.km",
   "Bio-diversity" → "Biodiversity", "Jun'ichirō" → "Jun’ichirō", "inbuild" → "inbuilt", "Community hall" → "Community Hall",
   "veranda" → "verandah", "build structures are build" → "built structures are built",
-  "six potential" → "Six potential", "Campbell bay" → "Campbell Bay". Dashes in her text: the shorter en dash (–).
+  "six potential" → "Six potential", "Campbell bay" → "Campbell Bay",
+  "Contour intrevals" → "Contour intervals". Dashes in her text: the shorter en dash (–).
 
 ## Stack
 
@@ -154,7 +155,8 @@ Every living sheet follows these. Anything short of them is reported, not hidden
   The numbers are generated in order in the content file by `figures(section)`. Use her titles where they exist.
 - Honest furniture: keep the title block (project, act, her original sheet number). Quiet tick marks, no A–L / 1–8 letters.
   `Inhabitant` only inside sections, elevations and renders at drawing scale, never beside a diagram.
-- Composition: one dominant drawing per sheet (about 50% of the area or more); text tops and edges line up with drawing
+- Composition: each sheet has EITHER one clear hero (≥ ~1.5x the area of the next largest element) OR a deliberate series
+  of equals (like her p.23). Never crop her drawings to get there. Text tops and edges line up with drawing
   edges; text columns about 45–70 characters; about 5 elements a sheet; coverage about 50–70%, not 100%.
 
 ## Site map

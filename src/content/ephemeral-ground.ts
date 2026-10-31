@@ -517,7 +517,7 @@ export const act3 = {
     // OCR, proofread
     data: [
       "Site area- 100 acres",
-      "Contour intrevals - 1m",
+      "Contour intervals - 1m",
       "Elevation - 35m",
       "Ecological footprint - Zero-disruption to Mangrove & Wetland Corridors",
     ],
@@ -567,7 +567,7 @@ export const act3 = {
     keyPlan: {
       heading: "Key Plan",
       image: { name: "ground/site-context", alt: "Her map of the site's surroundings, with the selected site boxed.", credit: "Satellite imagery: provider to confirm" } satisfies EgImage,
-      figure: fig35("Selected site"),
+      figure: fig35("Key plan: site location"),
       // Round the block marked 1 on her map.
       area: { left: 0.02, top: 0.16, width: 0.09, height: 0.17 },
     },

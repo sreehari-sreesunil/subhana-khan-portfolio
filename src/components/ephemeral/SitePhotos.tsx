@@ -78,7 +78,7 @@ export default function SitePhotos({ act }: { act: string }) {
           heading={keyPlan.heading}
           image={images[keyPlan.image.name]}
           alt={keyPlan.image.alt}
-          at="J1:L4"
+          at="J1:K4"
           figure={keyPlan.figure}
           credit={keyPlan.image.credit}
           area={keyPlan.area}
