@@ -45,9 +45,9 @@ function SlowArticle({ image, name, maxHeight = "80svh", parts, text }: SlowArti
           sizes="(max-width: 768px) 90vw, 50vw"
           duration={1.4}
           start="top 65%"
-          style={{ maxHeight }}
+          style={{ width: `calc(${maxHeight} * ${width / height})` }}
           wrapperClassName="mx-auto w-fit"
-          className="block h-auto w-auto max-w-full md:max-w-[50vw]"
+          className="block h-auto max-w-full md:max-w-[50vw]"
         />
         {image.credit && <figcaption className={`${creditClass} text-center`}>{image.credit}</figcaption>}
       </figure>

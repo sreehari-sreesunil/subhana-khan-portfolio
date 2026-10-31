@@ -12,6 +12,9 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const { title, quadrants } = act2.strategies;
 
+// Her sketches are small crops: shown a little under their own size, so they stay sharp.
+const SKETCH_SCALE = 0.85;
+
 // Grid cell, and where each label sits: at its own end of the axes, turning clockwise, as on her page.
 const places = [
   { cell: "lg:pt-11", label: "lg:top-0 lg:right-[calc(50%+1.25rem)]" },
@@ -140,7 +143,9 @@ export default function Strategies() {
                       width={image.width}
                       height={image.height}
                       sizes="(max-width: 1024px) 80vw, 15vw"
-                      className="mx-auto block h-auto max-h-44 w-auto max-w-full shrink-0 lg:mx-0 lg:max-h-40 lg:max-w-[38%]"
+                      // A set width, so the page's height is right before the image loads.
+                      style={{ width: image.width * SKETCH_SCALE }}
+                      className="mx-auto block h-auto max-w-full shrink-0 lg:mx-0 lg:max-w-[38%]"
                     />
                     <p className="mt-3 flex-1 font-body text-[0.95rem] leading-relaxed text-ink-green lg:mt-0 lg:text-[clamp(0.85rem,1vw,0.95rem)]">
                       {item.text}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Act1 from "@/components/ephemeral/Act1";
 import Act2 from "@/components/ephemeral/Act2";
+import Act3 from "@/components/ephemeral/Act3";
 import ActNavigator from "@/components/ephemeral/ActNavigator";
 import CameraStory from "@/components/ephemeral/CameraStory";
 import Opening from "@/components/ephemeral/Opening";
@@ -12,7 +13,7 @@ import { acts } from "@/content/ephemeral-ground";
 export const metadata: Metadata = { title: "Ephemeral Ground — Subhana Khan" };
 
 export default function EphemeralGroundPage() {
-  const [first, second, ...rest] = acts;
+  const [first, second, third, ...rest] = acts;
   return (
     <>
       <SiteHeader variant="halo" />
@@ -22,6 +23,7 @@ export default function EphemeralGroundPage() {
         <CameraStory titleId={`${first.id}-title`} title={`${first.number} ${first.navLabel}`}>
           <Act1 id={first.id} />
           <Act2 id={second.id} label={`${second.number} ${second.navLabel}`} />
+          <Act3 id={third.id} title={`${third.number} ${third.navLabel}`} />
         </CameraStory>
         {/* TEMP: placeholders until each act is built. */}
         {rest.map((act, i) => (

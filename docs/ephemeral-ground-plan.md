@@ -129,6 +129,8 @@ The PDF is out of order: **printed 17–18 are PDF p.11; printed 19–20 are PDF
 13. 3,00,000 vs 300,000 (pick one style).
 14. Sentinelese* and starred figures: what do the asterisks refer to?
 15. "Humnn-place relationship" is a typo baked into the Rosa arch (p.23). A corrected image would fix it.
+16. Originals of the settlements strip (p.9) without her text, since the text was lifted off the watercolour digitally and leaves faint smudges.
+17. Who took the site and infrastructure photos (p.10), and which satellite provider the context inset uses.
 
 **Fallback if unavailable:** redraw unit plans as SVG from the p.19 crop, needing her check. Cluster plans stay at about 1×, shown smaller, with no deep zoom.
 
@@ -215,7 +217,7 @@ Camera parked at the island, dimmed behind paper. See section 5.
 - **2.7 Strategies.** Teal page as HTML over her sketches. *Motion: quadrants open from the centre axes.*
 
 ### Act 3: The ground (09–10), "Where exactly?"
-- **3.1 Land analysis.** 3 island maps + text over held camera. *Motion: maps crossfade in place.*
+- **3.1 Land analysis.** 3 island maps + text over held camera. *Motion: maps crossfade in place.* The maps live on the stage (`LandMaps`), so no second sticky element is needed.
 - **3.2 The settlements.** Hand-coloured strip. *Native horizontal strip; no pin.*
 - **3.3 The site.** Camera to the site stop; outline draws on the coast (reuse the home boundary). *Motion: signature zoom continues.*
 - **3.4 Contours.** Contour site plan, site data as text. *Motion: `RevealImage` for now.* Optional later: contour lines drawing in (last build step).

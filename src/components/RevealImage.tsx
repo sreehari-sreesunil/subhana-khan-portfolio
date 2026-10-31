@@ -8,6 +8,9 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
+// However a trigger gets missed, an image on screen must never stay hidden.
+const FAILSAFE_MS = 2000;
+
 type RevealImageProps = ComponentProps<typeof Image> & {
   wrapperClassName?: string;
   /** Seconds. */
@@ -49,23 +52,37 @@ export default function RevealImage({
         { reduce: "(prefers-reduced-motion: reduce)", full: "(prefers-reduced-motion: no-preference)" },
         (context) => {
           const reduce = Boolean(context.conditions?.reduce);
-          ScrollTrigger.create({
-            trigger: root,
-            start,
-            once: true,
-            onEnter: () => {
-              if (reduce) {
-                gsap.to(root, { opacity: 1, duration: 0.8, ease: "power2.out", onComplete: finish });
-                return;
-              }
-              gsap.fromTo(
-                root,
-                { clipPath: "inset(100% 0% 0% 0%)" },
-                { clipPath: "inset(0% 0% 0% 0%)", duration, ease: "power3.out", onComplete: finish },
-              );
-              gsap.fromTo(inner, { scale: 1.08 }, { scale: 1, duration, ease: "power3.out" });
-            },
+          let played = false;
+          let failsafe: ReturnType<typeof setTimeout> | undefined;
+
+          const play = () => {
+            if (played) return;
+            played = true;
+            clearTimeout(failsafe);
+            observer.disconnect();
+            if (reduce) {
+              gsap.to(root, { opacity: 1, duration: 0.8, ease: "power2.out", onComplete: finish });
+              return;
+            }
+            gsap.fromTo(
+              root,
+              { clipPath: "inset(100% 0% 0% 0%)" },
+              { clipPath: "inset(0% 0% 0% 0%)", duration, ease: "power3.out", onComplete: finish },
+            );
+            gsap.fromTo(inner, { scale: 1.08 }, { scale: 1, duration, ease: "power3.out" });
+          };
+
+          const observer = new IntersectionObserver(([entry]) => {
+            clearTimeout(failsafe);
+            if (entry.isIntersecting) failsafe = setTimeout(play, FAILSAFE_MS);
           });
+          observer.observe(root);
+          ScrollTrigger.create({ trigger: root, start, once: true, onEnter: play });
+
+          return () => {
+            clearTimeout(failsafe);
+            observer.disconnect();
+          };
         },
       );
     },

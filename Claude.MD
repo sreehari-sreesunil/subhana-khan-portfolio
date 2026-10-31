@@ -78,7 +78,7 @@ Verify exact hex values by sampling the extracted page images before finalising.
 - `<RevealImage>`: use for images that should wipe up as they enter view (once). Takes all
   `next/image` props, plus `wrapperClassName` for the outer box. Reduced motion: a fade. The
   hidden state is CSS under `html.js`, with a failsafe if the main bundle never runs. Don't use it
-  for anything above the fold on load (it would flash in after hydration).
+  for anything above the fold on load (it would flash in after hydration). In view and unrevealed after 2s, it reveals anyway.
 - `data-cursor="enter"`: on an element that navigates when clicked, the dot grows into an
   "Enter" circle. Never put it on something that isn't clickable. Links and buttons grow the dot
   automatically. Text fields keep the native cursor. Fine pointers only, off under reduced motion.

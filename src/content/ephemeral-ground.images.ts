@@ -16,7 +16,7 @@ export const images = {
   "ground/tribal-map": { src: "/images/ephemeral-ground/ground/tribal-map.webp", width: 480, height: 660 },
   "ground/project-land-map": { src: "/images/ephemeral-ground/ground/project-land-map.webp", width: 460, height: 665 },
   "ground/land-use-map": { src: "/images/ephemeral-ground/ground/land-use-map.webp", width: 475, height: 660 },
-  "ground/settlements-strip": { src: "/images/ephemeral-ground/ground/settlements-strip.webp", width: 1753, height: 192 },
+  "ground/settlements-strip": { src: "/images/ephemeral-ground/ground/settlements-strip.webp", width: 1753, height: 480 },
   "ground/infrastructure-strip": { src: "/images/ephemeral-ground/ground/infrastructure-strip.webp", width: 1417, height: 195 },
   "ground/contour-plan": { src: "/images/ephemeral-ground/ground/contour-plan.webp", width: 1157, height: 545 },
   "ground/site-section": { src: "/images/ephemeral-ground/ground/site-section.webp", width: 1165, height: 165 },

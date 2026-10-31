@@ -6,15 +6,18 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Grain from "@/components/Grain";
-import { act1 } from "@/content/ephemeral-ground";
+import { act1, act3 } from "@/content/ephemeral-ground";
 import { ephemeralGroundPreview as home } from "@/content/home";
 import { createCamera } from "@/lib/camera";
 import { MAP_H, MAP_W } from "@/lib/ephemeral-geometry";
+import LandMaps from "./LandMaps";
+import SiteBoundary from "./SiteBoundary";
 import SlownessMotif, { WALK_FROM } from "./SlownessMotif";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const PAPER_OPACITY = 0.88;
+const DOT_PX = 4;
 
 type CameraStoryProps = { titleId: string; title: string; children: ReactNode };
 
@@ -27,14 +30,19 @@ export default function CameraStory({ titleId, title, children }: CameraStoryPro
     () => {
       const root = rootRef.current;
       const world = root?.querySelector<HTMLElement>("[data-act-world]");
-      if (!root || !world) return;
+      const boundary = root?.querySelector<SVGElement>("[data-site-boundary]");
+      if (!root || !world || !boundary) return;
 
       const mm = gsap.matchMedia();
       mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
         const camera = createCamera({
           world,
           size: { width: MAP_W, height: MAP_H },
-          stops: act1.stops.map(({ center, scale }) => ({ center, scale })),
+          stops: [...act1.stops, act3.site.stop].map(({ center, scale }) => ({ center, scale })),
+          // The outline's dots stay the same size on screen as the camera closes in.
+          onMove: (scale) => {
+            boundary.setAttribute("stroke-width", String((DOT_PX * MAP_W) / (world.clientWidth * scale)));
+          },
         });
         // Each leg's own ScrollTrigger reports how far along it is. One smoothed value follows their
         // sum, so a jump past several legs can never leave two tweens fighting over the camera.
@@ -69,6 +77,28 @@ export default function CameraStory({ titleId, title, children }: CameraStoryPro
           .to("[data-stage-motif]", { opacity: 1, duration: 0.1 }, 0)
           .fromTo("[data-stage-motif] [data-walker]", { xPercent: WALK_FROM }, { xPercent: 0, duration: 1 }, 0)
           .to("[data-stage-motif]", { opacity: 0, duration: 0.1 }, 0.9);
+
+        // Her three maps take turns in one place while the camera holds on the island.
+        const maps = gsap.utils.toArray<HTMLElement>("[data-stage-map]", root);
+        const fade = 0.08;
+        gsap
+          .timeline({
+            defaults: { ease: "none", duration: fade },
+            scrollTrigger: { trigger: "#land-analysis", start: "top 50%", end: "bottom 45%", scrub: 0.6 },
+          })
+          .to("[data-stage-maps]", { opacity: 1 }, 0)
+          .to(maps[1], { opacity: 1 }, 0.32)
+          .to(maps[2], { opacity: 1 }, 0.6)
+          .to("[data-stage-maps]", { opacity: 0 }, 1 - fade);
+
+        // Her outline draws on the coast as the camera arrives at the site.
+        gsap
+          .timeline({
+            defaults: { ease: "none" },
+            scrollTrigger: { trigger: "#where-exactly [data-act-card]", start: "top 70%", end: "top 20%", scrub: 0.6 },
+          })
+          .to(boundary, { opacity: 1, duration: 0.1 }, 0)
+          .to("[data-site-reveal]", { attr: { "stroke-dashoffset": 0 }, duration: 1 }, 0);
       });
     },
     { scope: rootRef },
@@ -84,6 +114,9 @@ export default function CameraStory({ titleId, title, children }: CameraStoryPro
         >
           <div data-act-world className="absolute inset-0">
             <Image src={home.map.src} alt={home.mapAlt} fill sizes="100vw" loading="eager" />
+            <svg aria-hidden="true" viewBox={`0 0 ${MAP_W} ${MAP_H}`} className="absolute inset-0 size-full overflow-visible">
+              <SiteBoundary id="story-site" dots="0 0.24" />
+            </svg>
           </div>
         </div>
         <h2
@@ -99,6 +132,9 @@ export default function CameraStory({ titleId, title, children }: CameraStoryPro
           <div data-stage-paper className="paper-fibre absolute inset-0 z-50 bg-paper opacity-0" />
           <div data-stage-motif className="absolute inset-x-0 bottom-[12%] z-50 h-[30svh] opacity-0">
             <SlownessMotif />
+          </div>
+          <div data-stage-maps className="absolute top-[calc(2.5rem+5svh)] right-[max(26vw,21rem)] bottom-[5svh] z-50 aspect-[480/690] opacity-0">
+            <LandMaps />
           </div>
           <p className="absolute right-10 bottom-3 z-50 font-ui text-[11px] text-ink-green/70">{act1.coastlineCredit}</p>
         </div>

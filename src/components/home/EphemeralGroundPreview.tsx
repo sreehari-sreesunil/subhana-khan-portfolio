@@ -10,16 +10,14 @@ import Grain from "@/components/Grain";
 import { getLenis } from "@/components/SmoothScroll";
 import TransitionLink from "@/components/TransitionLink";
 import { createCamera } from "@/lib/camera";
-import { DEPTH, MAP_H, MAP_W, planH, planW, planX, planY } from "@/lib/ephemeral-geometry";
+import SiteBoundary from "@/components/ephemeral/SiteBoundary";
+import { DEPTH, MAP_H, MAP_W, planW, planX, planY } from "@/lib/ephemeral-geometry";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const DOT_PX = 3;
 
 const { site, sitePlan } = content;
-const outlinePoints = site.outline
-  .map(([x, y]) => `${(planX + x * planW).toFixed(2)},${(planY + y * planH).toFixed(2)}`)
-  .join(" ");
 
 const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
 
@@ -38,8 +36,8 @@ export default function EphemeralGroundPreview() {
       const map = section.querySelector<HTMLElement>("[data-eg-map]");
       const marks = gsap.utils.toArray<Element>("[data-eg-mark]", section);
       const plan = section.querySelector<HTMLElement>("[data-eg-plan]");
-      const boundary = section.querySelector<SVGElement>("[data-eg-boundary]");
-      const reveal = section.querySelector<SVGElement>("[data-eg-reveal]");
+      const boundary = section.querySelector<SVGElement>("[data-site-boundary]");
+      const reveal = section.querySelector<SVGElement>("[data-site-reveal]");
       const text = gsap.utils.toArray<HTMLElement>("[data-eg-text]", section);
       const replay = section.querySelector<HTMLElement>("[data-eg-replay]");
       const planStatic = section.querySelector<HTMLElement>("[data-eg-plan-static]");
@@ -204,29 +202,7 @@ export default function EphemeralGroundPreview() {
                   strokeLinecap="round"
                   strokeDasharray="0 4.2"
                 />
-                <mask id="eg-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width={MAP_W} height={MAP_H}>
-                  <polygon
-                    data-eg-reveal
-                    points={outlinePoints}
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="1"
-                    pathLength={1}
-                    strokeDasharray="1"
-                    strokeDashoffset="1"
-                  />
-                </mask>
-                <g mask="url(#eg-reveal)">
-                  <polygon
-                    data-eg-boundary
-                    points={outlinePoints}
-                    fill="none"
-                    stroke="#E2002C"
-                    strokeLinecap="round"
-                    strokeDasharray="0 0.5"
-                    opacity="0"
-                  />
-                </g>
+                <SiteBoundary id="eg-reveal" dots="0 0.5" />
               </svg>
               <div
                 data-eg-mark

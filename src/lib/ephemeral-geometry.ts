@@ -12,6 +12,11 @@ export const planH = (planW * sitePlan.height) / sitePlan.width;
 export const planX = site.target.x - ((site.drawing.left + site.drawing.right) / 2) * planW;
 export const planY = site.target.y - ((site.drawing.top + site.drawing.bottom) / 2) * planH;
 
+/** The site's boundary in map units, traced from her plan's edge. */
+export const outlinePoints = site.outline
+  .map(([x, y]) => `${(planX + x * planW).toFixed(2)},${(planY + y * planH).toFixed(2)}`)
+  .join(" ");
+
 // The drawing ends at 86% of the visual's width, which sets how deep the camera goes.
 export const DEPTH = (0.86 * MAP_W) / site.widthUnits;
 

@@ -2,11 +2,17 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-type SnapStripProps = { label: string; hint: string; children: ReactNode };
+type SnapStripProps = {
+  label: string;
+  hint: string;
+  /** It fits the page on desktop, so the controls are for phones only. */
+  fitsDesktop?: boolean;
+  children: ReactNode;
+};
 
 // A native sideways scroller, so nothing is pinned and touch just works. It rests on each [data-snap]
 // inside it. The arrows and the line under it show there's more, and serve mice without sideways scroll.
-export default function SnapStrip({ label, hint, children }: SnapStripProps) {
+export default function SnapStrip({ label, hint, fitsDesktop, children }: SnapStripProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLSpanElement>(null);
   const [atStart, setAtStart] = useState(true);
@@ -54,7 +60,7 @@ export default function SnapStrip({ label, hint, children }: SnapStripProps) {
       >
         {children}
       </div>
-      <div className="mt-5 flex items-center gap-4 px-4 font-ui text-xs tracking-wide text-accent-terracotta md:px-10">
+      <div className={`mt-5 flex items-center gap-4 px-4 font-ui text-xs tracking-wide text-accent-terracotta md:px-10 ${fitsDesktop ? "md:hidden" : ""}`}>
         <span>{hint}</span>
         <span aria-hidden="true" className="relative h-px flex-1 bg-ink-green/20">
           <span ref={barRef} className="absolute inset-0 origin-left scale-x-0 bg-accent-terracotta" />

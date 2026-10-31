@@ -22,6 +22,8 @@ from psd_tools import PSDImage
 Image.MAX_IMAGE_PIXELS = None
 
 OUT = Path("public/images/ephemeral-ground")
+# Swapped in only once every image has saved, so a failed run leaves the site's images alone.
+BUILD = Path("assets-src/extracted/ephemeral-ground-build")
 MANIFEST = Path("src/content/ephemeral-ground.images.ts")
 QUALITY = 82
 
@@ -49,7 +51,7 @@ CROPS = {
     "ground/tribal-map": (9, (85, 40, 565, 700)),
     "ground/project-land-map": (9, (680, 40, 1140, 705)),
     "ground/land-use-map": (9, (1260, 40, 1735, 700)),
-    "ground/settlements-strip": (9, (0, 978, 1753, 1170)),
+    "ground/settlements-strip": (9, (0, 735, 1753, 1215)),
     "ground/infrastructure-strip": (10, (28, 40, 1445, 235)),
     "ground/contour-plan": (10, (65, 290, 1222, 835)),
     "ground/site-section": (10, (80, 825, 1245, 990)),
@@ -118,7 +120,7 @@ PAINT_WHITE = {
     "ground/tribal-map": [(85, 40, 310, 54)],
     "ground/infrastructure-strip": [(28, 40, 215, 75)],
     "ground/contour-plan": [(640, 737, 1222, 835), (420, 835, 505, 742, 640, 728, 640, 835)],
-    "ground/site-section": [(700, 825, 1245, 905), (85, 825, 215, 885)],
+    "ground/site-section": [(700, 825, 1245, 905), (85, 825, 215, 885), (370, 825, 530, 825, 490, 868, 370, 868)],
     "ground/site-context": [(1615, 770, 1712, 842)],
     "settlement/isometric-model": [(1005, 405, 1040, 575)],
     "settlement/masterplan": [(1360, 985, 1700, 1066)],
@@ -135,6 +137,14 @@ PAINT_WHITE = {
     "settlement/visitors-section": [(200, 875, 830, 1055)],
     "settlement/cultural-plan": [(700, 90, 1400, 400), (90, 90, 400, 108)],
     "idea/slope-ratio": [(1100, 438, 1392, 519), (852, 683, 1010, 802)],
+}
+
+# Her text sits on watercolour here, so white paint would show: only the ink is lifted (see lift_text).
+LIFT_TEXT = {
+    "ground/settlements-strip": [
+        (5, 752, 216, 800), (290, 800, 500, 848), (432, 735, 668, 782), (936, 936, 1134, 980), (1276, 862, 1492, 908),
+        (1522, 852, 1734, 896), (688, 790, 1154, 936), (1252, 700, 1722, 844), (1660, 1172, 1704, 1198),
+    ],
 }
 
 # name: (PSD layer id, widest px to keep, crop or None)
@@ -172,7 +182,10 @@ SMART_OBJECTS = {
 STACKED_RENDERS = ("idea/render-library", 1784, 1785)
 
 # Cut from her white page, and shown on paper: white becomes transparent, as if printed on it.
-ON_PAPER = {"idea/arch-collage", "idea/terrain", "idea/slope-ratio", "idea/accessibility"}
+ON_PAPER = {
+    "idea/arch-collage", "idea/terrain", "idea/slope-ratio", "idea/accessibility", "ground/settlements-strip",
+    "ground/infrastructure-strip", "ground/contour-plan", "ground/site-section", "ground/site-context",
+}
 
 # Her sketches sit on the teal page with hard crop edges, so those edges fade out.
 SOFT_EDGE = 12
@@ -183,7 +196,7 @@ PLAN_MOBILE = ("opening/plan-mobile", "assets-src/extracted/ug-thesis-ab20/site-
 
 
 def save(image, name, manifest):
-    path = OUT / f"{name}.webp"
+    path = BUILD / f"{name}.webp"
     path.parent.mkdir(parents=True, exist_ok=True)
     image.save(path, "WEBP", quality=QUALITY, method=6)
     manifest[name] = (f"/images/ephemeral-ground/{name}.webp", image.width, image.height, path.stat().st_size)
@@ -210,8 +223,37 @@ def soften(image):
     return soft
 
 
+def lift_text(page, boxes):
+    """Finds the dark strokes in each box and rebuilds only those pixels from the wash around them."""
+    out = page.copy()
+    for box in boxes:
+        reach = 24
+        left, top = max(box[0] - reach, 0), max(box[1] - reach, 0)
+        area = (left, top, min(box[2] + reach, page.width), min(box[3] + reach, page.height))
+        patch = out.crop(area)
+        grey = patch.convert("L")
+        darker = numpy.asarray(grey.filter(ImageFilter.GaussianBlur(12)), dtype=float) - numpy.asarray(grey, dtype=float)
+        ink = numpy.zeros(darker.shape, dtype=bool)
+        inside = (slice(box[1] - top, box[3] - top), slice(box[0] - left, box[2] - left))
+        ink[inside] = darker[inside] > 10
+        hole = numpy.asarray(Image.fromarray((ink * 255).astype("uint8")).filter(ImageFilter.MaxFilter(7)), dtype=float) / 255
+        keep = 1 - hole
+        pixels = numpy.asarray(patch, dtype=float)
+        rebuilt = numpy.empty_like(pixels)
+        # Close, then wider where a line of text leaves nothing nearby to copy.
+        for radius in (24, 6):
+            weight = numpy.asarray(Image.fromarray((keep * 255).astype("uint8")).filter(ImageFilter.GaussianBlur(radius)), dtype=float)
+            for channel in range(3):
+                kept = Image.fromarray((pixels[..., channel] * keep).astype("uint8")).filter(ImageFilter.GaussianBlur(radius))
+                value = numpy.asarray(kept, dtype=float) / numpy.maximum(weight, 1) * 255
+                rebuilt[..., channel] = value if radius == 24 else numpy.where(weight > 40, value, rebuilt[..., channel])
+        merged = pixels * keep[..., None] + rebuilt * hole[..., None]
+        out.paste(Image.fromarray(numpy.clip(merged, 0, 255).astype("uint8")), (left, top))
+    return out
+
+
 def crop_page(page, name, box):
-    image = page.copy()
+    image = lift_text(page, LIFT_TEXT[name]) if name in LIFT_TEXT else page.copy()
     draw = ImageDraw.Draw(image)
     for shape in PAINT_WHITE.get(name, []):
         if len(shape) == 4:
@@ -222,8 +264,8 @@ def crop_page(page, name, box):
 
 
 def main():
-    if OUT.exists():
-        shutil.rmtree(OUT)
+    if BUILD.exists():
+        shutil.rmtree(BUILD)
     manifest = {}
     pdf = pymupdf.open("assets-src/portfolio.pdf")
     pages = {}
@@ -271,6 +313,10 @@ def main():
     stacked.paste(top, (0, 0))
     stacked.paste(bottom, (0, top.height))
     save(stacked, name, manifest)
+
+    if OUT.exists():
+        shutil.rmtree(OUT)
+    BUILD.replace(OUT)
 
     lines = [
         "// Generated by scripts/extract-ephemeral-assets.py. Do not edit by hand.",

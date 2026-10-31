@@ -438,6 +438,87 @@ export const act2 = {
   },
 };
 
+// Act 3 (pp.09–10). Nothing here is in the PSD.
+export const act3 = {
+  scrollHint: "Scroll sideways",
+  landAnalysis: {
+    maps: [
+      {
+        name: "ground/tribal-map",
+        alt: "Map of tribal areas, forest and national parks on Great Nicobar.",
+        credit: "Dr M. Chandi, ANTRI RAC, with A&N Forest Dept GIS cell, 2018",
+      },
+      {
+        name: "ground/project-land-map",
+        alt: "Map of the land within the project area.",
+        credit: "NITI Aayog, Holistic Development of Great Nicobar Island",
+      },
+      { name: "ground/land-use-map", alt: "Map of proposed land use.", credit: TO_CONFIRM },
+    ] as { name: ImageName; alt: string; credit: string }[],
+    // OCR, proofread
+    text: "The land use analysis reveals a major shift in Great Nicobar, from predominantly protected forests and indigenous settlements to a development-oriented landscape shaped by the proposed port, airport and township. Changes to protected zones and the reclassification of native village lands raise concerns about ecological loss and the displacement of existing communities.",
+  },
+  settlements: {
+    label: "The settlements",
+    image: { name: "ground/settlements-strip", alt: "Hand-coloured strip of the coast with its settlements circled and joined by the road." } satisfies EgImage,
+    // OCR, proofread
+    text: "six potential locations were assessed based on institutional proximity, tourism potential, access to infrastructure, ecological sensitivity, suitability for forest-edge development and compatibility with indigenous land rights. The assessment aimed to identify a location that balances user accessibility with minimal environmental disturbance and respect for existing communities.",
+    // Where her names sit, as % of the strip.
+    names: [
+      { name: "Campbell bay", left: 0.6, top: 5 },
+      { name: "Govind Nagar", left: 16.7, top: 15.2 },
+      { name: "Joginder Nagar", left: 24.9, top: 1.5 },
+      { name: "Laxmi Nagar", left: 53.7, top: 43 },
+      { name: "Gandhi Nagar", left: 73.1, top: 27.7 },
+      { name: "Shastri Nagar", left: 87.1, top: 25.6 },
+    ],
+  },
+  site: {
+    /** The coast at Campbell Bay. Her plan is drawn about 47× true size, as on the home page. */
+    stop: { center: home.site.target, scale: 80 },
+    frameAlt: "The coast at Campbell Bay on Great Nicobar, with the site outlined in red dots.",
+    // OCR, proofread
+    text: "Located near Campbell Bay, Great Nicobar’s main urban centre, the site is surrounded by an educational campus, housing, agricultural land and established road networks. Nearby markets, schools, healthcare, administrative offices and recreational facilities provide essential amenities, offering a connected base for a nature-integrated neighbourhood.",
+  },
+  plan: {
+    title: "Site plan",
+    image: { name: "ground/contour-plan", alt: "Site plan with contours, water catchments and the coast." } satisfies EgImage,
+    // OCR, proofread
+    data: [
+      "Site area- 100 acres",
+      "Contour intrevals - 1m",
+      "Elevation - 35m",
+      "Ecological footprint - Zero-disruption to Mangrove & Wetland Corridors",
+    ],
+    legend: ["Bay of Bengal", "Laxman beach", "Water catchment basin", "Access road", "Wetland", "Forest"],
+    wind: ["Wind from North-west", "Wind from South-west"],
+    layout:
+      "The layout follows the natural topography, placing buildings within existing clearings and higher contours while preserving drainage channels and water catchments. Institutional zones are positioned near access routes, allowing the inner site to retain forest and wetland corridors. Shaded pedestrian connections integrate daily movement with the natural landscape while minimising ecological disturbance.",
+    transect:
+      "The transect shows the transition from the island’s interior forests to the Bay of Bengal coast. The layout follows the natural contours, preserving water catchments, wetlands and coastal ecosystems while integrating low-impact buildings and pedestrian connections.",
+  },
+  context: {
+    infrastructure: {
+      title: "Infrastructure",
+      image: { name: "ground/infrastructure-strip", alt: "Photographs of buildings and streets near the site.", credit: "Photographer to confirm" } satisfies EgImage,
+    },
+    section: {
+      title: "Site section",
+      image: { name: "ground/site-section", alt: "Long section from the interior forest to the coast." } satisfies EgImage,
+    },
+    map: {
+      title: "Site context",
+      image: { name: "ground/site-context", alt: "Map of the site's surroundings with a satellite inset.", credit: "Satellite imagery: provider to confirm" } satisfies EgImage,
+      // OCR, proofread
+      key: ["Selected site", "Educational campus", "Apartment society", "INS Baaz", "Port", "Residential area"],
+    },
+    photos: {
+      title: "Site photos",
+      image: { name: "ground/site-photos", alt: "Aerial photographs of forest, mangrove and beach.", credit: "Photographer to confirm" } satisfies EgImage,
+    },
+  },
+};
+
 export const acts: EgAct[] = [
   {
     id: "act-1",
@@ -463,39 +544,8 @@ export const acts: EgAct[] = [
     navLabel: "THE GROUND",
     question: "Where exactly?",
     pages: [9, 10],
-    sections: [
-      {
-        id: "land-analysis",
-        pages: [9],
-        images: [
-          { name: "ground/tribal-map", alt: "Map of tribal areas, forest and national parks on Great Nicobar.", credit: "Dr M Chandi, ANTRI RAC, with A&N Forest Dept GIS cell, 2018" },
-          { name: "ground/project-land-map", alt: "Map of the land within the project area.", credit: "NITI Aayog, Holistic Development of Great Nicobar Island" },
-          { name: "ground/land-use-map", alt: "Map of proposed land use.", credit: TO_CONFIRM },
-        ],
-      },
-      {
-        id: "settlements",
-        pages: [9],
-        images: [{ name: "ground/settlements-strip", alt: "Hand-coloured strip of the coast with its settlements circled." }],
-      },
-      { id: "site", title: "Site plan", pages: [10], images: [] },
-      {
-        id: "contours",
-        pages: [10],
-        images: [{ name: "ground/contour-plan", alt: "Site plan with contours, water catchments and the coast." }],
-      },
-      {
-        id: "context",
-        title: "Site context",
-        pages: [10],
-        images: [
-          { name: "ground/infrastructure-strip", alt: "Photographs of buildings and streets near the site.", credit: "Photographer to confirm" },
-          { name: "ground/site-section", alt: "Long section from the interior forest to the coast." },
-          { name: "ground/site-context", alt: "Map of the site's surroundings with a satellite inset.", credit: "Satellite imagery provider to confirm" },
-          { name: "ground/site-photos", alt: "Aerial photographs of forest, mangrove and beach.", credit: "Photographer to confirm" },
-        ],
-      },
-    ],
+    // Built from `act3` above.
+    sections: [],
   },
   {
     id: "act-4",
