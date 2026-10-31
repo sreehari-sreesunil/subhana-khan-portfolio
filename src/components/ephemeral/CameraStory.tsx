@@ -10,9 +10,9 @@ import { act1, act3 } from "@/content/ephemeral-ground";
 import { ephemeralGroundPreview as home } from "@/content/home";
 import { createCamera } from "@/lib/camera";
 import { MAP_H, MAP_W, storyOutlinePoints } from "@/lib/ephemeral-geometry";
-import LandMaps from "./LandMaps";
 import SiteBoundary from "./SiteBoundary";
 import SlownessMotif, { WALK_FROM } from "./SlownessMotif";
+import ZoneShapes from "./ZoneShapes";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -56,13 +56,11 @@ export default function CameraStory({ titleId, title, children }: CameraStoryPro
         // Tracing paper over the parked island: it settles as Act 2 arrives, and lifts again for 2.6.
         // As with the camera, one smoothed value follows both, so a long jump can't leave them fighting.
         const paper = gsap.quickTo("[data-stage-paper]", "opacity", { duration: 0.6, ease: "power3" });
-        const stageTitle = gsap.quickTo("[data-stage-title]", "opacity", { duration: 0.6, ease: "power3" });
         const edges: ScrollTrigger[] = [];
         const followPaper = () => {
           const [arrive, lift] = edges;
           if (!arrive || !lift) return;
           paper(PAPER_OPACITY * (arrive.progress - lift.progress));
-          stageTitle(1 - Math.min(arrive.progress * 2, 1));
         };
         ["#act-2", "#back-to-the-island"].forEach((trigger) => {
           edges.push(ScrollTrigger.create({ trigger, start: "top 90%", end: "top 25%", onUpdate: followPaper, onRefresh: followPaper }));
@@ -78,18 +76,22 @@ export default function CameraStory({ titleId, title, children }: CameraStoryPro
           .fromTo("[data-stage-motif] [data-walker]", { xPercent: WALK_FROM }, { xPercent: 0, duration: 1 }, 0)
           .to("[data-stage-motif]", { opacity: 0, duration: 0.1 }, 0.9);
 
-        // Her three maps take turns in one place while the camera holds on the island.
-        const maps = gsap.utils.toArray<HTMLElement>("[data-stage-map]", root);
-        const fade = 0.08;
+        // The act's title goes as the first sheet lands: it would otherwise show through a window.
+        gsap.to("[data-stage-title]", {
+          opacity: 0,
+          ease: "none",
+          scrollTrigger: { trigger: "#ocean", start: "top bottom", end: "top 80%", scrub: 0.3 },
+        });
+
+        // The zones belong to 1.4's sheets alone: its sheet raises each one, this keeps them to its stretch of the page.
+        const fade = 0.06;
         gsap
           .timeline({
             defaults: { ease: "none", duration: fade },
-            scrollTrigger: { trigger: "#land-analysis", start: "top 50%", end: "bottom 45%", scrub: 0.6 },
+            scrollTrigger: { trigger: "#proposal", start: "top 80%", end: "bottom 30%", scrub: 0.6 },
           })
-          .to("[data-stage-maps]", { opacity: 1 }, 0)
-          .to(maps[1], { opacity: 1 }, 0.32)
-          .to(maps[2], { opacity: 1 }, 0.6)
-          .to("[data-stage-maps]", { opacity: 0 }, 1 - fade);
+          .to("[data-stage-zones]", { opacity: 1 }, 0)
+          .to("[data-stage-zones]", { opacity: 0 }, 1 - fade);
 
         // Her outline draws on the coast as the camera arrives at the site.
         gsap
@@ -115,6 +117,9 @@ export default function CameraStory({ titleId, title, children }: CameraStoryPro
           <div data-act-world className="absolute inset-0">
             <Image src={home.map.src} alt={home.mapAlt} fill sizes="100vw" loading="eager" />
             <svg aria-hidden="true" viewBox={`0 0 ${MAP_W} ${MAP_H}`} className="absolute inset-0 size-full overflow-visible">
+              <g data-stage-zones opacity="0">
+                <ZoneShapes id="stage-zones" hidden />
+              </g>
               <SiteBoundary id="story-site" dots="0 0.24" points={storyOutlinePoints} />
             </svg>
           </div>
@@ -132,9 +137,6 @@ export default function CameraStory({ titleId, title, children }: CameraStoryPro
           <div data-stage-paper className="paper-fibre absolute inset-0 z-50 bg-paper opacity-0" />
           <div data-stage-motif className="absolute inset-x-0 bottom-[12%] z-50 h-[30svh] opacity-0">
             <SlownessMotif />
-          </div>
-          <div data-stage-maps className="absolute top-[calc(2.5rem+5svh)] right-[max(26vw,21rem)] bottom-[5svh] z-50 aspect-[480/690] opacity-0">
-            <LandMaps />
           </div>
           <p className="absolute right-10 bottom-3 z-50 font-ui text-[11px] text-ink-green/70">{act1.coastlineCredit}</p>
         </div>

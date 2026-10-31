@@ -29,6 +29,8 @@ type SheetGridProps = {
   slow?: boolean;
   /** Stays on screen while the reader scrolls on, so a slow reveal can finish. Desktop with motion only. */
   hold?: boolean;
+  /** Called as each reveal group begins, for anything the sheet reveals outside itself. */
+  onGroupStart?: (group: number) => void;
   children: ReactNode;
 };
 
@@ -117,18 +119,19 @@ function arm(trigger: HTMLElement, start: string, run: () => void) {
   };
 }
 
-// Cuts every stage-window out of the paper, so its texture stays whole around them.
-function cutWindows(sheet: HTMLElement, paper: HTMLElement, windows: HTMLElement[]) {
+// Cuts every stage-window out of the paper, and out of its grain: the stage has its own.
+function cutWindows(sheet: HTMLElement, layers: HTMLElement[], windows: HTMLElement[]) {
   const box = sheet.getBoundingClientRect();
   const holes = windows.map((element) => {
     const rect = element.getBoundingClientRect();
     const [l, t, r, b] = [rect.left - box.left, rect.top - box.top, rect.right - box.left, rect.bottom - box.top];
     return `${l}px ${t}px, ${r}px ${t}px, ${r}px ${b}px, ${l}px ${b}px, ${l}px ${t}px, 0 0`;
   });
-  paper.style.clipPath = `polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, ${holes.join(", ")})`;
+  const cut = `polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, ${holes.join(", ")})`;
+  layers.forEach((layer) => (layer.style.clipPath = cut));
 }
 
-export default function SheetGrid({ id, title, titleAt = "K8:L8", slow = false, hold = false, children }: SheetGridProps) {
+export default function SheetGrid({ id, title, titleAt = "K8:L8", slow = false, hold = false, onGroupStart, children }: SheetGridProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   // Next keeps visited pages alive; coming back to one must not replay it.
   const played = useRef(new Set<number>());
@@ -164,7 +167,10 @@ export default function SheetGrid({ id, title, titleAt = "K8:L8", slow = false, 
                   waiting.forEach((group, i) => {
                     // The next drawing starts while this one is still arriving; people come last.
                     const position = i === 0 ? 0 : steps(root, "drawing", group).length ? (slow ? "<+=1" : "<+=0.4") : ">-0.2";
-                    sheet.add(groupTimeline(root, group, slow, reduce).eventCallback("onComplete", () => finish(group)), position);
+                    const timeline = groupTimeline(root, group, slow, reduce)
+                      .eventCallback("onStart", () => onGroupStart?.(group))
+                      .eventCallback("onComplete", () => finish(group));
+                    sheet.add(timeline, position);
                   });
                   fit(sheet, slow ? SHEET_SECONDS.slow : SHEET_SECONDS.regular);
                 }),
@@ -184,15 +190,15 @@ export default function SheetGrid({ id, title, titleAt = "K8:L8", slow = false, 
       );
 
       const windows = gsap.utils.toArray<HTMLElement>("[data-stage-window]", root);
-      const paper = root.querySelector<HTMLElement>("[data-sheet-paper]");
-      const sheet = paper?.parentElement;
-      if (windows.length && paper && sheet) {
+      const layers = gsap.utils.toArray<HTMLElement>("[data-sheet-paper], .sheet > .grain", root);
+      const sheet = layers[0]?.parentElement;
+      if (windows.length && sheet) {
         mm.add("(min-width: 48rem) and (prefers-reduced-motion: no-preference)", () => {
-          const observer = new ResizeObserver(() => cutWindows(sheet, paper, windows));
+          const observer = new ResizeObserver(() => cutWindows(sheet, layers, windows));
           observer.observe(sheet);
           return () => {
             observer.disconnect();
-            paper.style.clipPath = "";
+            layers.forEach((layer) => (layer.style.clipPath = ""));
           };
         });
       }

@@ -20,6 +20,12 @@ export type EgImage = {
 /** One photo in a masonry sheet: its credit is the group's. */
 type EgPhoto = { name: ImageName; alt: string; figure: string };
 
+/** An image on a living sheet, with its number. */
+export type EgFigure = EgImage & { figure: string };
+
+/** One zone on 1.4's map and its key. */
+export type ZoneId = "campbell" | "galathea" | "port" | "airport" | "township" | "power";
+
 /** Her bold words, kept. */
 export type TextPart = { text: string; bold?: boolean };
 
@@ -70,9 +76,18 @@ export const opening = {
     "Shared Territories explores an alternative model of settlement for ecologically sensitive island environments. It envisions a community of voluntary residents living through shared resources, collective land stewardship and a nature-embedded lifestyle. By treating the settlement as a network of small, replicable ecosystems rather than a single expanding township, the project explores how human habitation, ecological regeneration and economic activity can coexist.",
 };
 
+const fig11 = figures("1.1");
+const fig12 = figures("1.2");
+const fig13 = figures("1.3");
+const fig14 = figures("1.4");
+const fig15 = figures("1.5");
+const fig16 = figures("1.6");
+
 // Act 1 (pp.07–08). Stops are in the map's units; scale is relative to the map covering the screen.
 export const act1 = {
   coastlineCredit: credits.coastline,
+  // Her printed page numbers.
+  sheets: { island: "07", stake: "08" },
   stops: [
     { center: { x: 500, y: 327 }, scale: 1, focus: { x: 500, y: 327 } },
     // Wider than a true close-up: the arc and the strait need about 400 units of height between them.
@@ -82,35 +97,50 @@ export const act1 = {
     { center: { x: 593.4, y: 284 }, scale: 24, focus: { x: 585.5, y: 282 } },
   ],
   ocean: {
+    figure: fig11("Indian Ocean"),
     // OCR, proofread
     text: "The Andaman and Nicobar Islands are a remote archipelago in the eastern Indian Ocean, stretching over 800 km between the Bay of Bengal and the Andaman Sea. With rich biodiversity and fragile ecosystems, their proximity to the strategically important Malacca Strait gives the islands significant ecological, geopolitical and maritime importance, shaping growing development interests in the region.",
   },
   strait: {
     frameAlt: "Map of the Andaman and Nicobar Islands and the Malacca Strait.",
+    windowFigure: fig12("Andaman and Nicobar Islands, Strait of Malacca"),
     title: "Strait of Malacca",
     // OCR, proofread
     text: "The Malacca Strait is one of the world’s most critical maritime trade routes, connecting the Indian and Pacific Oceans and carrying a significant share of global shipping and energy transport. Its proximity to the Andaman and Nicobar Islands gives the region strategic importance in terms of trade, defence, and maritime security. This location has played a key role in shaping recent development interests in the islands.",
-    image: { name: "island/malacca-map", alt: "Map of the Strait of Malacca between Malaysia and Sumatra.", credit: TO_CONFIRM } satisfies EgImage,
+    image: { name: "island/malacca-map", alt: "Map of the Strait of Malacca between Malaysia and Sumatra.", credit: TO_CONFIRM, figure: fig12("Strait of Malacca") } satisfies EgFigure,
   },
   people: {
     frameAlt: "Map of Great Nicobar and Little Nicobar.",
+    windowFigure: fig13("Great Nicobar"),
     title: "INTRODUCTION",
     subtitle: "Patai Takaru’s people",
     // OCR, proofread
     text: "The Nicobarese inhabit Great Nicobar’s coastal regions, relying on fishing, coconut cultivation and inter-island exchange, while communal ownership shapes their relationship with the land. The Shompen live in small, dispersed groups within the island’s interior forests, relying on generations of knowledge of forests, rivers and wildlife, and adapting their movements to seasonal changes.",
     dwellingTitle: "Pattern of dwelling",
     huts: [
-      { name: "island/dwelling-hut-a", alt: "Archival photograph of a thatched dome hut.", credit: TO_CONFIRM },
-      { name: "island/dwelling-hut-b", alt: "Archival photograph of a thatched hut on stilts.", credit: TO_CONFIRM },
-    ] satisfies EgImage[],
+      { name: "island/dwelling-hut-a", alt: "Archival photograph of a thatched dome hut.", credit: TO_CONFIRM, figure: fig13("Thatched dome hut") },
+      { name: "island/dwelling-hut-b", alt: "Archival photograph of a thatched hut on stilts.", credit: TO_CONFIRM, figure: fig13("Hut on stilts") },
+    ] satisfies EgFigure[],
   },
   proposal: {
     title: "The Great Nicobar Development Proposal",
+    windowFigure: fig14("Proposed development zones, redrawn approximately from maps on her sheets 07 and 09"),
+    windowAlt: "Map of Great Nicobar with the proposed development zones drawn over it.",
     map: {
       name: "island/proposal-map",
       alt: "Zoning map of the proposed development on Great Nicobar.",
       credit: "Based on NITI Aayog, Holistic Development of Great Nicobar Island",
-    } satisfies EgImage,
+      figure: fig14("Development zones, as published"),
+    } satisfies EgFigure,
+    // In reveal order. Names and numbers as printed on her p.07 map.
+    zones: [
+      { id: "campbell", label: "Campbell Bay National Park" },
+      { id: "galathea", label: "Galathea National Park" },
+      { id: "port", marker: 1, label: "International Container Transhipment Terminal" },
+      { id: "airport", marker: 2, label: "International Airport" },
+      { id: "township", marker: 3, label: "Township and Area Development" },
+      { id: "power", marker: 4, label: "Power Plant" },
+    ] as { id: ZoneId; marker?: number; label: string }[],
     scaleTitle: "Scale of development",
     // OCR, proofread
     scale: [
@@ -159,32 +189,33 @@ export const act1 = {
       title: "Biodiversity loss",
       text: "The proposed clearance of nearly 8.5 lakh trees in Great Nicobar raises concerns beyond local biodiversity. As India faces rising temperatures and heatwaves, losing one of its last intact tropical rainforests threatens carbon storage, climate regulation and ecological resilience, highlighting the conflict between development and long-term environmental stability.",
       images: [
-        { name: "island/trees-graphic", alt: "News graphic of Great Nicobar's coast from the air.", credit: TO_CONFIRM },
-        { name: "island/heat-map", alt: "Land surface temperature map of India.", credit: TO_CONFIRM },
+        { name: "island/trees-graphic", alt: "News graphic of Great Nicobar's coast from the air.", credit: TO_CONFIRM, figure: fig15("Great Nicobar coast") },
+        { name: "island/heat-map", alt: "Land surface temperature map of India.", credit: TO_CONFIRM, figure: fig15("Land surface temperature") },
       ],
     },
     {
       title: "Leatherback Turtle Nesting Grounds",
       text: "The proposed transshipment port is located near Galathea Bay, one of the world’s most significant nesting sites for the endangered Leatherback Sea Turtle. Increased coastal activity, artificial lighting and habitat alteration may disrupt nesting and hatching cycles.",
-      images: [{ name: "island/port-map", alt: "Map of the proposed port near Galathea Bay.", credit: TO_CONFIRM }],
+      images: [{ name: "island/port-map", alt: "Map of the proposed port near Galathea Bay.", credit: TO_CONFIRM, figure: fig15("Proposed port, Galathea Bay") }],
     },
     {
       title: "Ecological Fragility",
       text: "Great Nicobar’s limited freshwater and finite resources make it vulnerable to rapid population growth and rising demand. Its seismic activity and sensitive coastal, forest and river ecosystems further increase the risks of large-scale land transformation, threatening ecological resilience and long-term resource security.",
-      images: [{ name: "island/section-sketch", alt: "Drawn section through forest, wetland and shore." }],
+      images: [{ name: "island/section-sketch", alt: "Drawn section through forest, wetland and shore.", figure: fig15("Section through forest, wetland and shore") }],
     },
     {
       title: "Impact of population influx",
       text: "Large-scale migration in the Andaman and Nicobar Islands brought disease, resource competition and cultural disruption, contributing to severe population declines among communities such as the Great Andamanese and Onge. These pressures threaten Indigenous languages, traditional knowledge and cultural survival.",
       images: [],
       source: "Subir Bhaumik, “Measles hits rare Andaman tribe”, BBC News, 16 May 2006",
+      numbersFigure: fig15("Population, existing to proposed"),
     },
-  ] as { title: string; text: string; images: EgImage[]; source?: string }[],
+  ] as { title: string; text: string; images: EgFigure[]; source?: string; numbersFigure?: string }[],
   lessons: {
     title: "Lessons from earlier interventions",
     // OCR, proofread
     text: "Infrastructure, logging, plantations and settlement schemes fragmented Indigenous territories across the Andaman and Nicobar Islands, restricting access to traditional lands and resources. These interventions disrupted established livelihoods and increased exposure to outsiders, disease and dependence on external support.",
-    tableCaption: "Population of Andaman Islands communities by census year, 1901 to 2011.",
+    tableCaption: fig16("Population of Andaman Islands communities by census year, 1901 to 2011."),
     tableCredit: TO_CONFIRM,
     tableHead: ["Year", "Great Andamanese", "Onge", "Jarawa", "Sentinelese*", "Total", "Growth rate"],
     // Read by eye: OCR can't read this table. In every row the four groups add up to her total.
@@ -202,7 +233,7 @@ export const act1 = {
       ["2001", "43", "96", "240", "39", "418", "-19.61"],
       ["2011", "54", "101", "380", "15", "–", "–"],
     ],
-    maps: { name: "island/island-maps", alt: "Three maps of the Andaman Islands in 1957, 1979 and 2004.", credit: TO_CONFIRM } satisfies EgImage,
+    maps: { name: "island/island-maps", alt: "Three maps of the Andaman Islands in 1957, 1979 and 2004.", credit: TO_CONFIRM, figure: fig16("Andaman Islands in 1957, 1979 and 2004") } satisfies EgFigure,
   },
 };
 
@@ -469,29 +500,37 @@ export const act2 = {
   },
 };
 
+const fig31 = figures("3.1");
+const fig32 = figures("3.2");
+const fig34 = figures("3.4");
+
 // Act 3 (pp.09–10). Nothing here is in the PSD.
 export const act3 = {
   scrollHint: "Scroll sideways",
+  // Her printed page numbers.
+  sheets: { maps: "09", plan: "10" },
   landAnalysis: {
     maps: [
       {
         name: "ground/tribal-map",
         alt: "Map of tribal areas, forest and national parks on Great Nicobar.",
         credit: "Dr M. Chandi, ANTRI RAC, with A&N Forest Dept GIS cell, 2018",
+        figure: fig31("Tribal areas and national parks"),
       },
       {
         name: "ground/project-land-map",
         alt: "Map of the land within the project area.",
         credit: "NITI Aayog, Holistic Development of Great Nicobar Island",
+        figure: fig31("Land Details Within the Project Area"),
       },
-      { name: "ground/land-use-map", alt: "Map of proposed land use.", credit: TO_CONFIRM },
-    ] as { name: ImageName; alt: string; credit: string }[],
+      { name: "ground/land-use-map", alt: "Map of proposed land use.", credit: TO_CONFIRM, figure: fig31("Proposed land use") },
+    ] satisfies EgFigure[],
     // OCR, proofread
     text: "The land use analysis reveals a major shift in Great Nicobar, from predominantly protected forests and indigenous settlements to a development-oriented landscape shaped by the proposed port, airport and township. Changes to protected zones and the reclassification of native village lands raise concerns about ecological loss and the displacement of existing communities.",
   },
   settlements: {
     label: "The settlements",
-    image: { name: "ground/settlements-strip", alt: "Hand-coloured strip of the coast with its settlements circled and joined by the road." } satisfies EgImage,
+    image: { name: "ground/settlements-strip", alt: "Hand-coloured strip of the coast with its settlements circled and joined by the road.", figure: fig32("The settlements") } satisfies EgFigure,
     // OCR, proofread
     text: "Six potential locations were assessed based on institutional proximity, tourism potential, access to infrastructure, ecological sensitivity, suitability for forest-edge development and compatibility with indigenous land rights. The assessment aimed to identify a location that balances user accessibility with minimal environmental disturbance and respect for existing communities.",
     // Where her names sit, as % of the strip.
@@ -513,7 +552,8 @@ export const act3 = {
   },
   plan: {
     title: "Site plan",
-    image: { name: "ground/contour-plan", alt: "Site plan with contours, water catchments and the coast." } satisfies EgImage,
+    image: { name: "ground/contour-plan", alt: "Site plan with contours, water catchments and the coast.", figure: fig34("Site plan") } satisfies EgFigure,
+    keyPlanFigure: fig34("Key plan: site location"),
     // OCR, proofread
     data: [
       "Site area- 100 acres",

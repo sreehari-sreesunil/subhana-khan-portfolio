@@ -21,7 +21,7 @@ export default function EphemeralGroundPage() {
         <Opening />
         <ActNavigator acts={acts.map(({ id, number, navLabel }) => ({ id, number, label: navLabel }))} />
         <CameraStory titleId={`${first.id}-title`} title={`${first.number} ${first.navLabel}`}>
-          <Act1 id={first.id} />
+          <Act1 id={first.id} title={`${first.number} ${first.navLabel}`} />
           <Act2 id={second.id} label={`${second.number} ${second.navLabel}`} />
           <Act3 id={third.id} title={`${third.number} ${third.navLabel}`} />
         </CameraStory>

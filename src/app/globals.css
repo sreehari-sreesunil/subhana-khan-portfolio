@@ -370,6 +370,17 @@ html.js:not([data-hydrated]) [data-reveal] {
   margin-top: 0;
 }
 
+/* Her figures in columns: a marker hangs outside the digits, so the digits themselves stay aligned. */
+.sheet-star {
+  position: absolute;
+}
+
+.sheet-decimal {
+  display: inline-block;
+  width: 3ch;
+  text-align: left;
+}
+
 .sheet-key-area {
   position: absolute;
   border: 1.5px dashed var(--key-red);
@@ -473,6 +484,11 @@ html.js:not([data-hydrated]) [data-reveal] {
   .sheet-fit {
     width: min(100cqw, calc((100cqh - var(--sheet-caption, 0px)) * var(--sheet-ratio) * var(--sheet-scale, 1)));
     flex: none;
+  }
+
+  .sheet-strip-fit {
+    flex: none;
+    width: min(100cqw, calc((100cqh - var(--sheet-caption, 0px)) * var(--sheet-ratio)));
   }
 
   .sheet-masonry {

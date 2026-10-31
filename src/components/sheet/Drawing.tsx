@@ -5,8 +5,7 @@ import SheetBlock from "./SheetBlock";
 export type SheetImage = { src: string; width: number; height: number };
 
 // Room kept under a drawing for its caption, so the two together fit the cells.
-const CAPTION_ONE_LINE = "1.25rem";
-const CAPTION_TWO_LINES = "2.25rem";
+const captionRoom = (lines: number) => `${0.25 + lines}rem`;
 const HEADING = "1.25rem";
 
 export type DrawingProps = {
@@ -24,6 +23,8 @@ export type DrawingProps = {
   group?: number;
   /** Size against the cell's height, so drawings on one sheet can keep their relative scale. */
   scale?: number;
+  /** For a caption that wraps. Defaults to one line, or two with a credit. */
+  captionLines?: number;
   /** Sits above the drawing, unclipped by its wipe: a callout's circle, a key plan's box. */
   children?: ReactNode;
 };
@@ -39,12 +40,12 @@ export function FigureCaption({ figure, credit, group = 0 }: { figure: string; c
 }
 
 /** A drawing filling its cells, keeping its proportions. Its box is exactly the image, so overlays can use percentages. */
-export default function Drawing({ image, alt, at, phone, sizes, figure, credit, heading, group = 0, scale, children }: DrawingProps) {
-  const captionRoom = credit ? CAPTION_TWO_LINES : CAPTION_ONE_LINE;
+export default function Drawing({ image, alt, at, phone, sizes, figure, credit, heading, group = 0, scale, captionLines, children }: DrawingProps) {
+  const room = captionRoom(captionLines ?? (credit ? 2 : 1));
   const style = {
     "--sheet-ratio": image.width / image.height,
     "--sheet-scale": scale,
-    "--sheet-caption": heading ? `calc(${captionRoom} + ${HEADING})` : captionRoom,
+    "--sheet-caption": heading ? `calc(${room} + ${HEADING})` : room,
   } as CSSProperties;
   return (
     <SheetBlock at={at} phone={phone} className="sheet-drawing">

@@ -1,33 +1,13 @@
 import Image from "next/image";
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties } from "react";
 import Drawing, { FigureCaption } from "@/components/sheet/Drawing";
 import SheetBlock from "@/components/sheet/SheetBlock";
 import SheetGrid from "@/components/sheet/SheetGrid";
+import { bodyClass, headingClass, Lines, Name, smallClass } from "@/components/sheet/SheetText";
 import { act1, act2, images, type TextPart } from "@/content/ephemeral-ground";
 import { StaticFrame } from "./StoryFrames";
 
-const headingClass = "font-heading text-[length:var(--sheet-heading)] leading-tight font-semibold text-ink-green";
-const nameClass = "font-heading text-[length:var(--sheet-name)] leading-tight font-semibold text-ink-green";
-const bodyClass = "font-body text-[length:var(--sheet-body)] leading-relaxed text-ink-green lg:max-w-[33em]";
-const smallClass = "font-body text-[length:var(--sheet-small)] leading-snug text-ink-green";
-
 export const withBold = (parts: TextPart[]) => parts.map((part) => (part.bold ? <strong key={part.text}>{part.text}</strong> : part.text));
-
-function Lines({ group, className = bodyClass, children }: { group: number; className?: string; children: ReactNode }) {
-  return (
-    <p data-sheet-step="text" data-sheet-group={group} data-sheet-lines className={className}>
-      {children}
-    </p>
-  );
-}
-
-function Name({ group, children }: { group: number; children: ReactNode }) {
-  return (
-    <h4 data-sheet-step="text" data-sheet-group={group} className={`${nameClass} mb-2`}>
-      {children}
-    </h4>
-  );
-}
 
 // Her arches keep the sizes they have on her sheet, so all four are measured against the tallest.
 const TALLEST_ARCH = Math.max(...act2.philosophers.map((person) => images[person.image.name].height));

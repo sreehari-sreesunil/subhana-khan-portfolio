@@ -132,6 +132,11 @@ The PDF is out of order: **printed 17–18 are PDF p.11; printed 19–20 are PDF
 16. Originals of the settlements strip (p.9) without her text, since the text was lifted off the watercolour digitally and leaves faint smudges.
 17. Who took the site and infrastructure photos (p.10), and which satellite provider the context inset uses.
 18. Approve the figure titles we wrote, as she has no name for these: the 2.6 collage ("A different logic"), the island window ("Great Nicobar") and the 12 site photos.
+19. Approve the new figure titles in Acts 1 and 3: 1.1.1, 1.2.1, 1.3.1–1.3.3, 1.4.2, 1.5.1–1.5.5, 1.6.2, 3.1.1 and 3.1.3, 3.2.1, 3.4.2. (3.1.2 is printed on her map, 1.6.1 is the table's caption, now visible.)
+20. Approve the zone map on 1.4: the colours, and revealing it in her marker order (1 to 4) after the two parks. The bright green strip inside Galathea has no label on her map, so it's drawn as part of Galathea. The shapes are approximate.
+21. Approve the alt text on the new sheets, including the zone window.
+22. Source of the p.09 land-use map, now also the basis of the port and airport shapes on 1.4.
+23. Fig. 1.5.5 sets her "7300 (approx)" and "3,00,000 (approx)" large. 7300 is native people plus settlers (1600 + 5700), so the caption says "existing", not "native". Please confirm the wording, and the citation for the BBC article beneath it.
 
 **Fallback if unavailable:** redraw unit plans as SVG from the p.19 crop, needing her check. Cluster plans stay at about 1×, shown smaller, with no deep zoom.
 
@@ -200,12 +205,13 @@ A visible affordance (a sliver of the next image, plus a small "drag / swipe" la
 - **Motion:** brief text fades up line by line after the sheet leaves.
 
 ### Act 1: The island (07–08), "Why here, and what is at stake?"
-- **1.1 Ocean.** Full-screen map, archipelago text beside it. *Motion: the zoom to the island begins (signature).*
-- **1.2 Strait of Malacca.** Text card over the held map; her locator as an inset. *Motion: inset fades up.*
-- **1.3 The people.** Patai Takaru's people collage + text; dwelling photo strip. *Motion: collage parallax, gentle.*
-- **1.4 The proposal.** Zone map, scale figures as real text, 4 icons. *Motion: numbers fade up staggered, no count-up.*
-- **1.5 What's at stake.** Four columns; each one image. *Motion: `RevealImage` wipe per column.*
-- **1.6 Lessons.** Text, table as HTML. *Motion: table rows reveal ~60ms apart.*
+Living sheets (her sheets 07–08). 1.1–1.4 use the live camera map in a `stage-window` as their hero. The gaps between 1.1, 1.2 and 1.3 keep the camera's moves in view.
+- **1.1 Ocean.** Map window across the sheet, archipelago text beneath. *Motion: the map is seen alone first, then the sheet arrives.*
+- **1.2 Strait of Malacca.** Text and her locator on the left, window on the right. *Motion: the sheet's arrival moves the camera.*
+- **1.3 The people.** Window, text, the two dwelling photos at one height. The collage stays held back (item 11).
+- **1.4 The proposal.** Two sheets with the window in the same place. Sheet A: zones redrawn over our island (`ZoneShapes`, traced from pp.07 and 09), a key, her map as a reference, scale figures. Sheet B: the four projects and the population groups. *Motion: each key row raises its zone, within 3s.*
+- **1.5 What's at stake.** No window: four columns as a series, the fourth a typographic figure of her two population numbers. *Motion: column by column, within 2s.*
+- **1.6 Lessons.** A real HTML table as the hero, text and her maps beside it. *Motion: table wipes up, rows follow, within 2s.*
 
 ### Act 2: The idea (23–24, then 11–12), "What is slowness in design?"
 Camera parked at the island, dimmed behind paper. See section 5.
@@ -218,10 +224,10 @@ Camera parked at the island, dimmed behind paper. See section 5.
 - **2.7 Strategies.** Teal page as HTML over her sketches. *Motion: quadrants open from the centre axes, within 3s; sketches fetch one screen early.*
 
 ### Act 3: The ground (09–10), "Where exactly?"
-- **3.1 Land analysis.** 3 island maps + text over held camera. *Motion: maps crossfade in place.* The maps live on the stage (`LandMaps`), so no second sticky element is needed.
-- **3.2 The settlements.** Hand-coloured strip. *Native horizontal strip; no pin.*
+- **3.1 Land analysis.** Living sheet (her sheet 09): the three maps in a row as a series of equals, text beneath. *Motion: map by map, within 2s.*
+- **3.2 The settlements.** Living sheet: the hand-coloured strip across the sheet with her names over it. On phones it scrolls sideways.
 - **3.3 The site.** Camera to the site stop; outline draws on the coast (reuse the home boundary). *Motion: signature zoom continues.*
-- **3.4 Contours.** Contour site plan, site data as text. *Motion: `RevealImage` for now.* Optional later: contour lines drawing in (last build step).
+- **3.4 Contours.** Living sheet (her sheet 10): contour plan as the hero, with a key plan and the site data, legend and wind as HTML. On phones the plan scrolls sideways. Optional later: contour lines drawing in (last build step).
 - **3.5 Infrastructure, section, photos.** Infrastructure and site photos: one masonry living sheet (her sheet 10) with a key plan; each photo opens the full-screen `PhotoViewer`. Site section and site context stay as they were. *Motion: fast wipe across the photos, 2s; `RevealImage` for the rest.*
 
 ### Act 4: The settlement (13–22), "What did she design?"
