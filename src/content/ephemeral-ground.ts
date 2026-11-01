@@ -614,6 +614,43 @@ export const act3 = {
   },
 };
 
+const fig41 = figures("4.1");
+const fig42 = figures("4.2");
+
+// Act 4 (pp.13–22). Nothing here is in the PSD.
+export const act4 = {
+  // Her printed page numbers.
+  sheets: { opening: "13", masterplan: "15" },
+  opening: {
+    image: { name: "settlement/opening-collage", alt: "Collage of a child watching a shared street.", figure: fig41("Collage") } satisfies EgFigure,
+    // OCR, proofread
+    text: "Everything that lives, passes. The Nicobarese honoured this – a hut for birth, a hut for death, each threshold given its own ground. This settlement carries that understanding differently. The house that grows with a family and contracts when children leave does not resist time – it moves with it. Accessibility is not a ramp added at the end. It is the absence of a barrier from the beginning – for the child running, the elder steadying, the mother carrying. The settlement is the support system. The verandah where neighbours meet without planning to. The community kitchen that means no one cooks alone. The cluster that becomes family for people who chose to come here – who left the speed of the mainland deliberately, who picked this forest, this island, this life. A building that weathers, silvers, and one day returns to the forest is not a monument. On borrowed land, it never was.",
+  },
+  masterplan: {
+    title: "MASTERPLAN",
+    image: { name: "settlement/masterplan", alt: "Colour masterplan of the 100-acre site, with lake and coast.", credit: credits.coastline, figure: fig42("Masterplan") } satisfies EgFigure,
+    /** Where her plan sits on the map at the site stop, in the map's units: on the dotted outline. */
+    onMap: { left: home.site.story.left, top: home.site.story.top, width: home.site.story.width },
+    /** Her north arrow, degrees clockwise from up. */
+    north: 71,
+    // OCR, proofread
+    text: "Spread across a 100-acre site, the master plan adopts a low-impact approach to development by concentrating the built programme within approximately 50 acres while preserving the remaining land as ecological infrastructure. Instead of treating the landscape as vacant land for expansion, forests, wetlands, and natural drainage systems become integral components of the neighbourhood. The resulting settlement is dispersed rather than compact, reducing environmental disturbance and creating a community that is closely integrated with the island’s natural terrain.",
+    // OCR, proofread. `at` is where her printed numbers sit, as % of the plan; 3 marks three basins.
+    key: [
+      { number: 1, name: "Bay of Bengal", at: [[97.3, 52.85]] },
+      { number: 2, name: "Laxman beach", at: [[93.09, 51.64]] },
+      { number: 3, name: "Water catchment basin", at: [[44.56, 3.76], [74.35, 5.09], [57.36, 24.24]] },
+      { number: 4, name: "Access road", at: [[53.63, 64.61]] },
+      { number: 5, name: "Wetland", at: [[71.83, 36.73]] },
+      { number: 6, name: "Residential area", at: [[22.34, 36.61]] },
+      { number: 7, name: "Community center", at: [[42.58, 45.09]] },
+      { number: 8, name: "Visitor’s center", at: [[60.6, 34.06]] },
+      { number: 9, name: "Forest", at: [[75.74, 75.52]] },
+      { number: 10, name: "Cultural center", at: [[80.12, 20.61]] },
+    ],
+  },
+};
+
 /** The title block's fixed words, on every living sheet. */
 export const sheetLabels = { project: "Ephemeral Ground", sheet: "Sheet", scale: "Scale", north: "North" };
 

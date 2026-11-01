@@ -137,6 +137,9 @@ The PDF is out of order: **printed 17–18 are PDF p.11; printed 19–20 are PDF
 21. Approve the alt text on the new sheets, including the zone window.
 22. Source of the p.09 land-use map, now also the basis of the port and airport shapes on 1.4.
 23. Fig. 1.5.5 sets her "7300 (approx)" and "3,00,000 (approx)" large. 7300 is native people plus settlers (1600 + 5700), so the caption says "existing", not "native". Please confirm the wording, and the citation for the BBC article beneath it.
+24. Approve "Collage" as the title of Fig. 4.1.1, the p.13 opening collage. An original would also let it be larger: it's 302×337px.
+25. Her north arrow on p.15 points about 71° clockwise from up, but the plan sits unrotated on the north-up map (sea side on the coast, at exaggerated scale). Is that acceptable? The title block on 4.2 shows her arrow.
+26. Approve the alt text on 4.1 and 4.2.
 
 **Fallback if unavailable:** redraw unit plans as SVG from the p.19 crop, needing her check. Cluster plans stay at about 1×, shown smaller, with no deep zoom.
 
@@ -231,8 +234,8 @@ Camera parked at the island, dimmed behind paper. See section 5.
 - **3.5 Infrastructure, section, photos.** Infrastructure and site photos: one masonry living sheet (her sheet 10) with a key plan; each photo opens the full-screen `PhotoViewer`. Site section and site context stay as they were. *Motion: fast wipe across the photos, 2s; `RevealImage` for the rest.*
 
 ### Act 4: The settlement (13–22), "What did she design?"
-- **4.1 Opening text.** Her "Everything that lives, passes…" alone. *Motion: line-by-line.*
-- **4.2 Masterplan.** Zoom stop; key as HTML linked to numbers. *Motion: signature zoom continues; hovering a key item highlights its number.*
+- **4.1 Opening text.** Living sheet (her sheet 13): her "Everything that lives, passes…" set large as the hero, the collage beside it near its real size (it's only 302×337px). *Motion: line-by-line, within 3s.*
+- **4.2 Masterplan.** Living sheet (her sheet 15). In the gap above it her plan fades in on the dotted outline, the map fades out and the camera closes in, then the sheet's `late` window comes to rest around the plan. Key as HTML linked to her numbers, in both directions; text beneath; no key plan. Below `lg` or 700px tall, and with reduced motion, the plan is static in the sheet. *Motion: signature zoom continues.*
 - **4.3 Design program.** SVG bubble diagram. *Motion: connects node by node (CLAUDE.md).*
 - **4.4 Tsunami.** Render, text, zoning. *Motion: the three defence layers fade in order.*
 - **4.5 Eight strategies.** 2×4 grid. *Motion: stagger.*

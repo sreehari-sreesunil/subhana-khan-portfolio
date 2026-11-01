@@ -89,7 +89,7 @@ CROPS = {
     "settlement/isometric-model": (13, (1005, 305, 1710, 735)),
     "settlement/tsunami-render": (14, (52, 90, 1090, 465)),
     "settlement/tsunami-zoning": (14, (44, 505, 1375, 1212)),
-    "settlement/masterplan": (15, (35, 320, 1700, 1066)),
+    "settlement/masterplan": (15, (35, 300, 1700, 1125)),
     "settlement/strategy-water": (16, (70, 105, 400, 305)),
     "settlement/strategy-gradient": (16, (570, 25, 735, 325)),
     "settlement/strategy-ecology": (16, (910, 110, 1295, 275)),
@@ -132,7 +132,6 @@ PAINT_WHITE = {
     "ground/site-section": [(700, 825, 1245, 905), (85, 825, 215, 885), (370, 825, 530, 825, 490, 868, 370, 868)],
     "ground/site-context": [(1615, 770, 1712, 842)],
     "settlement/isometric-model": [(1005, 405, 1040, 575)],
-    "settlement/masterplan": [(1360, 985, 1700, 1066)],
     "settlement/site-section": [
         (160, 1030, 370, 1060), (425, 1015, 550, 1070), (525, 975, 640, 1025), (935, 955, 1065, 982),
         (980, 1033, 1075, 1085), (1215, 945, 1335, 995), (1305, 1037, 1395, 1088), (1460, 1065, 1610, 1095),
@@ -194,7 +193,16 @@ STACKED_RENDERS = ("idea/render-library", 1784, 1785)
 ON_PAPER = {
     "idea/arch-collage", "idea/terrain", "idea/slope-ratio", "idea/accessibility", "ground/settlements-strip",
     "ground/infra-1", "ground/infra-2", "ground/infra-3", "ground/infra-4", "ground/infra-5", "ground/infra-6",
-    "ground/contour-plan", "ground/site-section", "ground/site-context",
+    "ground/contour-plan", "ground/site-section", "ground/site-context", "settlement/opening-collage",
+}
+
+# Traced by hand, in page coordinates: this plan goes over the map, so all around it must be transparent. A cut
+# by colour would run in along her white roads. One "3" overhangs the edge, so its box keeps only the ink.
+CUT_OUT = {
+    "settlement/masterplan": (
+        [(44, 379), (925, 307), (1683, 385), (1683, 973), (888, 957), (650, 985), (560, 1115), (133, 1070)],
+        (1258, 325, 1290, 345),
+    ),
 }
 
 # Her sketches sit on the teal page with hard crop edges, so those edges fade out.
@@ -223,6 +231,20 @@ def white_to_alpha(image):
     safe = numpy.maximum(alpha, 1 / 255)[..., None]
     colour = numpy.clip((rgb - (1 - alpha[..., None]) * 255) / safe, 0, 255)
     return Image.fromarray(numpy.dstack((colour, alpha * 255)).astype("uint8"), "RGBA")
+
+
+def cut_out(image, box, polygon, overhang):
+    """The crop at `box`, transparent outside `polygon`. Both this and `overhang` are in page coordinates."""
+    left, top = box[:2]
+    scale = 4
+    mask = Image.new("L", (image.width * scale, image.height * scale), 0)
+    ImageDraw.Draw(mask).polygon([((x - left) * scale, (y - top) * scale) for x, y in polygon], fill=255)
+    cut = image.convert("RGBA")
+    cut.putalpha(mask.resize(image.size, Image.LANCZOS))
+    area = (overhang[0] - left, overhang[1] - top, overhang[2] - left, overhang[3] - top)
+    ink = white_to_alpha(image.crop(area))
+    cut.alpha_composite(ink, area[:2])
+    return cut
 
 
 def soften(image):
@@ -289,6 +311,8 @@ def main():
             image = white_to_alpha(image)
         elif name.startswith("idea/strategy-"):
             image = soften(image)
+        elif name in CUT_OUT:
+            image = cut_out(image, box, *CUT_OUT[name])
         save(image, name, manifest)
 
     name, source, (left, top, right, bottom), widest = PLAN_MOBILE

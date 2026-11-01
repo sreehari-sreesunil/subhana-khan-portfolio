@@ -54,7 +54,7 @@ export const images = {
   "settlement/isometric-model": { src: "/images/ephemeral-ground/settlement/isometric-model.webp", width: 705, height: 430 },
   "settlement/tsunami-render": { src: "/images/ephemeral-ground/settlement/tsunami-render.webp", width: 1038, height: 375 },
   "settlement/tsunami-zoning": { src: "/images/ephemeral-ground/settlement/tsunami-zoning.webp", width: 1331, height: 707 },
-  "settlement/masterplan": { src: "/images/ephemeral-ground/settlement/masterplan.webp", width: 1665, height: 746 },
+  "settlement/masterplan": { src: "/images/ephemeral-ground/settlement/masterplan.webp", width: 1665, height: 825 },
   "settlement/strategy-water": { src: "/images/ephemeral-ground/settlement/strategy-water.webp", width: 330, height: 200 },
   "settlement/strategy-gradient": { src: "/images/ephemeral-ground/settlement/strategy-gradient.webp", width: 165, height: 300 },
   "settlement/strategy-ecology": { src: "/images/ephemeral-ground/settlement/strategy-ecology.webp", width: 385, height: 165 },

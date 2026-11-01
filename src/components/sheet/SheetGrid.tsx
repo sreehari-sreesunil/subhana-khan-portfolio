@@ -7,7 +7,7 @@ import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
 import Grain from "@/components/Grain";
 import { fetchEarly } from "@/lib/fetch-early";
-import SheetBlock from "./SheetBlock";
+import SheetBlock, { LATE_WINDOW } from "./SheetBlock";
 import SheetFrame from "./SheetFrame";
 import TitleBlock, { type TitleBlockProps } from "./TitleBlock";
 
@@ -193,7 +193,8 @@ export default function SheetGrid({ id, title, titleAt = "K8:L8", slow = false, 
       const layers = gsap.utils.toArray<HTMLElement>("[data-sheet-paper], .sheet > .grain", root);
       const sheet = layers[0]?.parentElement;
       if (windows.length && sheet) {
-        mm.add("(min-width: 48rem) and (prefers-reduced-motion: no-preference)", () => {
+        const late = windows.some((element) => element.dataset.stageWindow === "late");
+        mm.add(late ? LATE_WINDOW : "(min-width: 48rem) and (prefers-reduced-motion: no-preference)", () => {
           const observer = new ResizeObserver(() => cutWindows(sheet, layers, windows));
           observer.observe(sheet);
           return () => {

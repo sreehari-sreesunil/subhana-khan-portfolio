@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Act1 from "@/components/ephemeral/Act1";
 import Act2 from "@/components/ephemeral/Act2";
 import Act3 from "@/components/ephemeral/Act3";
+import Act4 from "@/components/ephemeral/Act4";
 import ActNavigator from "@/components/ephemeral/ActNavigator";
 import CameraStory from "@/components/ephemeral/CameraStory";
 import Opening from "@/components/ephemeral/Opening";
@@ -13,7 +14,7 @@ import { acts } from "@/content/ephemeral-ground";
 export const metadata: Metadata = { title: "Ephemeral Ground — Subhana Khan" };
 
 export default function EphemeralGroundPage() {
-  const [first, second, third, ...rest] = acts;
+  const [first, second, third, fourth] = acts;
   return (
     <>
       <SiteHeader variant="halo" />
@@ -24,33 +25,18 @@ export default function EphemeralGroundPage() {
           <Act1 id={first.id} title={`${first.number} ${first.navLabel}`} />
           <Act2 id={second.id} label={`${second.number} ${second.navLabel}`} />
           <Act3 id={third.id} title={`${third.number} ${third.navLabel}`} />
+          <Act4 id={fourth.id} title={`${fourth.number} ${fourth.navLabel}`} />
         </CameraStory>
-        {/* TEMP: placeholders until each act is built. */}
-        {rest.map((act, i) => (
-          <section
-            key={act.id}
-            id={act.id}
-            aria-labelledby={`${act.id}-title`}
-            className="paper-fibre relative flex min-h-svh flex-col items-center justify-center gap-6 bg-paper px-4"
+        {/* TEMP: until the rest of Act 4 is built. */}
+        <div className="paper-fibre relative flex min-h-[40svh] items-center justify-center bg-paper px-4">
+          <TransitionLink
+            href="/"
+            className="font-ui text-sm tracking-wide text-accent-terracotta underline-offset-4 hover:underline"
           >
-            <h2
-              id={`${act.id}-title`}
-              tabIndex={-1}
-              className="font-heading text-[clamp(2rem,5vw,4.5rem)] font-semibold text-ink-green"
-            >
-              {act.number} {act.navLabel}
-            </h2>
-            {i === rest.length - 1 && (
-              <TransitionLink
-                href="/"
-                className="font-ui text-sm tracking-wide text-accent-terracotta underline-offset-4 hover:underline"
-              >
-                <span aria-hidden="true">←</span> Back to home
-              </TransitionLink>
-            )}
-            <Grain surface="colour" />
-          </section>
-        ))}
+            <span aria-hidden="true">←</span> Back to home
+          </TransitionLink>
+          <Grain surface="colour" />
+        </div>
       </main>
     </>
   );

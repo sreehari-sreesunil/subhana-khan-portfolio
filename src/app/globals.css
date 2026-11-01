@@ -370,6 +370,37 @@ html.js:not([data-hydrated]) [data-reveal] {
   margin-top: 0;
 }
 
+/* The masterplan's box: exactly the plan, so her numbers can use percentages. */
+.sheet-plan {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--sheet-ratio);
+}
+
+/* Phones: a readable disc over her tiny number. From `lg` it's only a ring, on hover. */
+.sheet-plan-number {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  translate: -50% -50%;
+  background: var(--paper);
+  color: var(--ink-green);
+  font-size: 0.625rem;
+  font-weight: 700;
+}
+
+.sheet-plan-number[data-active="true"] {
+  background: var(--accent-terracotta);
+  color: var(--paper);
+}
+
+.sheet-plan-label {
+  position: static;
+}
+
 /* Her figures in columns: a marker hangs outside the digits, so the digits themselves stay aligned. */
 .sheet-star {
   position: absolute;
@@ -423,6 +454,50 @@ html.js:not([data-hydrated]) [data-reveal] {
 
   html.js .sheet-window-fallback {
     display: none;
+  }
+
+  html.js .sheet-window.sheet-window-late {
+    min-height: 0;
+  }
+
+  html.js .sheet-window-late .sheet-window-fallback {
+    display: block;
+  }
+}
+
+@media (min-width: 64rem) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
+  html.js .sheet-window-late .sheet-window-fallback {
+    display: none;
+  }
+}
+
+@media (min-width: 64rem) {
+  .sheet-plan {
+    width: min(100cqw, calc(100cqh * var(--sheet-ratio)));
+    margin-inline: auto;
+  }
+
+  .sheet-plan-number {
+    width: 3%;
+    height: auto;
+    aspect-ratio: 1;
+    background: none;
+    color: transparent;
+    border: 2px solid var(--accent-terracotta);
+    opacity: 0;
+    transition: opacity 0.25s ease-out;
+  }
+
+  .sheet-plan-number[data-active="true"] {
+    opacity: 1;
+    background: none;
+    color: transparent;
+  }
+
+  .sheet-plan-label {
+    position: absolute;
+    left: auto;
+    right: 0;
   }
 }
 
