@@ -7,6 +7,7 @@ not a page-flipper.
 
 ## How we work (read first)
 
+- Read docs/status.md at the start of every session; update it before every commit.
 - Build ONE section at a time. After each section: run the dev server, check it in the
   browser at desktop (1440px) and mobile (375px) widths, then stop and wait for review.
 - Start every new feature in plan mode. Explain the plan in plain words before writing code.
