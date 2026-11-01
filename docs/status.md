@@ -4,7 +4,7 @@ Updated 2026-11-01. Update at the end of every task, and before every commit.
 
 ## Last commit
 
-`dive + about: no start lag` (2026-11-01) — the home dive now starts with the landing, and About's reveal starts as the portrait comes on screen. Before it: `act 4: checks + true north`.
+`prepare preview deploy` (2026-11-01) — noindex on every page plus a disallow-all robots.txt, source file types gitignored, repo audited, clean build passes. Not pushed: no GitHub remote yet. Before it: `dive + about: no start lag`.
 
 ## Reviewed and approved by the user
 
@@ -20,11 +20,12 @@ Only what the user has confirmed goes here, with the date.
 
 ## What's next
 
-1. User reviews batch 2 and step 9 at 1440px and 375px.
-2. Bubble diagram (step 10). Starts in plan mode.
-3. Act 4 sections 4.4–4.8, one per review (step 11).
-4. Cluster and unit zoom (step 12), blocked on Subhana's files or a redraw she checks.
-5. "View all sheets" (step 13), mobile crops (step 14), performance, reduced motion and accessibility (step 15), optional contours (step 16).
+1. User creates the private GitHub repo, pushes, and imports it on Vercel. The noindex comes off before launch (`Claude.MD`, "Before launch").
+2. User reviews batch 2 and step 9 at 1440px and 375px.
+3. Bubble diagram (step 10). Starts in plan mode.
+4. Act 4 sections 4.4–4.8, one per review (step 11).
+5. Cluster and unit zoom (step 12), blocked on Subhana's files or a redraw she checks.
+6. "View all sheets" (step 13), mobile crops (step 14), performance, reduced motion and accessibility (step 15), optional contours (step 16).
 
 Then the pages that don't exist yet: Hillside School, Timber Veil, `/photography`, `/writing/imperfections`.
 

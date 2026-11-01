@@ -277,3 +277,4 @@ not hard-coded in components, so text and images can be swapped without touching
 - Replace About portrait with original (current one is a TEMP cutout from the flattened
   PDF page, 376×621px).
 - Phone number: only add if Subhana confirms.
+- Remove noindex: delete `src/app/robots.ts` and the `robots` line in `src/app/layout.tsx`'s metadata.

@@ -50,6 +50,8 @@ const lora = Lora({
 export const metadata: Metadata = {
   title: "Subhana Khan — Portfolio",
   description: "Architecture portfolio of Subhana Khan, Kochi, Kerala.",
+  // Private preview: remove before launch, with src/app/robots.ts.
+  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
