@@ -629,9 +629,9 @@ export const act4 = {
   masterplan: {
     title: "MASTERPLAN",
     image: { name: "settlement/masterplan", alt: "Colour masterplan of the 100-acre site, with lake and coast.", credit: credits.coastline, figure: fig42("Masterplan") } satisfies EgFigure,
-    /** Where her plan sits on the map at the site stop, in the map's units: on the dotted outline. */
-    onMap: { left: home.site.story.left, top: home.site.story.top, width: home.site.story.width },
-    /** Her north arrow, degrees clockwise from up. */
+    /** Where her plan sits on the map, in the map's units, turned true to her north: its sea edge on the east coast. */
+    onMap: { center: { x: 587.8, y: 282.9 }, width: 6 },
+    /** Her north arrow, degrees clockwise from up. The camera turns the map by this, so the plan lands upright. */
     north: 71,
     // OCR, proofread
     text: "Spread across a 100-acre site, the master plan adopts a low-impact approach to development by concentrating the built programme within approximately 50 acres while preserving the remaining land as ecological infrastructure. Instead of treating the landscape as vacant land for expansion, forests, wetlands, and natural drainage systems become integral components of the neighbourhood. The resulting settlement is dispersed rather than compact, reducing environmental disturbance and creating a community that is closely integrated with the island’s natural terrain.",

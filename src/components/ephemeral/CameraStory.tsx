@@ -44,33 +44,32 @@ export default function CameraStory({ titleId, title, children }: CameraStoryPro
         const withPlan = Boolean(context.conditions.plan);
         const siteScale = act3.site.stop.scale;
         // Worked out from the window once it's measured: the camera ends with the plan exactly behind it.
-        const planStop: CameraStop = { center: act3.site.stop.center, scale: siteScale };
-        const planBox = { left: 0, top: 0, width: 1 };
-        const { onMap } = act4.masterplan;
+        const { onMap, north } = act4.masterplan;
+        const planStop: CameraStop = { center: act3.site.stop.center, scale: siteScale, rotation: north };
+        const planBox = { centerX: 0, centerY: 0, width: 1 };
 
-        // The plan's second world: a sharp image at its final size, kept glued to its place on the map
-        // while the camera moves, and at scale 1 once it arrives. The map scaled it would be soft.
-        const placePlan = () => {
-          const frame = stage.getBoundingClientRect();
-          const map = world.getBoundingClientRect();
-          const unit = map.width / MAP_W;
+        // The plan's second world: a sharp image at its final size, kept glued to its place on the map, true
+        // to her north, while the camera moves and turns. It arrives upright at scale 1. The map scaled it would be soft.
+        const placePlan = (scale: number, rotation: number) => {
+          const unit = world.clientWidth / MAP_W;
+          const center = camera.project(onMap.center);
           gsap.set(planWorld, {
-            x: map.left - frame.left + onMap.left * unit - planBox.left,
-            y: map.top - frame.top + onMap.top * unit - planBox.top,
-            scale: (onMap.width * unit) / planBox.width,
-            transformOrigin: "0 0",
+            x: (stage.clientWidth - world.clientWidth) / 2 + center.x * unit - planBox.centerX,
+            y: (stage.clientHeight - world.clientHeight) / 2 + center.y * unit - planBox.centerY,
+            scale: (onMap.width * unit * scale) / planBox.width,
+            rotation: rotation - north,
             force3D: false,
           });
         };
 
-        const camera = createCamera({
+        const camera: ReturnType<typeof createCamera> = createCamera({
           world,
           size: { width: MAP_W, height: MAP_H },
           stops: [...[...act1.stops, act3.site.stop].map(({ center, scale }) => ({ center, scale })), ...(withPlan ? [planStop] : [])],
           // The outline's dots stay the same size on screen as the camera closes in.
-          onMove: (scale) => {
+          onMove: (scale, rotation) => {
             boundary.setAttribute("stroke-width", String((DOT_PX * MAP_W) / (world.clientWidth * scale)));
-            if (withPlan && scale >= Math.min(siteScale, planStop.scale)) placePlan();
+            if (withPlan && scale >= Math.min(siteScale, planStop.scale)) placePlan(scale, rotation);
           },
         });
 
@@ -78,14 +77,21 @@ export default function CameraStory({ titleId, title, children }: CameraStoryPro
           const sheet = planWindow.closest(".sheet")?.getBoundingClientRect();
           if (!sheet) return;
           const box = planWindow.getBoundingClientRect();
-          Object.assign(planBox, { left: box.left - sheet.left, top: box.top - sheet.top, width: box.width });
-          gsap.set(planWorld, { left: planBox.left, top: planBox.top, width: box.width, height: box.height });
+          const [left, top] = [box.left - sheet.left, box.top - sheet.top];
+          Object.assign(planBox, { centerX: left + box.width / 2, centerY: top + box.height / 2, width: box.width });
+          gsap.set(planWorld, { left, top, width: box.width, height: box.height });
           const unit = world.clientWidth / MAP_W;
           planStop.scale = box.width / (onMap.width * unit);
+          // Back from the window's centre to the camera's, in the map's own directions: the map is turned here.
+          const radians = (-north * Math.PI) / 180;
           const pixels = planStop.scale * unit;
+          const toWindow = {
+            x: (planBox.centerX - stage.clientWidth / 2) / pixels,
+            y: (planBox.centerY - stage.clientHeight / 2) / pixels,
+          };
           planStop.center = {
-            x: onMap.left - (planBox.left - stage.clientWidth / 2) / pixels,
-            y: onMap.top - (planBox.top - stage.clientHeight / 2) / pixels,
+            x: onMap.center.x - (toWindow.x * Math.cos(radians) - toWindow.y * Math.sin(radians)),
+            y: onMap.center.y - (toWindow.x * Math.sin(radians) + toWindow.y * Math.cos(radians)),
           };
           camera.place();
         };
@@ -101,8 +107,10 @@ export default function CameraStory({ titleId, title, children }: CameraStoryPro
         const legs: ScrollTrigger[] = [];
         const follow = () => smooth(legs.reduce((sum, leg) => sum + leg.progress, 0));
         gsap.utils.toArray<HTMLElement>("[data-act-leg] [data-act-card]", root).forEach((card) => {
-          if (card.hasAttribute("data-plan-leg") && !withPlan) return;
-          legs.push(ScrollTrigger.create({ trigger: card, start: "top bottom", end: "top 45%", onUpdate: follow, onRefresh: follow }));
+          const planLeg = card.hasAttribute("data-plan-leg");
+          if (planLeg && !withPlan) return;
+          // The plan's leg starts early: the turn has to be seen in the gap, before the sheet covers it.
+          legs.push(ScrollTrigger.create({ trigger: card, start: planLeg ? "top 115%" : "top bottom", end: "top 45%", onUpdate: follow, onRefresh: follow }));
         });
 
         // Tracing paper over the parked island: it settles as Act 2 arrives, and lifts again for 2.6.
@@ -154,16 +162,16 @@ export default function CameraStory({ titleId, title, children }: CameraStoryPro
           .to(boundary, { opacity: 1, duration: 0.1 }, 0)
           .to("[data-site-reveal]", { attr: { "stroke-dashoffset": 0 }, duration: 1 }, 0);
 
-        // Her plan takes over from the map while the gap above 4.2 is in view.
+        // Her plan appears on the island before the camera turns to it, and the map goes once it has.
         if (withPlan) {
           gsap
             .timeline({
               defaults: { ease: "none" },
-              scrollTrigger: { trigger: "[data-plan-leg]", start: "top 140%", end: "top 50%", scrub: 0.6 },
+              scrollTrigger: { trigger: "[data-plan-leg]", start: "top 150%", end: "top 45%", scrub: 0.6 },
             })
-            .to(planWorld, { opacity: 1, duration: 0.6 }, 0)
+            .to(planWorld, { opacity: 1, duration: 0.3 }, 0)
             .fromTo(boundary, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: false }, 0)
-            .to(world, { autoAlpha: 0, duration: 0.4 }, 0.6);
+            .to(world, { autoAlpha: 0, duration: 0.2 }, 0.8);
         }
 
         return () => resized.disconnect();
@@ -190,7 +198,7 @@ export default function CameraStory({ titleId, title, children }: CameraStoryPro
             </svg>
           </div>
         </div>
-        <div data-plan-world className="absolute hidden opacity-0 will-change-[transform,opacity] lg:motion-safe:block">
+        <div data-plan-world className="absolute hidden opacity-0 lg:motion-safe:block">
           <Image src={planImage.src} alt={act4.masterplan.image.alt} fill sizes="75vw" />
         </div>
         <h2

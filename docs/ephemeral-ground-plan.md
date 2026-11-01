@@ -138,7 +138,7 @@ The PDF is out of order: **printed 17–18 are PDF p.11; printed 19–20 are PDF
 22. Source of the p.09 land-use map, now also the basis of the port and airport shapes on 1.4.
 23. Fig. 1.5.5 sets her "7300 (approx)" and "3,00,000 (approx)" large. 7300 is native people plus settlers (1600 + 5700), so the caption says "existing", not "native". Please confirm the wording, and the citation for the BBC article beneath it.
 24. Approve "Collage" as the title of Fig. 4.1.1, the p.13 opening collage. An original would also let it be larger: it's 302×337px.
-25. Her north arrow on p.15 points about 71° clockwise from up, but the plan sits unrotated on the north-up map (sea side on the coast, at exaggerated scale). Is that acceptable? The title block on 4.2 shows her arrow.
+25. Is her p.15 north arrow right? It points about 71° clockwise from up, and the camera now turns the map to match, so the plan lands upright and true to it. That puts the plan's sea side towards the sea, but the real coast crosses its sea edge at about 45° (only 58% of that edge is over water on the map). Fitting the coast instead would mean turning the plan about −15°, which contradicts her arrow. It's one number (`north`). The plan also no longer sits on Act 3's dotted outline, which fades as the plan appears.
 26. Approve the alt text on 4.1 and 4.2.
 
 **Fallback if unavailable:** redraw unit plans as SVG from the p.19 crop, needing her check. Cluster plans stay at about 1×, shown smaller, with no deep zoom.
@@ -181,12 +181,12 @@ All 47 editable text layers are on three artboards. Everything else must be **ty
 | Ocean | 1× | `map-osm.svg` | Start of Act 1 |
 | Island | ≈24× | Great Nicobar fills the screen | End of Act 1, held through Act 2 |
 | Site | ≈80× | Site outline on the coast | Act 3 |
-| Masterplan | ≈80× | Plan fades in, map fades out | Start of Act 4 |
+| Masterplan | ≈133× at 1440px, turned 71° | Plan fades in, camera turns to her north, map fades out | Start of Act 4 |
 | Cluster | ×5 | Residential cluster | Act 4 |
 | Unit | ×6 | Family unit plan | End of Act 4 |
 
 - **Second world after the masterplan:** at the masterplan stop the camera resets to a new world with the masterplan at 1×, hidden by the crossfade. Without this, the unit stop needs about 2400×.
-- **Use the p.15 flat plan, not the isometric,** from the site stop on. Its sea is on the right, so it sits correctly on the real east coast, which the isometric can't (home shows it unmirrored, as you asked).
+- **Use the p.15 flat plan, not the isometric,** from the site stop on. Its sea side faces the real east coast, which the isometric can't (home shows it unmirrored, as you asked). True to her north arrow, the coast meets its sea edge at an angle (item 25).
 - **Scale is exaggerated,** as on home: 10 units, about 47× true size. True scale would need about 4700×.
 - **Continuing from home:** home ends on the isometric plan, so the Opening shows that same plan at the same size. The sheet lifts and the reader appears to arrive at the same object. Act 1 then begins back at the ocean.
 
@@ -235,7 +235,7 @@ Camera parked at the island, dimmed behind paper. See section 5.
 
 ### Act 4: The settlement (13–22), "What did she design?"
 - **4.1 Opening text.** Living sheet (her sheet 13): her "Everything that lives, passes…" set large as the hero, the collage beside it near its real size (it's only 302×337px). *Motion: line-by-line, within 3s.*
-- **4.2 Masterplan.** Living sheet (her sheet 15). In the gap above it her plan fades in on the dotted outline, the map fades out and the camera closes in, then the sheet's `late` window comes to rest around the plan. Key as HTML linked to her numbers, in both directions; text beneath; no key plan. Below `lg` or 700px tall, and with reduced motion, the plan is static in the sheet. *Motion: signature zoom continues.*
+- **4.2 Masterplan.** Living sheet (her sheet 15). In the gap above it her plan fades in on the island as the dotted outline fades, the camera closes in and turns 71° until her north is true and the plan is upright, the map fades out, then the sheet's `late` window comes to rest around the plan. The title block shows her north arrow. Key as HTML linked to her numbers, in both directions; text beneath; no key plan. Below `lg` or 700px tall, and with reduced motion, the plan is static in the sheet. *Motion: signature zoom continues.*
 - **4.3 Design program.** SVG bubble diagram. *Motion: connects node by node (CLAUDE.md).*
 - **4.4 Tsunami.** Render, text, zoning. *Motion: the three defence layers fade in order.*
 - **4.5 Eight strategies.** 2×4 grid. *Motion: stagger.*
@@ -328,7 +328,7 @@ Each step is one reviewable piece, checked at 1440px and 375px, then stop for re
 6. **Act 2 text and arches** (2.1–2.3). *Check: pacing by hand.*
 7. **Act 2 rest** (2.4–2.7), with the shared horizontal strip.
 8. **Act 3:** site zoom and outline. *Check: outline sits on the coast.*
-9. **Act 4 masterplan stop,** then the key. *Check: flat plan aligns with the coast.*
+9. **Act 4 masterplan stop,** then the key. *Check: plan is true to her north, its sea side towards the sea (the coast itself crosses at about 45°, item 25).*
 10. **Bubble diagram.**
 11. **Act 4 sections** (4.4–4.8), one per review.
 12. **Cluster and unit zoom.** *Blocked on Subhana's files, or use the redraw with her check.*

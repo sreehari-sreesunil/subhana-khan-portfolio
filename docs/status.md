@@ -4,7 +4,7 @@ Updated 2026-11-01. Update at the end of every task, and before every commit.
 
 ## Last commit
 
-`ephemeral: act 4 opening + masterplan` (2026-11-01) — built 4.1, and 4.2 with the masterplan stop and its interactive key (plan step 9).
+`act 4: checks + true north` (2026-11-01) — step 9's skipped checks all pass, and the camera now turns the map so the masterplan lands upright and true to her north.
 
 ## Reviewed and approved by the user
 
@@ -14,7 +14,7 @@ Only what the user has confirmed goes here, with the date.
 |---|---|---|
 | `docs/ephemeral-ground-plan.md` | Approved (the plan's own status line); date not recorded | Not recorded |
 | Living sheet batch 2 (`637b93a`) | **Built, NOT yet reviewed by user** | n/a |
-| Act 4 opening + masterplan (step 9) | **Built, NOT yet reviewed by user** | n/a |
+| Act 4 opening + masterplan + true north (step 9) | **Built, NOT yet reviewed by user** | n/a |
 | Everything else built so far | Not recorded: the git history doesn't show approvals. To be confirmed by the user | n/a |
 
 ## What's next
@@ -44,7 +44,7 @@ Full detail: "Needed from Subhana", section 6 and "Open questions" in `docs/ephe
 - Alt text on the new sheets (21).
 - Fig. 1.5.5 wording and the BBC citation (23).
 - "Collage" as the title of Fig. 4.1.1, and the alt text on 4.1 and 4.2 (24, 26).
-- The masterplan sits unrotated on the map, about 71° off her north arrow (25).
+- The masterplan is true to her north arrow, but the real coast crosses its sea edge at about 45°. Is the arrow right (25)?
 
 **Answers**
 - Is the p.07 Nicobarese collage safe to use? (11)

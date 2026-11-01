@@ -95,7 +95,8 @@ Verify exact hex values by sampling the extracted page images before finalising.
   `/lab` for reference; its hill and building are TEMP.
 - `SnapStrip`: native sideways scroller with arrows and a progress line, for wide images. It rests on each
   `[data-snap]` inside it, which must have real size (`inset-y-0 w-px`): Chrome ignores empty snap targets.
-- `createCamera` (`src/lib/camera.ts`): one camera, any number of stops. `map-osm.svg` is shared by home and
+- `createCamera` (`src/lib/camera.ts`): one camera, any number of stops, each with an optional `rotation`; `project(point)`
+  says where a map point falls in the frame, for layers kept on the map. `map-osm.svg` is shared by home and
   the project page, so its credit ("Coastline © OpenStreetMap contributors") must show wherever the map does.
 - Living sheet (`src/components/sheet/`, thesis Acts 1–3 except 3.3, and Act 4): `SheetGrid` is a full-screen sheet, 12×8 from `lg`,
   4 columns below, with its own paper and grain, down to 700px tall (`.sheet` type sizes use `min(vw, svh)`). Inside it,

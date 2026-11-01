@@ -22,7 +22,7 @@ export default function Masterplan({ title }: { title: string }) {
   const clear = () => setActive(null);
 
   return (
-    <div data-act-leg className="lg:motion-safe:mt-[100svh]">
+    <div data-act-leg className="lg:motion-safe:mt-[150svh]">
       <div data-act-card data-plan-leg>
         <SheetGrid id="masterplan" title={{ act: title, sheet: sheets.masterplan, north }} hold>
           <SheetBlock at="K1:L1" className="lg:pl-3">
