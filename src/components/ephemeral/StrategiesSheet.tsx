@@ -49,9 +49,9 @@ function SectionStrip() {
   return (
     <SheetBlock at="A7:L8">
       <SnapStrip label={section.stripLabel} hint={act3.scrollHint} fitsDesktop flush>
-        <figure className="sheet-section shrink-0 md:w-full md:shrink" style={{ "--sheet-ratio": ratio, maxWidth: width } as CSSProperties}>
-          {/* 240px is her section's real height: phones scroll it at full size, never above. */}
-          <div className="relative h-60 md:h-auto md:w-full" style={{ aspectRatio: ratio }}>
+        <figure className="sheet-section shrink-0 md:w-full md:shrink" style={{ "--sheet-ratio": ratio, "--sheet-real": `${height}px`, maxWidth: width } as CSSProperties}>
+          {/* Phones scroll it at its real height at most, never above. */}
+          <div className="relative h-[min(44svh,var(--sheet-real))] md:h-auto md:w-full" style={{ aspectRatio: ratio }}>
             {section.labels.map(({ x, lines }) => (
               <span key={lines[0] + x} data-snap className="absolute inset-y-0 w-px snap-center" style={{ left: `${x}%` }} />
             ))}

@@ -6,12 +6,18 @@ ug thesis.psd, which holds real layers for pp.05-06, 23 and 24 only. See docs/ep
 Never upscales. Rebuilds public/images/ephemeral-ground and src/content/ephemeral-ground.images.ts.
 Needs pymupdf, psd-tools and Pillow.
 
+Swapping in her originals: `npm run images:swap`. See docs/asset-manifest.md. Any image under public/images, not only
+this page's, is replaced by the file at the same path in assets-src/originals (any image format). A full run ends with
+the same step, so originals survive it.
+
 Deliberately not extracted: photos showing people who may be Jarawa or Shompen (p.07 Nicobarese collage,
 p.08 "Lessons" collage and BBC clipping, p.22 clipping), and the PSD's hidden layers, which include
 another person's CV and portfolio page.
 """
 import io
+import re
 import shutil
+import sys
 from pathlib import Path
 
 import numpy
@@ -26,6 +32,12 @@ OUT = Path("public/images/ephemeral-ground")
 BUILD = Path("assets-src/extracted/ephemeral-ground-build")
 MANIFEST = Path("src/content/ephemeral-ground.images.ts")
 QUALITY = 82
+ORIGINALS = Path("assets-src/originals")
+PUBLIC = Path("public/images")
+# Widest an original is kept at: past this next/image has no size to serve it at.
+WIDEST = 3840
+# Where each image's recorded width and height live.
+SIZES = [MANIFEST, Path("src/content/home.ts"), Path("src/content/site.ts")]
 
 # Printed page -> (PDF page, side). PDF pages 10 and 11 are in the wrong order.
 PAGES = {
@@ -300,6 +312,42 @@ def crop_page(page, name, box):
     return image.crop(box)
 
 
+def swap_originals():
+    """Replaces each image that has an original waiting, processed as the one it replaces was."""
+    for source in sorted(path for path in ORIGINALS.rglob("*") if path.is_file()):
+        relative = source.relative_to(ORIGINALS).with_suffix("")
+        targets = list((PUBLIC / relative.parent).glob(f"{relative.name}.*"))
+        if not targets:
+            sys.exit(f"No image on the site at {relative}: check the name of {source}")
+        target, name = targets[0], relative.as_posix().removeprefix("ephemeral-ground/")
+        image = Image.open(source).convert("RGBA" if name in CUT_OUT else "RGB")
+        if image.width > WIDEST:
+            image = image.resize((WIDEST, round(image.height * WIDEST / image.width)), Image.LANCZOS)
+        if name in ON_PAPER:
+            image = white_to_alpha(image)
+        elif name.startswith("idea/strategy-"):
+            image = soften(image)
+        options = {"quality": QUALITY, "method": 6} if target.suffix == ".webp" else {"quality": 90}
+        image.convert("RGB" if target.suffix == ".jpg" else image.mode).save(target, **options)
+        print(f"{relative}: {image.width}x{image.height}")
+
+
+def sync_sizes():
+    """Writes every image's real width and height into the content files, so layouts follow the new file."""
+    def real_size(match):
+        path = PUBLIC.parent / match[2].lstrip("/")
+        if path.suffix == ".svg":
+            return match[0]
+        width, height = Image.open(path).size
+        return f"{match[1]}{match[2]}{match[3]}width: {width}, height: {height}"
+
+    for path in SIZES:
+        text = path.read_bytes().decode()
+        path.write_bytes(re.sub(r'(src: ")(/images/[^"]+)(", )width: \d+, height: \d+', real_size, text).encode())
+    # It keys resized images by URL alone, so it would keep serving the old picture.
+    shutil.rmtree(".next/cache/images", ignore_errors=True)
+
+
 def main():
     if BUILD.exists():
         shutil.rmtree(BUILD)
@@ -368,7 +416,13 @@ def main():
 
     total = sum(entry[3] for entry in manifest.values())
     print(f"{len(manifest)} images, {total // 1024} KB total")
+    swap_originals()
+    sync_sizes()
 
 
 if __name__ == "__main__":
-    main()
+    if "--originals" in sys.argv:
+        swap_originals()
+        sync_sizes()
+    else:
+        main()

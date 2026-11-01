@@ -4,7 +4,7 @@ Updated 2026-11-01. Update at the end of every task, and before every commit.
 
 ## Last commit
 
-`act 4: tsunami, strategies, site section` (2026-11-01) — sections 4.4–4.6 as two living sheets: tsunami design (sheet 14), and the eight strategies with the long site section on one sheet (sheet 16). Not pushed. Before it: `act 4: design program diagram`, pushed.
+`asset manifest for HQ swap` (2026-11-01) — `docs/asset-manifest.md` lists every image, and `npm run images:swap` puts in an original with no layout changes. Not pushed. Before it: `act 4: tsunami, strategies, site section`, sections 4.4–4.6 as two living sheets, also not pushed.
 
 ## Reviewed and approved by the user
 
@@ -32,9 +32,12 @@ Then the pages that don't exist yet: Hillside School, Timber Veil, `/photography
 
 ## Waiting on Subhana
 
+Subhana approved defaults; still need her yes/no on the AI Timber Veil render and the sketch-6 seawall.
+
 Full detail: "Needed from Subhana", section 6 and "Open questions" in `docs/ephemeral-ground-plan.md`, and "Before launch" in `Claude.MD`. Numbers are the plan's "Needed from Subhana" items.
 
 **Files**
+She'll send high-quality originals once the site is finished: `docs/asset-manifest.md` says what each must cover, and which to upgrade first.
 - Essential for the end of the zoom: family unit plans, cluster plans, masterplan (1–3).
 - Strongly wanted: original thesis PSD or PDF, high-resolution jury sheets, contour and tsunami plans, p.24 render originals, full-size site photos (4–8).
 - Her jury sheets: not in `assets-src/` yet, so the masterplan is the p.15 PDF crop. An original of the p.13 collage (24).

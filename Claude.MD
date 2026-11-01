@@ -256,6 +256,7 @@ original sheets as full images, click to open a zoomable viewer.
 
 - Never ship the PDF to the site (except an optional compressed download, ≤25MB).
 - Raw extracted images live in `/assets-src` (not deployed). Processed web images in `/public/images`.
+- Her originals: `docs/asset-manifest.md` lists every image. Save one under `assets-src/originals/` by its image path, then run `npm run images:swap`.
 - Prefer original image files over PDF page renders. Full jury sheets: render at ~2400px wide.
 - Target 150–400KB per image; next/image generates responsive sizes.
 - All text is real HTML, never text baked into images (except her script "Thank you").
