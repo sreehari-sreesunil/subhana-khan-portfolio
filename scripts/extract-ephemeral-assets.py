@@ -131,6 +131,7 @@ PAINT_WHITE = {
     "ground/contour-plan": [(640, 737, 1222, 835), (420, 835, 505, 742, 640, 728, 640, 835)],
     "ground/site-section": [(700, 825, 1245, 905), (85, 825, 215, 885), (370, 825, 530, 825, 490, 868, 370, 868)],
     "ground/site-context": [(1615, 770, 1712, 842)],
+    "settlement/strategy-roads": [(1420, 698, 1530, 705)],
     "settlement/isometric-model": [(1005, 405, 1040, 575)],
     "settlement/site-section": [
         (160, 1030, 370, 1060), (425, 1015, 550, 1070), (525, 975, 640, 1025), (935, 955, 1065, 982),
@@ -194,6 +195,10 @@ ON_PAPER = {
     "idea/arch-collage", "idea/terrain", "idea/slope-ratio", "idea/accessibility", "ground/settlements-strip",
     "ground/infra-1", "ground/infra-2", "ground/infra-3", "ground/infra-4", "ground/infra-5", "ground/infra-6",
     "ground/contour-plan", "ground/site-section", "ground/site-context", "settlement/opening-collage",
+    "settlement/tsunami-zoning", "settlement/tsunami-render",
+    "settlement/site-section", "settlement/strategy-water", "settlement/strategy-gradient", "settlement/strategy-ecology",
+    "settlement/strategy-layout", "settlement/strategy-walkability", "settlement/strategy-resilience",
+    "settlement/strategy-contour", "settlement/strategy-roads",
 }
 
 # Traced by hand, in page coordinates: this plan goes over the map, so all around it must be transparent. A cut

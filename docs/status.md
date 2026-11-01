@@ -4,7 +4,7 @@ Updated 2026-11-01. Update at the end of every task, and before every commit.
 
 ## Last commit
 
-`act 4: design program diagram` (2026-11-01) — section 4.3: her p.13 bubble diagram redrawn as SVG on a living sheet, with hover and keyboard highlight and a phone version (plan step 10). Not pushed. Before it: `prepare preview deploy`.
+`act 4: tsunami, strategies, site section` (2026-11-01) — sections 4.4–4.6 as two living sheets: tsunami design (sheet 14), and the eight strategies with the long site section on one sheet (sheet 16). Not pushed. Before it: `act 4: design program diagram`, pushed.
 
 ## Reviewed and approved by the user
 
@@ -17,13 +17,14 @@ Only what the user has confirmed goes here, with the date.
 | Act 4 opening + masterplan + true north (step 9) | **Built, NOT yet reviewed by user** | n/a |
 | Home dive and About start-lag fix | **Built, NOT yet reviewed by user** | n/a |
 | Design program diagram, 4.3 (step 10) | **Built, NOT yet reviewed by user**. Plan and p.14 legend names approved by the user | 2026-11-01 |
+| Tsunami, strategies, site section, 4.4–4.6 (step 11a) | **Built, NOT yet reviewed by user**. Plan approved by the user, with 4.5 and 4.6 on one sheet | 2026-11-01 |
 | Everything else built so far | Not recorded: the git history doesn't show approvals. To be confirmed by the user | n/a |
 
 ## What's next
 
 1. Push to GitHub when ready, so the Vercel preview updates. The noindex comes off before launch (`Claude.MD`, "Before launch").
-2. User reviews batch 2, step 9 and 4.3 at 1440px and 375px.
-3. Act 4 sections 4.4–4.8, one per review (step 11).
+2. User reviews batch 2, step 9, 4.3 and 4.4–4.6 at 1440px and 375px.
+3. Act 4 sections 4.7–4.8 (step 11b): plan first.
 4. Cluster and unit zoom (step 12), blocked on Subhana's files or a redraw she checks.
 5. "View all sheets" (step 13), mobile crops (step 14), performance, reduced motion and accessibility (step 15), optional contours (step 16).
 
@@ -48,6 +49,7 @@ Full detail: "Needed from Subhana", section 6 and "Open questions" in `docs/ephe
 - "Collage" as the title of Fig. 4.1.1, and the alt text on 4.1 and 4.2 (24, 26).
 - The masterplan is true to her north arrow, but the real coast crosses its sea edge at about 45°. Is the arrow right (25)?
 - 4.3: new legend names "Institution" and "Landscape", the zones given to The basin and Supporting services, the figure title and alt text (27). Which p.13 paragraph belongs here, and the unused one's typos (28).
+- 4.4–4.6: figure titles and alt text (29); baked-in "LITHORAL FOREST", "VISITORS CENTER" and "WETLAND/STREAM" on the zoning plan (30); sketch 6's seawall against her p.14 argument, and whether the sketch is hers (31).
 
 **Answers**
 - Is the p.07 Nicobarese collage safe to use? (11)

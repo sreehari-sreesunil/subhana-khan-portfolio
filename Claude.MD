@@ -20,7 +20,7 @@ not a page-flipper.
   list only): "innnovation" → "innovation", "consious" → "conscious", "PLANING" → "PLANNING",
   "permanant" → "permanent", "Mangroove" → "Mangrove", "Spactial" → "Spatial",
   "Settelers" → "Settlers", "Strait of malacca" → "Strait of Malacca", "166sq.km" → "166 sq.km",
-  "Bio-diversity" → "Biodiversity", "Jun'ichirō" → "Jun’ichirō", "inbuild" → "inbuilt", "Community hall" → "Community Hall",
+  "Bio-diversity" → "Biodiversity", "Jun'ichirō" → "Jun’ichirō", "inbuild" → "inbuilt", "Community hall" → "Community Hall", "Community kitchen" → "Community Kitchen",
   "veranda" → "verandah", "build structures are build" → "built structures are built",
   "six potential" → "Six potential", "Campbell bay" → "Campbell Bay",
   "Contour intrevals" → "Contour intervals". Dashes in her text: the shorter en dash (–).

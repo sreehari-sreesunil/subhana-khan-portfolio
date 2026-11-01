@@ -370,6 +370,33 @@ html.js:not([data-hydrated]) [data-reveal] {
   margin-top: 0;
 }
 
+/* p.16: eight sketch-and-text pairs, one column on phones. */
+.sheet-strategies {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.sheet-strategy-sketch {
+  height: 9rem;
+  margin-bottom: 0.5rem;
+}
+
+.sheet-section-label {
+  font-size: 0.8125rem;
+  line-height: 1.15;
+}
+
+/* The section's empty sky, top left. */
+.sheet-section-caption {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.sheet-section-caption .sheet-caption {
+  margin-top: 0;
+}
+
 /* The masterplan's box: exactly the plan, so her numbers can use percentages. */
 .sheet-plan {
   position: relative;
@@ -564,6 +591,50 @@ html.js:not([data-hydrated]) [data-reveal] {
   .sheet-strip-fit {
     flex: none;
     width: min(100cqw, calc((100cqh - var(--sheet-caption, 0px)) * var(--sheet-ratio)));
+  }
+
+  .sheet-strategies {
+    height: 100%;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    /* Sketch, name, text, caption, twice: subgrid lines the names up across each row. */
+    grid-template-rows: repeat(2, minmax(0, 1fr) auto auto auto);
+    gap: 0 1.25rem;
+  }
+
+  .sheet-strategy {
+    display: grid;
+    grid-row: span 4;
+    grid-template-rows: subgrid;
+    min-height: 0;
+  }
+
+  .sheet-strategy .sheet-caption {
+    margin-top: 0.15rem;
+  }
+
+  .sheet-strategy-sketch {
+    height: auto;
+    min-height: 0;
+    margin-bottom: 0.2rem;
+  }
+
+  .sheet-strategy:nth-child(n + 5) .sheet-strategy-sketch {
+    margin-top: 0.5rem;
+  }
+
+  .sheet-strategy h4 {
+    margin-bottom: 0.15rem;
+  }
+
+  /* The strip's height sets its width, never wider than the sheet. */
+  .sheet-section {
+    flex: none;
+    width: min(100cqw, calc(100cqh * var(--sheet-ratio)));
+    margin-inline: auto;
+  }
+
+  .sheet-section-label {
+    font-size: clamp(0.6875rem, 0.95cqw, 0.9375rem);
   }
 
   .sheet-masonry {

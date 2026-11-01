@@ -618,11 +618,14 @@ export const act3 = {
 const fig41 = figures("4.1");
 const fig42 = figures("4.2");
 const fig43 = figures("4.3");
+const fig44 = figures("4.4");
+const fig45 = figures("4.5");
+const fig46 = figures("4.6");
 
 // Act 4 (pp.13–22). Nothing here is in the PSD.
 export const act4 = {
   // Her printed page numbers.
-  sheets: { opening: "13", masterplan: "15", program: "13" },
+  sheets: { opening: "13", masterplan: "15", program: "13", tsunami: "14", strategies: "16" },
   opening: {
     image: { name: "settlement/opening-collage", alt: "Collage of a child watching a shared street.", figure: fig41("Collage") } satisfies EgFigure,
     // OCR, proofread
@@ -667,6 +670,50 @@ export const act4 = {
       { name: "Institution", group: "institution" },
       { name: "Landscape", group: "landscape" },
     ] satisfies { name: string; group: ProgramGroup }[],
+  },
+  tsunami: {
+    title: "TSUNAMI RESILIENT DESIGN",
+    plan: { name: "settlement/tsunami-zoning", alt: "Zoning plan of the settlement over its contours: coloured circles for each zone, joined by dotted paths, with forest, wetland and mangroves.", figure: fig44("Zoning plan") } satisfies EgFigure,
+    render: { name: "settlement/tsunami-render", alt: "Render of a landmark tower above the coast.", figure: fig44("Landmark tower") } satisfies EgFigure,
+    // Proofread against p.14
+    text: "This design proposes a multi-layered coastal defence system that reduces tsunami wave energy before it reaches inhabited land. Inspired by post-disaster reconstruction strategies developed in Sendai, Japan following the 2011 Tōhoku tsunami, the approach stacks three natural and built barriers in sequence – offshore coral reefs, a dense mangrove belt, and an inland water channel network. Each layer absorbs and breaks wave momentum progressively, significantly reducing wave height and force by the time it reaches the built environment. Rather than relying on a single hard seawall, this strategy works with natural ecosystems, creating a coastal edge that is both ecologically productive and disaster resilient. The elevated community and landmark tower set within the landscape further ensure that residents have safe refuge and visibility during a tsunami event.",
+    // Her own phrases from the text above, in her order. The reefs aren't drawn anywhere, so these stay words.
+    layers: ["offshore coral reefs", "a dense mangrove belt", "an inland water channel network"],
+    legendTitle: "LEGENDS",
+    // Her p.14 legend, in her order, with colours sampled from its circles.
+    legend: [
+      { name: "Tourist zone", colour: "#E8B5B2" },
+      { name: "The common", colour: "#9FD4CA" },
+      { name: "Residential", colour: "#EDEDAF" },
+      { name: "Retail", colour: "#A6A7C3" },
+      { name: "Water catchment area", colour: "#A8BAC6" },
+    ],
+  },
+  strategies: [
+    // Proofread against p.16
+    { name: "settlement/strategy-water", title: "1. Water Strategy", alt: "Sketch section of a water catchment.", figure: fig45("Water Strategy"), text: "Rainwater catchments, wetlands and natural drainage channels support groundwater recharge, reduce runoff and secure freshwater, integrating water conservation into everyday settlement life." },
+    { name: "settlement/strategy-gradient", title: "2. Public–Private Gradient", alt: "Sketch of a public-to-private gradient.", figure: fig45("Public–Private Gradient"), text: "The settlement transitions from public functions near the entrance to quieter, more intimate residential clusters, balancing community access with residents’ privacy." },
+    { name: "settlement/strategy-ecology", title: "3. Ecological Preservation", alt: "Sketch section of preserved wetland.", figure: fig45("Ecological Preservation"), text: "Wetlands, water catchments and dense vegetation are preserved as integral parts of the neighbourhood, supporting biodiversity, natural drainage and climate resilience." },
+    { name: "settlement/strategy-layout", title: "4. Scattered Building Layout", alt: "Diagram of scattered buildings.", figure: fig45("Scattered Building Layout"), text: "Smaller building clusters preserve vegetation, maintain natural drainage and frame landscape views, while the spaces between them become shared green areas." },
+    { name: "settlement/strategy-walkability", title: "5. Walkability", alt: "Sketch of a shaded path.", figure: fig45("Walkability"), text: "Pedestrian pathways follow the landscape, linking activity nodes through shaded routes and framed views to encourage exploration and interaction while reducing motorised transport." },
+    { name: "settlement/strategy-resilience", title: "6. Disaster Resilience", alt: "Section of layered coastal defences.", figure: fig45("Disaster Resilience"), credit: TO_CONFIRM, text: "Higher-contour public buildings serve as evacuation points, while connected roads and pedestrian paths guide residents to safety. Distributed critical infrastructure supports community resilience during emergencies." },
+    { name: "settlement/strategy-contour", title: "7. Contour Responsive Planning", alt: "Sketch of buildings stepping with contours.", figure: fig45("Contour Responsive Planning"), text: "Buildings step with the natural contours, minimising cut-and-fill, preserving topography and improving stormwater management." },
+    { name: "settlement/strategy-roads", title: "8. Road Network", alt: "Diagram of the road network.", figure: fig45("Road Network"), text: "A hierarchical road network prioritises pedestrians, with primary roads serving public and emergency facilities and secondary roads connecting residential clusters. Peripheral vehicle access encourages walking and cycling, creating a safer, quieter neighbourhood." },
+  ] satisfies (EgFigure & { title: string; text: string })[],
+  section: {
+    image: { name: "settlement/site-section", alt: "Long section from the residential cluster to Laxman beach.", figure: fig46("Site section") } satisfies EgFigure,
+    stripLabel: "Site section, from the residential cluster to Laxman beach",
+    // Her labels, in her order, placed at her leader lines. `x` and `y` are % of the section; `side` is where the words sit.
+    labels: [
+      { lines: ["Residential cluster"], x: 20.8, y: 46, side: "left" },
+      { lines: ["Community", "Kitchen"], x: 30.6, y: 46, side: "left" },
+      { lines: ["Community", "Hall"], x: 35, y: 28, side: "left" },
+      { lines: ["Access road"], x: 53.9, y: 14, side: "right" },
+      { lines: ["Visitor’s", "center"], x: 56, y: 50, side: "right" },
+      { lines: ["Mangrove", "forest"], x: 70.2, y: 4, side: "centre" },
+      { lines: ["Cultural", "center"], x: 74.5, y: 50, side: "right" },
+      { lines: ["Laxman beach"], x: 82.7, y: 54, side: "right" },
+    ] as { lines: string[]; x: number; y: number; side: "left" | "right" | "centre" }[],
   },
 };
 
@@ -730,34 +777,6 @@ export const acts: EgAct[] = [
         images: [{ name: "settlement/masterplan", alt: "Colour masterplan of the 100-acre site, with lake and coast." }],
       },
       { id: "design-program", title: "DESIGN PROGRAM", pages: [13], images: [] },
-      {
-        id: "tsunami",
-        title: "TSUNAMI RESILIENT DESIGN",
-        pages: [14],
-        images: [
-          { name: "settlement/tsunami-render", alt: "Render of a landmark tower above the coast." },
-          { name: "settlement/tsunami-zoning", alt: "Zoning plan of the settlement." },
-        ],
-      },
-      {
-        id: "eight-strategies",
-        pages: [16],
-        images: [
-          { name: "settlement/strategy-water", alt: "Sketch section of a water catchment." },
-          { name: "settlement/strategy-gradient", alt: "Sketch of a public-to-private gradient." },
-          { name: "settlement/strategy-ecology", alt: "Sketch section of preserved wetland." },
-          { name: "settlement/strategy-layout", alt: "Diagram of scattered buildings." },
-          { name: "settlement/strategy-walkability", alt: "Sketch of a shaded path." },
-          { name: "settlement/strategy-resilience", alt: "Section of layered coastal defences." },
-          { name: "settlement/strategy-contour", alt: "Sketch of buildings stepping with contours." },
-          { name: "settlement/strategy-roads", alt: "Diagram of the road network." },
-        ],
-      },
-      {
-        id: "site-section",
-        pages: [16],
-        images: [{ name: "settlement/site-section", alt: "Long section from the residential cluster to Laxman beach." }],
-      },
       {
         id: "community-zone",
         title: "COMMUNITY ZONE",

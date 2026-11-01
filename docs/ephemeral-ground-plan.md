@@ -141,6 +141,9 @@ The PDF is out of order: **printed 17–18 are PDF p.11; printed 19–20 are PDF
 25. Is her p.15 north arrow right? It points about 71° clockwise from up, and the camera now turns the map to match, so the plan lands upright and true to it. That puts the plan's sea side towards the sea, but the real coast crosses its sea edge at about 45° (only 58% of that edge is over water on the map). Fitting the coast instead would mean turning the plan about −15°, which contradicts her arrow. It's one number (`north`). The plan also no longer sits on Act 3's dotted outline, which fades as the plan appears.
 26. Approve the alt text on 4.1 and 4.2.
 27. 4.3 legend: "Institution" (pale grey) and "Landscape" (pale yellow-green) are new names; the other five are her p.14 names. Is "Water catchment area" right for The basin, and "Retail" for Supporting services? Also the figure title "Design program" and the diagram's alt text.
+29. 4.4–4.6 figure titles she has no name for: "Zoning plan", "Landmark tower", "Site section". Alt text on these sheets.
+30. Zoning plan's baked-in labels (printed into the image): "LITHORAL FOREST" (p.12 spells it "littoral"), "VISITORS CENTER" (elsewhere "Visitor’s center"), "WETLAND/STREAM". Needs a clean version.
+31. Sketch 6 (Disaster Resilience): is it hers, and what's its source? Its labels show "Seawall (New structure)", while p.14 argues against relying on a seawall.
 28. 4.3 uses the "community core" paragraph, which sits beside her residential cluster diagram on p.13. Her other p.13 paragraph, "The clusters are broken into tiny clusters…", is unused so far: it's cut off on the page and has typos outside the approved list ("beacuse", "vegitation").
 
 **Fallback if unavailable:** redraw unit plans as SVG from the p.19 crop, needing her check. Cluster plans stay at about 1×, shown smaller, with no deep zoom.
@@ -239,9 +242,8 @@ Camera parked at the island, dimmed behind paper. See section 5.
 - **4.1 Opening text.** Living sheet (her sheet 13): her "Everything that lives, passes…" set large as the hero, the collage beside it near its real size (it's only 302×337px). *Motion: line-by-line, within 3s.*
 - **4.2 Masterplan.** Living sheet (her sheet 15). In the gap above it her plan fades in on the island as the dotted outline fades, the camera closes in and turns 71° until her north is true and the plan is upright, the map fades out, then the sheet's `late` window comes to rest around the plan. The title block shows her north arrow. Key as HTML linked to her numbers, in both directions; text beneath; no key plan. Below `lg` or 700px tall, and with reduced motion, the plan is static in the sheet. *Motion: signature zoom continues.*
 - **4.3 Design program.** Living sheet (her sheet 13): SVG bubble diagram redrawn from p.13 as the hero, her community core paragraph, a legend in her p.14 names, and a tall rearranged diagram below `lg`. Hover, focus or tap a bubble to see what it connects to. *Motion: colour groups appear in turn, then the arrows draw. Below `lg`: the diagram fades up as one and its arrows draw.*
-- **4.4 Tsunami.** Render, text, zoning. *Motion: the three defence layers fade in order.*
-- **4.5 Eight strategies.** 2×4 grid. *Motion: stagger.*
-- **4.6 Site section.** Labelled. *Native horizontal strip; no pin.*
+- **4.4 Tsunami.** Living sheet (her sheet 14): zoning plan as the hero with her legend as HTML, tower render, her text. Her coral reefs aren't drawn anywhere, so the three layers are her own phrases, listed in her order; nothing is added to the plan. *Motion: plan, render, text, then the three layers in turn.*
+- **4.5 Eight strategies and 4.6 Site section.** One living sheet, as on her p.16 (sheet 16): the eight sketch-and-text pairs as a series, no heading (she has none), the long section as the sheet's base with her labels as HTML on her leader lines. Sketches and section never go above real size. *Motion: pairs 1 to 8, then the section, then its labels. On phones the section is a native horizontal strip at its real height.*
 - **4.7 Community zone (17–18).** Plans + text. *Motion: hall floors stack in order.*
 - **4.8 Tourism and culture (21–22).** Plans + text. *Motion: `RevealImage`.*
 - **4.9 Cluster, then home (19–20).** Zoom to cluster, then the family unit. *Motion: the zoom ends here, and the page rests.* Then elevation and "View all sheets".
