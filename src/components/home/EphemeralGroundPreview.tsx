@@ -25,7 +25,7 @@ export default function EphemeralGroundPreview() {
   const sectionRef = useRef<HTMLElement>(null);
   const { mapDot, mapRing } = content;
 
-  // Desktop: the section settles to the top once, then the dive plays once on a clock.
+  // Desktop: the dive plays once on a clock, from the moment the section starts settling to the top.
   // Phones: the plan fades up. Reduced motion: CSS shows the final state.
   useGSAP(
     () => {
@@ -60,17 +60,18 @@ export default function EphemeralGroundPreview() {
 
         const dive = gsap
           .timeline({ paused: true, onUpdate: camera.place })
-          .to(camera.state, { position: 1, duration: 4.4, ease: "sine.inOut" }, 0.8)
-          .to(marks, { opacity: 0, duration: 0.8, ease: "power2.out" }, 1)
-          .set(boundary, { opacity: 1 }, 2.2)
-          .to(reveal, { attr: { "stroke-dashoffset": 0 }, duration: 1, ease: "sine.inOut" }, 2.2)
-          .to(plan, { opacity: 1, duration: 1.2, ease: "sine.inOut" }, 3.2)
-          .to(map, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, 3.2)
-          .to(boundary, { opacity: 0, duration: 0.6, ease: "power2.out" }, 4.6)
-          .to(text, { opacity: 1, duration: 0.9, ease: "power2.out", stagger: 0.2 }, 0.5)
-          .to(replay, { autoAlpha: 1, duration: 0.6, ease: "power2.out" }, 6.2);
+          .to(camera.state, { position: 1, duration: 6, ease: "sine.inOut" }, 0)
+          .to(marks, { opacity: 0, duration: 0.8, ease: "power2.out" }, 0.8)
+          .set(boundary, { opacity: 1 }, 1.9)
+          .to(reveal, { attr: { "stroke-dashoffset": 0 }, duration: 1.4, ease: "sine.inOut" }, 1.9)
+          .to(plan, { opacity: 1, duration: 1.6, ease: "sine.inOut" }, 3.3)
+          .to(map, { opacity: 0, duration: 1.6, ease: "sine.inOut" }, 3.3)
+          .to(boundary, { opacity: 0, duration: 0.6, ease: "power2.out" }, 5.2)
+          .to(text, { opacity: 1, duration: 0.9, ease: "power2.out", stagger: 0.2 }, 1.3)
+          .to(replay, { autoAlpha: 1, duration: 0.6, ease: "power2.out" }, 7);
 
         let played = false;
+        let arrived = false;
         const play = () => {
           if (played) return;
           played = true;
@@ -84,12 +85,27 @@ export default function EphemeralGroundPreview() {
           onEnter: () => {
             // Also fires on a page restored below the section; that must not pull the reader back.
             const top = section.getBoundingClientRect().top;
-            if (played || top <= 0) return;
+            const settle = !played && top > 0;
+            play();
             // A number, not the element: after a jump (Page Down, scrollbar) Lenis's own position is stale.
-            getLenis()?.scrollTo(window.scrollY + top, { duration: 0.8, easing: easeOutCubic });
+            if (settle) getLenis()?.scrollTo(window.scrollY + top, { duration: 0.8, easing: easeOutCubic });
+          },
+          // The reader turned back before arriving: the dive unwinds, ready to start again.
+          onLeaveBack: () => {
+            if (arrived) return;
+            played = false;
+            dive.reverse();
           },
         });
-        const landed = ScrollTrigger.create({ trigger: section, start: "top 2px", once: true, onEnter: play });
+        const landed = ScrollTrigger.create({
+          trigger: section,
+          start: "top 2px",
+          once: true,
+          onEnter: () => {
+            arrived = true;
+            play();
+          },
+        });
 
         const onReplay = () => {
           dive.restart();

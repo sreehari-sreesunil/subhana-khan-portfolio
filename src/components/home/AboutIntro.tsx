@@ -52,7 +52,7 @@ export default function AboutIntro({ content: about, headingLevel: Heading = "h2
               .from([...text, link], { opacity: 0, duration: 1.2, stagger: 0.25 }, "-=0.2");
           } else {
             tl.from(portrait, { opacity: 0, y: 40, duration: 1 })
-              .from(bubble, { opacity: 0, scale: 0.9, duration: 0.8 }, "-=0.35")
+              .from(bubble, { opacity: 0, scale: 0.9, duration: 0.8 }, 0.2)
               .addLabel("lines", "-=0.2");
             split = SplitText.create(text, {
               type: "lines",
@@ -83,9 +83,11 @@ export default function AboutIntro({ content: about, headingLevel: Heading = "h2
             });
           };
 
+          // Desktop: as the portrait comes on screen, or its rise would play out of sight. Phones: it's below the text.
+          const wide = window.matchMedia("(min-width: 48rem)").matches;
           ScrollTrigger.create({
-            trigger: section,
-            start: "top 65%",
+            trigger: wide ? portrait : section,
+            start: wide ? "top bottom" : "top 65%",
             once: true,
             onEnter: () => {
               if (!reduce) openFromTail();

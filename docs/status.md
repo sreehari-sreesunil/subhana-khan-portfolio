@@ -4,7 +4,7 @@ Updated 2026-11-01. Update at the end of every task, and before every commit.
 
 ## Last commit
 
-`act 4: checks + true north` (2026-11-01) — step 9's skipped checks all pass, and the camera now turns the map so the masterplan lands upright and true to her north.
+`dive + about: no start lag` (2026-11-01) — the home dive now starts with the landing, and About's reveal starts as the portrait comes on screen. Before it: `act 4: checks + true north`.
 
 ## Reviewed and approved by the user
 
@@ -15,6 +15,7 @@ Only what the user has confirmed goes here, with the date.
 | `docs/ephemeral-ground-plan.md` | Approved (the plan's own status line); date not recorded | Not recorded |
 | Living sheet batch 2 (`637b93a`) | **Built, NOT yet reviewed by user** | n/a |
 | Act 4 opening + masterplan + true north (step 9) | **Built, NOT yet reviewed by user** | n/a |
+| Home dive and About start-lag fix | **Built, NOT yet reviewed by user** | n/a |
 | Everything else built so far | Not recorded: the git history doesn't show approvals. To be confirmed by the user | n/a |
 
 ## What's next
