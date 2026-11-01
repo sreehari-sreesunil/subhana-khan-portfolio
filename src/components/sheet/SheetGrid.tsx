@@ -64,9 +64,9 @@ function groupTimeline(root: HTMLElement, group: number, slow: boolean, reduce: 
 
   steps(root, "callout", group).forEach((element, i) => {
     timeline.to(element, { opacity: 1, duration: short, ease }, i === 0 ? after() : ">-0.2");
-    const line = element.querySelector("path");
-    if (line && !reduce) {
-      timeline.fromTo(line, { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: short, ease }, "<");
+    const lines = element.querySelectorAll("path[stroke-dasharray]");
+    if (lines.length && !reduce) {
+      timeline.fromTo(lines, { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: short, ease, stagger: 0.04 }, "<");
     }
   });
 
@@ -91,8 +91,7 @@ function showGroup(root: HTMLElement, group: number) {
   const everything = gsap.utils.toArray<HTMLElement>(`[data-sheet-step][data-sheet-group="${group}"]`, root);
   gsap.set(everything, { clipPath: "none", opacity: 1 });
   everything.forEach((element) => {
-    const line = element.querySelector("path");
-    if (line) line.setAttribute("stroke-dashoffset", "0");
+    element.querySelectorAll("path[stroke-dasharray]").forEach((line) => line.setAttribute("stroke-dashoffset", "0"));
   });
 }
 

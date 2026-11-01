@@ -140,6 +140,8 @@ The PDF is out of order: **printed 17–18 are PDF p.11; printed 19–20 are PDF
 24. Approve "Collage" as the title of Fig. 4.1.1, the p.13 opening collage. An original would also let it be larger: it's 302×337px.
 25. Is her p.15 north arrow right? It points about 71° clockwise from up, and the camera now turns the map to match, so the plan lands upright and true to it. That puts the plan's sea side towards the sea, but the real coast crosses its sea edge at about 45° (only 58% of that edge is over water on the map). Fitting the coast instead would mean turning the plan about −15°, which contradicts her arrow. It's one number (`north`). The plan also no longer sits on Act 3's dotted outline, which fades as the plan appears.
 26. Approve the alt text on 4.1 and 4.2.
+27. 4.3 legend: "Institution" (pale grey) and "Landscape" (pale yellow-green) are new names; the other five are her p.14 names. Is "Water catchment area" right for The basin, and "Retail" for Supporting services? Also the figure title "Design program" and the diagram's alt text.
+28. 4.3 uses the "community core" paragraph, which sits beside her residential cluster diagram on p.13. Her other p.13 paragraph, "The clusters are broken into tiny clusters…", is unused so far: it's cut off on the page and has typos outside the approved list ("beacuse", "vegitation").
 
 **Fallback if unavailable:** redraw unit plans as SVG from the p.19 crop, needing her check. Cluster plans stay at about 1×, shown smaller, with no deep zoom.
 
@@ -236,7 +238,7 @@ Camera parked at the island, dimmed behind paper. See section 5.
 ### Act 4: The settlement (13–22), "What did she design?"
 - **4.1 Opening text.** Living sheet (her sheet 13): her "Everything that lives, passes…" set large as the hero, the collage beside it near its real size (it's only 302×337px). *Motion: line-by-line, within 3s.*
 - **4.2 Masterplan.** Living sheet (her sheet 15). In the gap above it her plan fades in on the island as the dotted outline fades, the camera closes in and turns 71° until her north is true and the plan is upright, the map fades out, then the sheet's `late` window comes to rest around the plan. The title block shows her north arrow. Key as HTML linked to her numbers, in both directions; text beneath; no key plan. Below `lg` or 700px tall, and with reduced motion, the plan is static in the sheet. *Motion: signature zoom continues.*
-- **4.3 Design program.** SVG bubble diagram. *Motion: connects node by node (CLAUDE.md).*
+- **4.3 Design program.** Living sheet (her sheet 13): SVG bubble diagram redrawn from p.13 as the hero, her community core paragraph, a legend in her p.14 names, and a tall rearranged diagram below `lg`. Hover, focus or tap a bubble to see what it connects to. *Motion: colour groups appear in turn, then the arrows draw. Below `lg`: the diagram fades up as one and its arrows draw.*
 - **4.4 Tsunami.** Render, text, zoning. *Motion: the three defence layers fade in order.*
 - **4.5 Eight strategies.** 2×4 grid. *Motion: stagger.*
 - **4.6 Site section.** Labelled. *Native horizontal strip; no pin.*

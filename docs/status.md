@@ -4,7 +4,7 @@ Updated 2026-11-01. Update at the end of every task, and before every commit.
 
 ## Last commit
 
-`prepare preview deploy` (2026-11-01) — noindex on every page plus a disallow-all robots.txt, source file types gitignored, repo audited, clean build passes. Not pushed: no GitHub remote yet. Before it: `dive + about: no start lag`.
+`act 4: design program diagram` (2026-11-01) — section 4.3: her p.13 bubble diagram redrawn as SVG on a living sheet, with hover and keyboard highlight and a phone version (plan step 10). Not pushed. Before it: `prepare preview deploy`.
 
 ## Reviewed and approved by the user
 
@@ -16,16 +16,16 @@ Only what the user has confirmed goes here, with the date.
 | Living sheet batch 2 (`637b93a`) | **Built, NOT yet reviewed by user** | n/a |
 | Act 4 opening + masterplan + true north (step 9) | **Built, NOT yet reviewed by user** | n/a |
 | Home dive and About start-lag fix | **Built, NOT yet reviewed by user** | n/a |
+| Design program diagram, 4.3 (step 10) | **Built, NOT yet reviewed by user**. Plan and p.14 legend names approved by the user | 2026-11-01 |
 | Everything else built so far | Not recorded: the git history doesn't show approvals. To be confirmed by the user | n/a |
 
 ## What's next
 
-1. User creates the private GitHub repo, pushes, and imports it on Vercel. The noindex comes off before launch (`Claude.MD`, "Before launch").
-2. User reviews batch 2 and step 9 at 1440px and 375px.
-3. Bubble diagram (step 10). Starts in plan mode.
-4. Act 4 sections 4.4–4.8, one per review (step 11).
-5. Cluster and unit zoom (step 12), blocked on Subhana's files or a redraw she checks.
-6. "View all sheets" (step 13), mobile crops (step 14), performance, reduced motion and accessibility (step 15), optional contours (step 16).
+1. Push to GitHub when ready, so the Vercel preview updates. The noindex comes off before launch (`Claude.MD`, "Before launch").
+2. User reviews batch 2, step 9 and 4.3 at 1440px and 375px.
+3. Act 4 sections 4.4–4.8, one per review (step 11).
+4. Cluster and unit zoom (step 12), blocked on Subhana's files or a redraw she checks.
+5. "View all sheets" (step 13), mobile crops (step 14), performance, reduced motion and accessibility (step 15), optional contours (step 16).
 
 Then the pages that don't exist yet: Hillside School, Timber Veil, `/photography`, `/writing/imperfections`.
 
@@ -47,6 +47,7 @@ Full detail: "Needed from Subhana", section 6 and "Open questions" in `docs/ephe
 - Fig. 1.5.5 wording and the BBC citation (23).
 - "Collage" as the title of Fig. 4.1.1, and the alt text on 4.1 and 4.2 (24, 26).
 - The masterplan is true to her north arrow, but the real coast crosses its sea edge at about 45°. Is the arrow right (25)?
+- 4.3: new legend names "Institution" and "Landscape", the zones given to The basin and Supporting services, the figure title and alt text (27). Which p.13 paragraph belongs here, and the unused one's typos (28).
 
 **Answers**
 - Is the p.07 Nicobarese collage safe to use? (11)

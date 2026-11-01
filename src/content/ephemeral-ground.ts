@@ -1,5 +1,6 @@
 import { ephemeralGroundPreview as home } from "./home";
 import { images, type ImageName } from "./ephemeral-ground.images";
+import type { ProgramGroup } from "./ephemeral-program";
 
 // Skeleton for /work/ephemeral-ground. See docs/ephemeral-ground-plan.md.
 // Text marked "// PSD" is copied exactly from her editable layers. Text from pp.07–22 exists only as
@@ -616,11 +617,12 @@ export const act3 = {
 
 const fig41 = figures("4.1");
 const fig42 = figures("4.2");
+const fig43 = figures("4.3");
 
 // Act 4 (pp.13–22). Nothing here is in the PSD.
 export const act4 = {
   // Her printed page numbers.
-  sheets: { opening: "13", masterplan: "15" },
+  sheets: { opening: "13", masterplan: "15", program: "13" },
   opening: {
     image: { name: "settlement/opening-collage", alt: "Collage of a child watching a shared street.", figure: fig41("Collage") } satisfies EgFigure,
     // OCR, proofread
@@ -648,6 +650,23 @@ export const act4 = {
       { number: 9, name: "Forest", at: [[75.74, 75.52]] },
       { number: 10, name: "Cultural center", at: [[80.12, 20.61]] },
     ],
+  },
+  program: {
+    title: "DESIGN PROGRAM",
+    alt: "Bubble diagram of the design program: bubbles coloured by zone, joined by arrows.",
+    figure: fig43("Design program"),
+    // Proofread against p.13
+    text: "The community core anchors the masterplan radially – binding residents through daily use, orienting tourists without granting them access, and serving as the instinctive convergence point in an emergency.",
+    // Her p.14 legend, in her order. Institution and Landscape are new names, for her approval.
+    legend: [
+      { name: "Tourist zone", group: "tourist" },
+      { name: "The common", group: "common" },
+      { name: "Residential", group: "residential" },
+      { name: "Retail", group: "retail" },
+      { name: "Water catchment area", group: "water" },
+      { name: "Institution", group: "institution" },
+      { name: "Landscape", group: "landscape" },
+    ] satisfies { name: string; group: ProgramGroup }[],
   },
 };
 

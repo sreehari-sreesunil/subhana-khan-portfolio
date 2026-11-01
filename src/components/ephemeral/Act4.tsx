@@ -3,6 +3,7 @@ import SheetBlock from "@/components/sheet/SheetBlock";
 import SheetGrid from "@/components/sheet/SheetGrid";
 import { headingClass, Lines } from "@/components/sheet/SheetText";
 import { act4, images } from "@/content/ephemeral-ground";
+import DesignProgram from "./DesignProgram";
 import Masterplan from "./Masterplan";
 
 const { opening, sheets } = act4;
@@ -40,6 +41,7 @@ export default function Act4({ id, title }: { id: string; title: string }) {
     <section id={id} aria-labelledby={`${id}-title`}>
       <OpeningSheet id={id} title={title} />
       <Masterplan title={title} />
+      <DesignProgram title={title} />
     </section>
   );
 }
