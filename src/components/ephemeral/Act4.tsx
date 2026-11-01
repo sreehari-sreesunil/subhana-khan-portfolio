@@ -3,10 +3,14 @@ import SheetBlock from "@/components/sheet/SheetBlock";
 import SheetGrid from "@/components/sheet/SheetGrid";
 import { headingClass, Lines } from "@/components/sheet/SheetText";
 import { act4, images } from "@/content/ephemeral-ground";
+import CommunityHall from "./CommunityHall";
+import CommunityKitchen from "./CommunityKitchen";
+import CulturalCenter from "./CulturalCenter";
 import DesignProgram from "./DesignProgram";
 import Masterplan from "./Masterplan";
 import StrategiesSheet from "./StrategiesSheet";
 import TsunamiDesign from "./TsunamiDesign";
+import VisitorsCenter from "./VisitorsCenter";
 
 const { opening, sheets } = act4;
 
@@ -46,6 +50,10 @@ export default function Act4({ id, title }: { id: string; title: string }) {
       <DesignProgram title={title} />
       <TsunamiDesign title={title} />
       <StrategiesSheet title={title} />
+      <CommunityHall title={title} />
+      <CommunityKitchen title={title} />
+      <VisitorsCenter title={title} />
+      <CulturalCenter title={title} />
     </section>
   );
 }

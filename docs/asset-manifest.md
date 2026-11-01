@@ -1,7 +1,7 @@
 # Asset manifest
 
 For the swap to Subhana's high-quality originals. Measured 2026-11-01 on a production build at 1440×900 and 375×812.
-133 image files, plus two SVGs that need no swap (`home/ephemeral-ground/map-osm.svg`, `thank-you.svg`). She approved the
+137 image files, plus two SVGs that need no swap (`home/ephemeral-ground/map-osm.svg`, `thank-you.svg`). She approved the
 current PDF and PSD images for now, and will send originals once the site is finished. The swap doesn't rewrite this file, so its sizes go stale after a batch of swaps.
 
 ## How to swap an image
@@ -26,7 +26,7 @@ under the same name and format works too: run the same command to record its siz
 ## Rules for an original
 
 - **Same framing** means the same crop and proportions as now, because labels sit on it by percentage. A different crop means
-  redoing those positions, which live in `src/content/ephemeral-ground.ts`, not in layout code. Six thesis images need this, plus the home site plan.
+  redoing those positions, which live in `src/content/ephemeral-ground.ts`, not in layout code. Twelve thesis images need this (the five hall floors count as one set), plus the home site plan.
 - **Any other image** may change proportions: its sheet refits it.
 - **Sharpness** is pixels divided by the widest size it's shown at. 2× is the target for sharp screens. Below 1× the browser is enlarging it.
 - "No baked-in text" means labels were painted out and are real HTML on the page, so an original must be the clean version.
@@ -61,6 +61,9 @@ Below 1.5× at their largest size, lowest first. Her file should reach the width
 | `ephemeral-ground/ground/contour-plan` | Fig. 3.4.1 â€” Site plan | PDF p.10, crop 65,290 – 1222,835 | 1157×545 | 1152×543 | 758×357 | 1.0× | ≥2304px wide | No baked-in text; White or transparent background |
 | `ephemeral-ground/ground/site-3` | Fig. 3.5.9 â€” Road and forest | PDF p.10, crop 518,1036 – 862,1210 | 344×174 | 339×141 | 169×85 | 1.0× | ≥678px wide | The whole image |
 | `ephemeral-ground/island/malacca-map` | Fig. 1.2.2 â€” Strait of Malacca | PDF p.7, crop 1260,130 – 1725,500 | 465×370 | 456×363 | 343×273 | 1.0× | ≥912px wide | The whole image |
+| `ephemeral-ground/settlement/material-steel` | – | PDF p.21, crop 1439,816 – 1510,888 | 71×72 | 68×68 | 61×61 | 1.0× | ≥136px wide | A close-up of the material; shown as a circle |
+| `ephemeral-ground/settlement/material-timber` | – | PDF p.21, crop 1607,816 – 1678,888 | 71×72 | 68×68 | 61×61 | 1.0× | ≥136px wide | A close-up of the material; shown as a circle |
+| `ephemeral-ground/settlement/material-earth` | – | PDF p.21, crop 1523,816 – 1595,888 | 72×72 | 68×68 | 61×61 | 1.1× | ≥136px wide | A close-up of the material; shown as a circle |
 | `ephemeral-ground/island/port-map` | Fig. 1.5.3 â€” Proposed port, Galathea Bay | PDF p.8, crop 545,845 – 915,1140 | 370×295 | 342×272 | 343×273 | 1.1× | ≥686px wide | The whole image |
 | `ephemeral-ground/settlement/strategy-contour` | Fig. 4.5.7 â€” Contour Responsive Planning | PDF p.16, crop 930,515 – 1265,675 | 335×160 | 292×139 | 302×144 | 1.1× | ≥604px wide | White or transparent background |
 | `ephemeral-ground/idea/walker` | – | PSD layer 1746, crop 495,570 – 1075,715 | 580×145 | 518×130 | 123×31 | 1.1× | ≥1036px wide | The whole image |
@@ -88,13 +91,14 @@ Below 1.5× at their largest size, lowest first. Her file should reach the width
 | `home/about/portrait-temp` | – | PDF p.01, cut out of the flattened page | 376×621 | 283×468 | 169×279 | 1.3× | ≥566px wide | A portrait of her, on a transparent or plain background |
 | `ephemeral-ground/idea/lone-tree` | – | PSD layer 1743, crop 820,195 – 1090,556 | 270×361 | 202×270 | 132×176 | 1.3× | ≥404px wide | The whole image |
 | `ephemeral-ground/settlement/strategy-water` | Fig. 4.5.1 â€” Water Strategy | PDF p.16, crop 70,105 – 400,305 | 330×200 | 243×147 | 238×144 | 1.4× | ≥486px wide | White or transparent background |
+| `ephemeral-ground/settlement/cultural-section` | Fig. 4.8.6 â€” Cultural Center section | PDF p.22, crop 0,1025 – 940,1235 | 940×210 | 689×154 | 343×77 | 1.4× | ≥1378px wide | White or transparent background |
 | `ephemeral-ground/idea/arch-pallasmaa` | – | PSD layer 1629, crop 530,0 – 1000,1190 | 470×1190 | 234×591 | 343×868 | 1.4× | ≥686px wide | The whole image |
 | `ephemeral-ground/island/heat-map` | Fig. 1.5.2 â€” Land surface temperature | PDF p.8, crop 268,845 – 498,1140 | 230×295 | 166×213 | 167×214 | 1.4× | ≥334px wide | The whole image |
 | `ephemeral-ground/island/trees-graphic` | Fig. 1.5.1 â€” Great Nicobar coast | PDF p.8, crop 30,845 – 265,1140 | 235×295 | 170×213 | 170×214 | 1.4× | ≥340px wide | The whole image |
 | `ephemeral-ground/idea/arch-tanizaki` | – | PSD layer 1629, crop 1002,0 – 1478,1000 | 476×1000 | 237×497 | 343×721 | 1.4× | ≥686px wide | The whole image |
 | `ephemeral-ground/idea/strategy-tower` | – | PDF p.12, crop 70,220 – 510,430 | 440×210 | 246×118 | 311×148 | 1.4× | ≥622px wide | The whole image |
 | `ephemeral-ground/settlement/tsunami-zoning` | Fig. 4.4.1 â€” Zoning plan | PDF p.14, crop 44,505 – 1375,1212 | 1331×707 | 921×489 | 343×182 | 1.4× | ≥1842px wide | White or transparent background |
-| `ephemeral-ground/settlement/masterplan` | Fig. 4.2.1 â€” Masterplan | PDF p.15, crop 35,300 – 1700,1125 | 1665×825 | 1150×570 | 341×169 | 1.4× | ≥2300px wide | **Same framing** (her numbers and its map position are placed on it); Transparent outside the plan |
+| `ephemeral-ground/settlement/masterplan` | Fig. 4.2.1 â€” Masterplan, Fig. 4.7.3 â€” Key plan: Community Zone, Fig. 4.7.5 â€” Key plan: Community Zone, Fig. 4.8.4 â€” Key plan: Visitorâ€™s center, Fig. 4.8.7 â€” Key plan: Cultural center | PDF p.15, crop 35,300 – 1700,1125 | 1665×825 | 1150×570 | 343×170 | 1.4× | ≥2300px wide | **Same framing** (her numbers and its map position are placed on it); Transparent outside the plan |
 | `ephemeral-ground/idea/render-hall` | – | PSD smart object, layer 1783 | 500×598 | 317×379 | 343×410 | 1.5× | ≥686px wide | The whole image |
 | `ephemeral-ground/idea/render-residential` | – | PSD smart object, layer 1787 | 500×598 | 317×379 | 343×410 | 1.5× | ≥686px wide | The whole image |
 
@@ -234,21 +238,25 @@ Also upgrade, though the numbers above don't show it:
 | `ephemeral-ground/settlement/cluster-residential` | – | PDF p.20, crop 258,120 – 900,812 | 642×692 | – | – | – | – | The whole image |
 | `ephemeral-ground/settlement/cluster-tourist` | – | PDF p.20, crop 1060,85 – 1445,812 | 385×727 | – | – | – | – | The whole image |
 | `ephemeral-ground/settlement/commons-plan` | – | PDF p.19, crop 1075,272 – 1217,445 | 142×173 | – | – | – | – | The whole image |
-| `ephemeral-ground/settlement/cultural-key` | – | PDF p.22, crop 1222,85 – 1710,385 | 488×300 | – | – | – | – | The whole image |
-| `ephemeral-ground/settlement/cultural-plan` | – | PDF p.22, crop 80,90 – 1400,1005 | 1320×915 | – | – | – | – | No baked-in text |
-| `ephemeral-ground/settlement/cultural-section` | – | PDF p.22, crop 0,1025 – 940,1235 | 940×210 | – | – | – | – | The whole image |
+| `ephemeral-ground/settlement/cultural-plan` | Fig. 4.8.5 â€” Cultural Center plan | PDF p.22, crop 80,90 – 1400,1005 | 1320×915 | 755×523 | 343×238 | 1.7× | ≥1510px wide | No baked-in text; White or transparent background |
+| `ephemeral-ground/settlement/cultural-section` | Fig. 4.8.6 â€” Cultural Center section | PDF p.22, crop 0,1025 – 940,1235 | 940×210 | 689×154 | 343×77 | 1.4× | ≥1378px wide | White or transparent background |
 | `ephemeral-ground/settlement/family-first` | – | PDF p.19, crop 1390,520 – 1715,672 | 325×152 | – | – | – | – | The whole image |
 | `ephemeral-ground/settlement/family-ground` | – | PDF p.19, crop 1065,520 – 1392,672 | 327×152 | – | – | – | – | The whole image |
 | `ephemeral-ground/settlement/forest-aerial` | – | PDF p.13, crop 0,527 – 540,705 | 540×178 | – | – | – | – | The whole image |
-| `ephemeral-ground/settlement/hall-models` | – | PDF p.17, crop 75,770 – 635,1172 | 560×402 | – | – | – | – | The whole image |
-| `ephemeral-ground/settlement/hall-plans` | – | PDF p.17, crop 520,55 – 1700,1178 | 1180×1123 | – | – | – | – | No baked-in text |
+| `ephemeral-ground/settlement/hall-floor-1` | – | PDF p.17, crop 520,948 – 1700,1178 | 1180×230 | 689×134 | 343×67 | 1.7× | ≥1378px wide | **Same framing**: the five bands rejoin as one drawing, so swap all five together; No baked-in text; White or transparent background |
+| `ephemeral-ground/settlement/hall-floor-2` | – | PDF p.17, crop 520,728 – 1700,948 | 1180×220 | 689×128 | 343×64 | 1.7× | ≥1378px wide | **Same framing**: the five bands rejoin as one drawing, so swap all five together; No baked-in text; White or transparent background |
+| `ephemeral-ground/settlement/hall-floor-3` | – | PDF p.17, crop 520,497 – 1700,728 | 1180×231 | 689×135 | 343×67 | 1.7× | ≥1378px wide | **Same framing**: the five bands rejoin as one drawing, so swap all five together; No baked-in text; White or transparent background |
+| `ephemeral-ground/settlement/hall-floor-4` | – | PDF p.17, crop 520,285 – 1700,497 | 1180×212 | 689×124 | 343×62 | 1.7× | ≥1378px wide | **Same framing**: the five bands rejoin as one drawing, so swap all five together; No baked-in text; White or transparent background |
+| `ephemeral-ground/settlement/hall-floor-5` | – | PDF p.17, crop 520,55 – 1700,285 | 1180×230 | 689×134 | 343×67 | 1.7× | ≥1378px wide | **Same framing**: the five bands rejoin as one drawing, so swap all five together; No baked-in text; White or transparent background |
+| `ephemeral-ground/settlement/hall-models` | Fig. 4.7.1 â€” Form development | PDF p.17, crop 75,770 – 635,1172 | 560×402 | 342×245 | 343×246 | 1.6× | ≥686px wide | The whole image |
 | `ephemeral-ground/settlement/hut-photos` | – | PDF p.19, crop 925,60 – 1108,185 | 183×125 | – | – | – | – | The whole image |
 | `ephemeral-ground/settlement/isometric-model` | – | PDF p.13, crop 1005,305 – 1710,735 | 705×430 | – | – | – | – | No baked-in text |
-| `ephemeral-ground/settlement/kitchen-elevation` | – | PDF p.18, crop 45,980 – 1660,1235 | 1615×255 | – | – | – | – | The whole image |
-| `ephemeral-ground/settlement/kitchen-key` | – | PDF p.18, crop 1215,85 – 1710,320 | 495×235 | – | – | – | – | The whole image |
-| `ephemeral-ground/settlement/kitchen-plans` | – | PDF p.18, crop 110,95 – 1090,905 | 980×810 | – | – | – | – | No baked-in text |
-| `ephemeral-ground/settlement/masterplan` | Fig. 4.2.1 â€” Masterplan | PDF p.15, crop 35,300 – 1700,1125 | 1665×825 | 1150×570 | 341×169 | 1.4× | ≥2300px wide | **Same framing** (her numbers and its map position are placed on it); Transparent outside the plan |
-| `ephemeral-ground/settlement/materials` | – | PDF p.21, crop 1437,815 – 1682,890 | 245×75 | – | – | – | – | The whole image |
+| `ephemeral-ground/settlement/kitchen-elevation` | Fig. 4.7.6 â€” Community Kitchen elevation | PDF p.18, crop 45,980 – 1660,1235 | 1615×255 | 1037×164 | 343×54 | 1.6× | ≥2074px wide | The whole image |
+| `ephemeral-ground/settlement/kitchen-plans` | Fig. 4.7.4 â€” Community Kitchen floor plans | PDF p.18, crop 110,95 – 1090,905 | 980×810 | 607×502 | 343×284 | 1.6× | ≥1214px wide | **Same framing** (her dotted lines are drawn on it); No baked-in text; White or transparent background |
+| `ephemeral-ground/settlement/masterplan` | Fig. 4.2.1 â€” Masterplan, Fig. 4.7.3 â€” Key plan: Community Zone, Fig. 4.7.5 â€” Key plan: Community Zone, Fig. 4.8.4 â€” Key plan: Visitorâ€™s center, Fig. 4.8.7 â€” Key plan: Cultural center | PDF p.15, crop 35,300 – 1700,1125 | 1665×825 | 1150×570 | 343×170 | 1.4× | ≥2300px wide | **Same framing** (her numbers and its map position are placed on it); Transparent outside the plan |
+| `ephemeral-ground/settlement/material-earth` | – | PDF p.21, crop 1523,816 – 1595,888 | 72×72 | 68×68 | 61×61 | 1.1× | ≥136px wide | A close-up of the material; shown as a circle |
+| `ephemeral-ground/settlement/material-steel` | – | PDF p.21, crop 1439,816 – 1510,888 | 71×72 | 68×68 | 61×61 | 1.0× | ≥136px wide | A close-up of the material; shown as a circle |
+| `ephemeral-ground/settlement/material-timber` | – | PDF p.21, crop 1607,816 – 1678,888 | 71×72 | 68×68 | 61×61 | 1.0× | ≥136px wide | A close-up of the material; shown as a circle |
 | `ephemeral-ground/settlement/opening-collage` | Fig. 4.1.1 â€” Collage | PDF p.13, crop 100,55 – 402,392 | 302×337 | 342×381 | 343×383 | 0.9× | ≥686px wide | White or transparent background |
 | `ephemeral-ground/settlement/residential-plan` | – | PDF p.19, crop 45,85 – 865,1195 | 820×1110 | – | – | – | – | No baked-in text |
 | `ephemeral-ground/settlement/site-section` | Fig. 4.6.1 â€” Site section | PDF p.16, crop 0,945 – 1753,1185 | 1753×240 | 1384×189 | 1753×240 | 1.0× | ≥3506px wide | **Same framing** (section labels are placed on it); No baked-in text; White or transparent background |
@@ -264,12 +272,12 @@ Also upgrade, though the numbers above don't show it:
 | `ephemeral-ground/settlement/street-elevation` | – | PDF p.20, crop 235,875 – 1695,1160 | 1460×285 | – | – | – | – | The whole image |
 | `ephemeral-ground/settlement/tsunami-render` | Fig. 4.4.2 â€” Landmark tower | PDF p.14, crop 52,90 – 1090,465 | 1038×375 | 457×165 | 343×124 | 2.3× | Fine as is | White or transparent background |
 | `ephemeral-ground/settlement/tsunami-zoning` | Fig. 4.4.1 â€” Zoning plan | PDF p.14, crop 44,505 – 1375,1212 | 1331×707 | 921×489 | 343×182 | 1.4× | ≥1842px wide | White or transparent background |
-| `ephemeral-ground/settlement/visitors-plan` | – | PDF p.21, crop 135,55 – 1550,845 | 1415×790 | – | – | – | – | No baked-in text |
-| `ephemeral-ground/settlement/visitors-section` | – | PDF p.21, crop 200,875 – 1430,1240 | 1230×365 | – | – | – | – | No baked-in text |
+| `ephemeral-ground/settlement/visitors-plan` | Fig. 4.8.1 â€” Visitorâ€™s Center plan | PDF p.21, crop 135,55 – 1550,845 | 1415×790 | 885×494 | 343×191 | 1.6× | ≥1770px wide | No baked-in text; White or transparent background |
+| `ephemeral-ground/settlement/visitors-section` | Fig. 4.8.2 â€” Visitorâ€™s Center section | PDF p.21, crop 200,875 – 1430,1240 | 1230×365 | 595×176 | 343×102 | 2.1× | Fine as is | No baked-in text; White or transparent background |
 | `ephemeral-ground/settlement/walkway-sketch` | – | PDF p.20, crop 45,680 – 245,790 | 200×110 | – | – | – | – | The whole image |
 
 ## Not measured
 
-Not measured because they aren't on a page yet (Act 4 sections still to come), or show only briefly (the preloader) or at one screen size.
+These had no size on the page at load, usually because they show only briefly or at one screen size.
 
-`ephemeral-ground/idea/photo-strip`, `ephemeral-ground/opening/plan-mobile`, `ephemeral-ground/settlement/apartment-plan`, `ephemeral-ground/settlement/apartment-section`, `ephemeral-ground/settlement/cluster-diagram`, `ephemeral-ground/settlement/cluster-residential`, `ephemeral-ground/settlement/cluster-tourist`, `ephemeral-ground/settlement/commons-plan`, `ephemeral-ground/settlement/cultural-key`, `ephemeral-ground/settlement/cultural-plan`, `ephemeral-ground/settlement/cultural-section`, `ephemeral-ground/settlement/family-first`, `ephemeral-ground/settlement/family-ground`, `ephemeral-ground/settlement/forest-aerial`, `ephemeral-ground/settlement/hall-models`, `ephemeral-ground/settlement/hall-plans`, `ephemeral-ground/settlement/hut-photos`, `ephemeral-ground/settlement/isometric-model`, `ephemeral-ground/settlement/kitchen-elevation`, `ephemeral-ground/settlement/kitchen-key`, `ephemeral-ground/settlement/kitchen-plans`, `ephemeral-ground/settlement/materials`, `ephemeral-ground/settlement/residential-plan`, `ephemeral-ground/settlement/small-unit`, `ephemeral-ground/settlement/street-elevation`, `ephemeral-ground/settlement/visitors-plan`, `ephemeral-ground/settlement/visitors-section`, `ephemeral-ground/settlement/walkway-sketch`, `home/preloader/2021`, `home/preloader/2022`, `home/preloader/2023`, `home/preloader/2024`, `home/preloader/2025`, `home/preloader/2026`
+`ephemeral-ground/idea/photo-strip`, `ephemeral-ground/opening/plan-mobile`, `ephemeral-ground/settlement/apartment-plan`, `ephemeral-ground/settlement/apartment-section`, `ephemeral-ground/settlement/cluster-diagram`, `ephemeral-ground/settlement/cluster-residential`, `ephemeral-ground/settlement/cluster-tourist`, `ephemeral-ground/settlement/commons-plan`, `ephemeral-ground/settlement/family-first`, `ephemeral-ground/settlement/family-ground`, `ephemeral-ground/settlement/forest-aerial`, `ephemeral-ground/settlement/hut-photos`, `ephemeral-ground/settlement/isometric-model`, `ephemeral-ground/settlement/residential-plan`, `ephemeral-ground/settlement/small-unit`, `ephemeral-ground/settlement/street-elevation`, `ephemeral-ground/settlement/walkway-sketch`, `home/preloader/2021`, `home/preloader/2022`, `home/preloader/2023`, `home/preloader/2024`, `home/preloader/2025`, `home/preloader/2026`

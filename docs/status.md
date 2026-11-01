@@ -4,7 +4,7 @@ Updated 2026-11-01. Update at the end of every task, and before every commit.
 
 ## Last commit
 
-`asset manifest for HQ swap` (2026-11-01) — `docs/asset-manifest.md` lists every image, and `npm run images:swap` puts in an original with no layout changes. Not pushed. Before it: `act 4: tsunami, strategies, site section`, sections 4.4–4.6 as two living sheets, also not pushed.
+`act 4: community, tourism, culture` (2026-11-01) — sections 4.7 and 4.8 as four living sheets (17, 18, 21, 22) with one key plan built from her masterplan. Not pushed. Before it, also not pushed: `asset manifest for HQ swap` and `act 4: tsunami, strategies, site section`.
 
 ## Reviewed and approved by the user
 
@@ -18,13 +18,14 @@ Only what the user has confirmed goes here, with the date.
 | Home dive and About start-lag fix | **Built, NOT yet reviewed by user** | n/a |
 | Design program diagram, 4.3 (step 10) | **Built, NOT yet reviewed by user**. Plan and p.14 legend names approved by the user | 2026-11-01 |
 | Tsunami, strategies, site section, 4.4–4.6 (step 11a) | **Built, NOT yet reviewed by user**. Plan approved by the user, with 4.5 and 4.6 on one sheet | 2026-11-01 |
+| Community zone, tourism and culture, 4.7–4.8 (step 11b) | **Built, NOT yet reviewed by user**. Plan approved by the user | 2026-11-01 |
 | Everything else built so far | Not recorded: the git history doesn't show approvals. To be confirmed by the user | n/a |
 
 ## What's next
 
 1. Push to GitHub when ready, so the Vercel preview updates. The noindex comes off before launch (`Claude.MD`, "Before launch").
-2. User reviews batch 2, step 9, 4.3 and 4.4–4.6 at 1440px and 375px.
-3. Act 4 sections 4.7–4.8 (step 11b): plan first.
+2. User reviews batch 2, step 9, 4.3, 4.4–4.6 and 4.7–4.8 at 1440px and 375px.
+3. 18 older images show above their real size (worst: `ground/site-section`, 0.5×); `docs/asset-manifest.md` lists them. Decide whether to shrink them on the sheets or wait for originals.
 4. Cluster and unit zoom (step 12), blocked on Subhana's files or a redraw she checks.
 5. "View all sheets" (step 13), mobile crops (step 14), performance, reduced motion and accessibility (step 15), optional contours (step 16).
 
@@ -53,6 +54,7 @@ She'll send high-quality originals once the site is finished: `docs/asset-manife
 - The masterplan is true to her north arrow, but the real coast crosses its sea edge at about 45°. Is the arrow right (25)?
 - 4.3: new legend names "Institution" and "Landscape", the zones given to The basin and Supporting services, the figure title and alt text (27). Which p.13 paragraph belongs here, and the unused one's typos (28).
 - 4.4–4.6: figure titles and alt text (29); baked-in "LITHORAL FOREST", "VISITORS CENTER" and "WETLAND/STREAM" on the zoning plan (30); sketch 6's seawall against her p.14 argument, and whether the sketch is hers (31).
+- 4.7–4.8: figure titles, alt text and which swatch is which (32); the two unnamed p.22 drawings (33); baked-in typos and the "Visitor’s" quote mark (34); the Jarawa article's publisher (35).
 
 **Answers**
 - Is the p.07 Nicobarese collage safe to use? (11)

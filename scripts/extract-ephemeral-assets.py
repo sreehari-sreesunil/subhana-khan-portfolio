@@ -112,9 +112,13 @@ CROPS = {
     "settlement/strategy-roads": (16, (1420, 515, 1635, 705)),
     "settlement/site-section": (16, (0, 945, 1753, 1185)),
     "settlement/hall-models": (17, (75, 770, 635, 1172)),
-    "settlement/hall-plans": (17, (520, 55, 1700, 1178)),
+    # Her five floors, ground first. Each cut is a band of the page, so stacked they rejoin exactly.
+    "settlement/hall-floor-1": (17, (520, 948, 1700, 1178)),
+    "settlement/hall-floor-2": (17, (520, 728, 1700, 948)),
+    "settlement/hall-floor-3": (17, (520, 497, 1700, 728)),
+    "settlement/hall-floor-4": (17, (520, 285, 1700, 497)),
+    "settlement/hall-floor-5": (17, (520, 55, 1700, 285)),
     "settlement/kitchen-plans": (18, (110, 95, 1090, 905)),
-    "settlement/kitchen-key": (18, (1215, 85, 1710, 320)),
     "settlement/kitchen-elevation": (18, (45, 980, 1660, 1235)),
     "settlement/residential-plan": (19, (45, 85, 865, 1195)),
     "settlement/hut-photos": (19, (925, 60, 1108, 185)),
@@ -130,9 +134,10 @@ CROPS = {
     "settlement/street-elevation": (20, (235, 875, 1695, 1160)),
     "settlement/visitors-plan": (21, (135, 55, 1550, 845)),
     "settlement/visitors-section": (21, (200, 875, 1430, 1240)),
-    "settlement/materials": (21, (1437, 815, 1682, 890)),
+    "settlement/material-steel": (21, (1439, 816, 1510, 888)),
+    "settlement/material-earth": (21, (1523, 816, 1595, 888)),
+    "settlement/material-timber": (21, (1607, 816, 1678, 888)),
     "settlement/cultural-plan": (22, (80, 90, 1400, 1005)),
-    "settlement/cultural-key": (22, (1222, 85, 1710, 385)),
     "settlement/cultural-section": (22, (0, 1025, 940, 1235)),
 }
 
@@ -149,18 +154,26 @@ PAINT_WHITE = {
         (160, 1030, 370, 1060), (425, 1015, 550, 1070), (525, 975, 640, 1025), (935, 955, 1065, 982),
         (980, 1033, 1075, 1085), (1215, 945, 1335, 995), (1305, 1037, 1395, 1088), (1460, 1065, 1610, 1095),
     ],
-    "settlement/hall-plans": [(520, 55, 650, 520), (530, 720, 672, 738), (520, 765, 640, 1178), (1660, 1170, 1700, 1178)],
+    **{
+        f"settlement/hall-floor-{floor}": [(520, 55, 650, 520), (530, 720, 672, 738), (520, 765, 640, 1178), (1660, 1170, 1700, 1178)]
+        for floor in range(1, 6)
+    },
     "settlement/kitchen-plans": [(285, 450, 665, 475), (905, 340, 1090, 485)],
+    "settlement/visitors-plan": [(135, 55, 380, 108), (1430, 812, 1550, 845), (1490, 55, 1550, 300)],
     "settlement/residential-plan": [
         (150, 85, 470, 283, 750, 408, 870, 408, 870, 85), (815, 500, 865, 680), (815, 1015, 865, 1195),
     ],
-    "settlement/visitors-plan": [(135, 55, 380, 108)],
     "settlement/visitors-section": [(200, 875, 830, 1055)],
     "settlement/cultural-plan": [(700, 90, 1400, 400), (90, 90, 400, 108)],
     "idea/slope-ratio": [(1100, 438, 1392, 519), (852, 683, 1010, 802)],
 }
 
 # Her text sits on watercolour here, so white paint would show: only the ink is lifted (see lift_text).
+# Her dotted lines between the kitchen floors, redrawn on the page so they can draw. (x, top, bottom), in page pixels.
+CLEAR_LINES = {
+    "settlement/kitchen-plans": [(114, 252, 696), (214, 418, 548), (503, 338, 544), (705, 341, 784), (820, 98, 527), (879, 262, 687)],
+}
+
 LIFT_TEXT = {
     "ground/settlements-strip": [
         (5, 752, 216, 800), (290, 800, 500, 848), (432, 735, 668, 782), (936, 936, 1134, 980), (1276, 862, 1492, 908),
@@ -208,6 +221,9 @@ ON_PAPER = {
     "ground/infra-1", "ground/infra-2", "ground/infra-3", "ground/infra-4", "ground/infra-5", "ground/infra-6",
     "ground/contour-plan", "ground/site-section", "ground/site-context", "settlement/opening-collage",
     "settlement/tsunami-zoning", "settlement/tsunami-render",
+    "settlement/hall-floor-1", "settlement/hall-floor-2", "settlement/hall-floor-3", "settlement/hall-floor-4",
+    "settlement/hall-floor-5", "settlement/kitchen-plans", "settlement/visitors-plan", "settlement/visitors-section",
+    "settlement/cultural-plan", "settlement/cultural-section",
     "settlement/site-section", "settlement/strategy-water", "settlement/strategy-gradient", "settlement/strategy-ecology",
     "settlement/strategy-layout", "settlement/strategy-walkability", "settlement/strategy-resilience",
     "settlement/strategy-contour", "settlement/strategy-roads",
@@ -309,6 +325,11 @@ def crop_page(page, name, box):
             draw.rectangle(shape, fill="white")
         else:
             draw.polygon(shape, fill="white")
+    for x, top, bottom in CLEAR_LINES.get(name, []):
+        pixels = numpy.array(image)
+        pixels[top:bottom, x - 1:x + 1] = pixels[top:bottom, x - 3:x - 1]
+        pixels[top:bottom, x + 1:x + 4] = pixels[top:bottom, x + 5:x + 8]
+        image = Image.fromarray(pixels)
     return image.crop(box)
 
 

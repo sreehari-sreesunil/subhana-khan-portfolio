@@ -370,6 +370,12 @@ html.js:not([data-hydrated]) [data-reveal] {
   margin-top: 0;
 }
 
+/* Her swatches are 71px crops, so this is the largest they go. Short windows take them down. */
+.sheet-swatch {
+  width: min(4.4rem, 7.5svh);
+  height: min(4.4rem, 7.5svh);
+}
+
 /* p.16: eight sketch-and-text pairs, one column on phones. */
 .sheet-strategies {
   display: grid;

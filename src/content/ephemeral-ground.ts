@@ -621,11 +621,21 @@ const fig43 = figures("4.3");
 const fig44 = figures("4.4");
 const fig45 = figures("4.5");
 const fig46 = figures("4.6");
+const fig47 = figures("4.7");
+const fig48 = figures("4.8");
+
+// Her key plans box these on the masterplan: p.18 one box round the hall and kitchen, p.22 one each for the other two.
+const keyPlanImage = { heading: "Key Plan", name: "settlement/masterplan", alt: "Her masterplan, small, with this building's area boxed." } as const;
+const keyPlanAreas = {
+  community: { left: 0.328, top: 0.348, width: 0.117, height: 0.176 },
+  visitors: { left: 0.567, top: 0.265, width: 0.08, height: 0.15 },
+  cultural: { left: 0.765, top: 0.13, width: 0.08, height: 0.15 },
+};
 
 // Act 4 (pp.13–22). Nothing here is in the PSD.
 export const act4 = {
   // Her printed page numbers.
-  sheets: { opening: "13", masterplan: "15", program: "13", tsunami: "14", strategies: "16" },
+  sheets: { opening: "13", masterplan: "15", program: "13", tsunami: "14", strategies: "16", hall: "17", kitchen: "18", visitors: "21", cultural: "22" },
   opening: {
     image: { name: "settlement/opening-collage", alt: "Collage of a child watching a shared street.", figure: fig41("Collage") } satisfies EgFigure,
     // OCR, proofread
@@ -715,6 +725,74 @@ export const act4 = {
       { lines: ["Laxman beach"], x: 82.7, y: 54, side: "right" },
     ] as { lines: string[]; x: number; y: number; side: "left" | "right" | "centre" }[],
   },
+  // Figures are numbered as these run, so keep them in sheet order.
+  hall: {
+    zone: "COMMUNITY ZONE",
+    title: "COMMUNITY HALL",
+    // Proofread against p.17
+    text: "The Community Hall is positioned at the highest contour within the settlement, establishing it as the civic and emergency core of the neighbourhood. Its central location allows all major community facilities to be organized around it, making it easily accessible from every residential cluster. The elevated siting also provides a strategic advantage during emergencies, reducing the risk of tsunami inundation and allowing the building to function as a safe refuge. The surrounding open area is intentionally kept free of dense vegetation and permanent structures to ensure unobstructed access to the rooftop helipad, which serves as a critical point for emergency evacuation, relief operations, and communication during disasters.",
+    form: {
+      title: "FORM DEVELOPMENT",
+      text: "The Community Hall serves as a civic landmark, balancing grandeur with simplicity and a connection to the landscape. Elevated on stilts, its stepped auditorium forms a monolithic concrete volume that conveys collective identity without excessive height or ornamentation.",
+      image: { name: "settlement/hall-models", alt: "Two massing models of the Community Hall: one coloured by part, one white.", figure: fig47("Form development") } satisfies EgFigure,
+    },
+    // Ground first. She doesn't name the floors, so nothing here does.
+    floors: {
+      figure: fig47("Community Hall floor plans"),
+      list: [
+        { name: "settlement/hall-floor-1", alt: "Lowest Community Hall plan: lift, ramp and toilets, with the columns of the floors above." },
+        { name: "settlement/hall-floor-2", alt: "Community Hall plan with its pathway to the Community Kitchen." },
+        { name: "settlement/hall-floor-3", alt: "Community Hall plan with the auditorium, 29m across." },
+        { name: "settlement/hall-floor-4", alt: "Community Hall plan with seating around the large round room." },
+        { name: "settlement/hall-floor-5", alt: "Top Community Hall plan: the tsunami evacuation floor, 38m across." },
+      ] satisfies { name: ImageName; alt: string }[],
+    },
+    keyPlan: { ...keyPlanImage, figure: fig47("Key plan: Community Zone"), area: keyPlanAreas.community },
+  },
+  kitchen: {
+    title: "COMMUNITY KITCHEN",
+    // Proofread against p.18
+    text: "The Community Kitchen is envisioned as the social heart of the neighbourhood, where everyday routines become opportunities for interaction and community building. Rather than functioning solely as a place for food preparation, it brings residents together through cooking, dining, and shared activities. Designed around the principles of collective living, flexibility, and resilience, the building supports daily life while also serving as a key gathering space during festivals, workshops, and emergency situations.",
+    adapts: "The building adapts to festivals, workshops and celebrations, with dining spaces extending into shaded outdoor areas. This flexible arrangement encourages communal eating, social interaction and a closer connection with the landscape.",
+    plans: { name: "settlement/kitchen-plans", alt: "First and ground floor plans of the Community Kitchen, one above the other.", figure: fig47("Community Kitchen floor plans") } satisfies EgFigure,
+    planNames: { first: "First floor plan of community kitchen", ground: "Ground floor plan of community kitchen" },
+    // Her dotted lines, as % of the plans image: x, then top and bottom.
+    lines: [[0.5, 19.4, 74.2], [10.7, 39.9, 55.9], [40.2, 30, 55.5], [60.8, 30.4, 85.1], [72.5, 0.4, 53.3], [78.5, 20.6, 73.1]],
+    keyPlan: { ...keyPlanImage, figure: fig47("Key plan: Community Zone"), area: keyPlanAreas.community },
+    elevation: { name: "settlement/kitchen-elevation", alt: "Elevation of the Community Kitchen on stilts, among trees, with a pathway leading to it.", figure: fig47("Community Kitchen elevation") } satisfies EgFigure,
+  },
+  visitors: {
+    zone: "TOURISM ZONE",
+    title: "VISITOR’S CENTER",
+    // Proofread against p.21
+    text: "The Visitor Centre is designed as a sequential experience. As visitors enter, they first pass through an exhibition space that introduces the values, lifestyle, and ecological ethos of the community. This creates an understanding of the settlement before any interaction takes place. From there, they arrive at the reception and orientation area, where they receive information about their accommodation and can book activities such as whale watching, sailing, guided nature walks, or stays in the tourism cluster, beach cabins, or tree houses.",
+    plan: { name: "settlement/visitors-plan", alt: "Plan of the Visitor’s Center, with local shops, bike rentals and toilets around it.", figure: fig48("Visitor’s Center plan") } satisfies EgFigure,
+    section: { name: "settlement/visitors-section", alt: "Section through the Visitor’s Center, with a tree growing through it.", figure: fig48("Visitor’s Center section") } satisfies EgFigure,
+    material: {
+      title: "Material",
+      text: "The primary materials used are rammed earth and locally processed timber, both sourced and manufactured on the island to minimise environmental impact and support local construction practices. Steel is incorporated as the primary structural reinforcement, providing the building with greater strength and resilience against extreme weather events. As these buildings are located close to the coast, they are among the first to be exposed during cyclones or tsunamis. While they are not designed to withstand the forces of a tsunami, they are engineered to resist cyclonic wind loads and provide structural stability during severe storms.",
+      figure: fig48("Material"),
+      // In her text's order. Her circles have no names: which is which is by eye, for her approval.
+      swatches: [
+        { name: "settlement/material-earth", label: "rammed earth" },
+        { name: "settlement/material-timber", label: "locally processed timber" },
+        { name: "settlement/material-steel", label: "Steel" },
+      ] satisfies { name: ImageName; label: string }[],
+    },
+    keyPlan: { ...keyPlanImage, figure: fig48("Key plan: Visitor’s center"), area: keyPlanAreas.visitors },
+  },
+  cultural: {
+    title: "CULTURAL CENTER",
+    plan: { name: "settlement/cultural-plan", alt: "Plans of the Cultural Center, around a botanical courtyard and an auditorium.", figure: fig48("Cultural Center plan") } satisfies EgFigure,
+    section: { name: "settlement/cultural-section", alt: "Section through the Cultural Center, stepping down the slope around trees.", figure: fig48("Cultural Center section") } satisfies EgFigure,
+    keyPlan: { ...keyPlanImage, figure: fig48("Key plan: Cultural center"), area: keyPlanAreas.cultural },
+    // Proofread against p.22
+    text: "The building is carefully integrated with the natural contours of the site, creating a dynamic stepped elevation while minimising earthwork. The change in level allows the building to split into upper and lower floors, with the main entrance positioned at the intermediate level. An open-air amphitheatre is embedded into the slope, taking advantage of the terrain. The audience accesses the seating directly from the upper level, while the stage is accessed independently from the lower level, allowing both levels to function efficiently and creating a seamless relationship between the building and the landscape.",
+    busStop: "Bus stop is positioned along the main access road as the primary arrival point for tourists. Upon arrival, visitors are directed either to the Tourist Residential Cluster or the Visitor Centre. The Visitor Centre serves as the first point of orientation, introducing visitors to the settlement, its ecological context, and the experiences it offers before they explore the neighbourhood.",
+    tourism: "Tourism has exposed Indigenous communities, particularly the Jarawa, to intrusive encounters and exploitation. Reports of sexual abuse of Jarawa women highlight how tourism without safeguards threatens their dignity, safety, privacy and rights.",
+    // Her clipping and its photo are left out: identifiable Jarawa people are never shown. Cited as text instead.
+    source: "“Jarawa tribe now face sexual abuse by outsiders on Andaman Islands”. Publisher to confirm",
+  },
 };
 
 /** The title block's fixed words, on every living sheet. */
@@ -777,38 +855,6 @@ export const acts: EgAct[] = [
         images: [{ name: "settlement/masterplan", alt: "Colour masterplan of the 100-acre site, with lake and coast." }],
       },
       { id: "design-program", title: "DESIGN PROGRAM", pages: [13], images: [] },
-      {
-        id: "community-zone",
-        title: "COMMUNITY ZONE",
-        pages: [17, 18],
-        images: [
-          { name: "settlement/hall-models", alt: "Models of the community hall." },
-          { name: "settlement/hall-plans", alt: "Stacked floor plans of the community hall." },
-          { name: "settlement/kitchen-plans", alt: "Floor plans of the community kitchen." },
-          { name: "settlement/kitchen-key", alt: "Key plan locating the community kitchen." },
-          { name: "settlement/kitchen-elevation", alt: "Elevation of the community kitchen." },
-        ],
-      },
-      {
-        id: "tourism-zone",
-        title: "TOURISM ZONE",
-        pages: [21],
-        images: [
-          { name: "settlement/visitors-plan", alt: "Plan of the Visitor's Center and its shops." },
-          { name: "settlement/visitors-section", alt: "Section through the Visitor's Center." },
-          { name: "settlement/materials", alt: "Samples of rammed earth and timber." },
-        ],
-      },
-      {
-        id: "cultural-center",
-        title: "CULTURAL CENTER",
-        pages: [22],
-        images: [
-          { name: "settlement/cultural-plan", alt: "Plan of the Cultural Center." },
-          { name: "settlement/cultural-key", alt: "Key plan locating the Cultural Center." },
-          { name: "settlement/cultural-section", alt: "Section through the Cultural Center." },
-        ],
-      },
       {
         id: "residential-zone",
         title: "RESIDENTIAL ZONE",
